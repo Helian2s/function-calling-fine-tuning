@@ -243,3 +243,6 @@ __marimo__/
 # Large/raw experiment results
 /results/raw/
 /logs/
+# Generated smoke dataset derived from xLAM
+/data/smoke/*
+!/data/smoke/README.md

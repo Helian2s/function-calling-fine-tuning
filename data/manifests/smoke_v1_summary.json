@@ -1,0 +1,64 @@
+{
+  "available_tool_count_distribution": {
+    "1": 57,
+    "2": 41,
+    "3": 39,
+    "4": 40,
+    "5": 12,
+    "6": 8,
+    "7": 2,
+    "8": 1
+  },
+  "call_bucket_distribution": {
+    "single_call": 120,
+    "three_or_more_calls": 30,
+    "two_calls": 50
+  },
+  "examples_with_complex_parameters": 43,
+  "examples_with_five_or_more_available_tools": 23,
+  "expected_call_count_distribution": {
+    "1": 120,
+    "2": 50,
+    "3": 20,
+    "4": 9,
+    "5": 1
+  },
+  "generator_distribution": {
+    "deepseek": 100,
+    "mixtral": 100
+  },
+  "multi_call_examples_repeating_same_tool": 30,
+  "multi_call_examples_using_multiple_tools": 50,
+  "parameter_types": {
+    "Callable[[float], float]": 2,
+    "Dict": 3,
+    "List": 2,
+    "List[List[float]]": 2,
+    "List[List[int]]": 3,
+    "List[List[str]]": 3,
+    "List[Tuple[float, float]]": 1,
+    "List[Tuple[int, int]]": 1,
+    "List[Union[int, float]]": 4,
+    "List[float]": 15,
+    "List[int]": 22,
+    "List[str]": 3,
+    "Tuple[float, float]": 5,
+    "bool, optional": 14,
+    "float": 30,
+    "float, optional": 15,
+    "int": 98,
+    "int, optional": 58,
+    "list": 5,
+    "set": 1,
+    "str": 145,
+    "str, optional": 75,
+    "str, optional, default 'London'": 1
+  },
+  "split_sizes": {
+    "test": 40,
+    "train": 120,
+    "validation": 40
+  },
+  "total_selected": 200,
+  "unknown_answer_tool_examples": 0
+}
