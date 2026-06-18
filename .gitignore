@@ -129,7 +129,6 @@ __pypackages__/
 
 # Celery stuff
 celerybeat-schedule
-celerybeat.pid
 
 # Redis
 *.rdb
@@ -216,3 +215,31 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Generated datasets
+/data/raw/*
+/data/processed/*
+
+# Keep directory documentation
+!/data/raw/README.md
+!/data/processed/README.md
+
+# Model artifacts
+/checkpoints/
+/models/
+/adapters/
+/outputs/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+
+# Profiling artifacts
+/profiles/raw/
+*.nsys-rep
+*.qdrep
+*.sqlite
+
+# Large/raw experiment results
+/results/raw/
+/logs/
