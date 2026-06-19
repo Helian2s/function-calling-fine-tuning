@@ -1,0 +1,10 @@
+{
+  "filename": "xlam_function_calling_60k.json",
+  "local_path": "data/raw/xlam/xlam_function_calling_60k.json",
+  "repository_id": "Salesforce/xlam-function-calling-60k",
+  "repository_type": "dataset",
+  "resolved_at_utc": "2026-06-19T20:22:48.548007+00:00",
+  "revision": "26d14ebfe18b1f7b524bd39b404b50af5dc97866",
+  "sha256": "4ef5c6f0dc552f2231f93f5853a9ef431e9e806d7aa514d0f6b615606ce576c6",
+  "size_bytes": 96116570
+}

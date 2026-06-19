@@ -3,14 +3,34 @@ from __future__ import annotations
 import hashlib
 import json
 import random
+import sys
 from collections import Counter
+from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
-from datasets import Dataset, load_dataset
+ROOT = Path(__file__).resolve().parents[1]
+SRC_DIR = ROOT / "src"
+
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
+from function_calling_ft.normalization import (
+    NormalizationError,
+    normalize_xlam_row,
+)
 
 
 RAW_PATH = Path("data/raw/xlam/xlam_function_calling_60k.json")
+DOWNLOAD_METADATA_PATH = Path(
+    "data/raw/xlam/.cache/huggingface/download/"
+    "xlam_function_calling_60k.json.metadata"
+)
+HF_REPO_CACHE_DIR = (
+    Path.home()
+    / ".cache/huggingface/hub/"
+    / "datasets--Salesforce--xlam-function-calling-60k"
+)
 
 OUTPUT_DIR = Path("data/smoke/raw")
 MANIFEST_PATH = Path("data/manifests/smoke_v1_selection.json")
@@ -39,6 +59,53 @@ SPLIT_QUOTAS: dict[str, dict[str, int]] = {
 }
 
 GENERATORS = ("deepseek", "mixtral")
+RawDataset = Sequence[dict[str, Any]]
+PRIMARY_STRATIFICATION = {
+    "field": "len(answers)",
+    "bucket_field": "call_bucket",
+    "buckets": {
+        "single_call": "len(answers) == 1",
+        "two_calls": "len(answers) == 2",
+        "three_or_more_calls": "len(answers) >= 3",
+    },
+}
+
+
+def classify_normalization_rejection(
+    error: NormalizationError,
+) -> str:
+    """Map normalization failures to stable A3 rejection categories."""
+    message = str(error).lower()
+
+    if "duplicate tool names" in message:
+        return "normalization_duplicate_tool_names"
+
+    if (
+        "'callable'" in message
+        and "unsupported" in message
+        and "parameter type" in message
+    ):
+        return (
+            "normalization_unsupported_callable_parameters"
+        )
+
+    if "invalid parameter type expression" in message:
+        return (
+            "normalization_invalid_parameter_type_expressions"
+        )
+
+    if "references unavailable tool" in message:
+        return "normalization_unavailable_answer_tools"
+
+    if (
+        "unsupported parameter type" in message
+        or "unsupported generic parameter type" in message
+        or "unsupported type constant" in message
+        or "unsupported type expression" in message
+    ):
+        return "normalization_unsupported_parameter_types"
+
+    return "normalization_other_errors"
 
 
 def decode_json_field(
@@ -66,18 +133,88 @@ def decode_json_field(
         ) from exc
 
 
-def load_raw_dataset() -> Dataset:
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+
+    with path.open("rb") as file:
+        while chunk := file.read(1024 * 1024):
+            digest.update(chunk)
+
+    return digest.hexdigest()
+
+
+def infer_dataset_revision() -> str | None:
+    if DOWNLOAD_METADATA_PATH.is_file():
+        metadata_lines = DOWNLOAD_METADATA_PATH.read_text(
+            encoding="utf-8"
+        ).splitlines()
+
+        if metadata_lines:
+            revision = metadata_lines[0].strip()
+            if revision:
+                return revision
+
+    refs_main_path = HF_REPO_CACHE_DIR / "refs/main"
+
+    if refs_main_path.is_file():
+        revision = refs_main_path.read_text(
+            encoding="utf-8"
+        ).strip()
+        if revision:
+            return revision
+
+    snapshots_dir = HF_REPO_CACHE_DIR / "snapshots"
+
+    if snapshots_dir.is_dir():
+        snapshot_names = sorted(
+            path.name
+            for path in snapshots_dir.iterdir()
+            if path.is_dir()
+        )
+
+        if len(snapshot_names) == 1:
+            return snapshot_names[0]
+
+    return None
+
+
+def build_source_metadata() -> dict[str, Any]:
+    metadata: dict[str, Any] = {
+        "repository_id": "Salesforce/xlam-function-calling-60k",
+        "repository_type": "dataset",
+        "filename": RAW_PATH.name,
+        "revision": infer_dataset_revision(),
+    }
+
+    if RAW_PATH.is_file():
+        stat = RAW_PATH.stat()
+        metadata["local_path"] = str(RAW_PATH)
+        metadata["size_bytes"] = stat.st_size
+        metadata["sha256"] = sha256(RAW_PATH)
+        metadata["resolved_at_utc"] = datetime.now(
+            timezone.utc
+        ).isoformat()
+
+    return metadata
+
+
+def load_raw_dataset() -> list[dict[str, Any]]:
     if not RAW_PATH.is_file():
         raise FileNotFoundError(
             f"Raw dataset not found: {RAW_PATH}. "
             "Run scripts/download_xlam.py first."
         )
 
-    return load_dataset(
-        "json",
-        data_files=str(RAW_PATH),
-        split="train",
+    raw_dataset = json.loads(
+        RAW_PATH.read_text(encoding="utf-8")
     )
+
+    if not isinstance(raw_dataset, list):
+        raise ValueError(
+            f"Expected {RAW_PATH} to contain a JSON array."
+        )
+
+    return raw_dataset
 
 
 def generator_name(row_id: int) -> str:
@@ -250,16 +387,32 @@ def parse_candidate(
 
 
 def load_source_metadata() -> dict[str, Any]:
-    if not SOURCE_MANIFEST_PATH.is_file():
-        return {}
+    if SOURCE_MANIFEST_PATH.is_file():
+        return json.loads(
+            SOURCE_MANIFEST_PATH.read_text(encoding="utf-8")
+        )
 
-    return json.loads(
-        SOURCE_MANIFEST_PATH.read_text(encoding="utf-8")
+    metadata = build_source_metadata()
+    SOURCE_MANIFEST_PATH.parent.mkdir(
+        parents=True,
+        exist_ok=True,
     )
+    SOURCE_MANIFEST_PATH.write_text(
+        json.dumps(
+            metadata,
+            indent=2,
+            ensure_ascii=False,
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    return metadata
 
 
 def collect_candidates(
-    dataset: Dataset,
+    dataset: RawDataset,
 ) -> tuple[list[dict[str, Any]], Counter[str]]:
     candidates: list[dict[str, Any]] = []
     rejected: Counter[str] = Counter()
@@ -268,6 +421,12 @@ def collect_candidates(
 
     for row_index in range(len(dataset)):
         row = dataset[row_index]
+
+        try:
+            source_id = int(row["id"])
+        except (KeyError, TypeError, ValueError):
+            rejected["invalid_source_id"] += 1
+            continue
 
         try:
             candidate = parse_candidate(row, row_index)
@@ -283,8 +442,15 @@ def collect_candidates(
             rejected["zero_calls"] += 1
             continue
 
-        if candidate["unknown_answer_tools"]:
-            rejected["unknown_answer_tool"] += 1
+        try:
+            normalize_xlam_row(
+                candidate["raw_row"],
+                split="selection",
+            )
+        except NormalizationError as error:
+            rejected[
+                classify_normalization_rejection(error)
+            ] += 1
             continue
 
         seen_ids.add(candidate["id"])
@@ -430,6 +596,9 @@ def summarize_selection(
 
     return {
         "total_selected": len(total_records),
+        "recommended_primary_stratification": (
+            PRIMARY_STRATIFICATION
+        ),
         "split_sizes": split_sizes,
         "generator_distribution": dict(
             sorted(generator_distribution.items())
@@ -505,7 +674,6 @@ def create_manifest(
                     "has_complex_parameters": (
                         record["has_complex_parameters"]
                     ),
-                    "fingerprint": record["fingerprint"],
                 }
             )
 
@@ -516,9 +684,11 @@ def create_manifest(
             "Salesforce/xlam-function-calling-60k",
         ),
         "dataset_revision": source_metadata.get("revision"),
-        "dataset_sha256": source_metadata.get("sha256"),
         "selection_seed": SEED,
         "generator_boundary": GENERATOR_BOUNDARY,
+        "recommended_primary_stratification": (
+            PRIMARY_STRATIFICATION
+        ),
         "split_quotas": SPLIT_QUOTAS,
         "rejected_candidate_counts": dict(rejected),
         "records": records,

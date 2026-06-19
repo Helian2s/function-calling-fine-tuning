@@ -1,0 +1,52 @@
+{
+  "available_tool_count_distribution": {
+    "1": 53,
+    "2": 37,
+    "3": 54,
+    "4": 33,
+    "5": 12,
+    "6": 7,
+    "7": 4
+  },
+  "errors": [],
+  "expected_call_count_distribution": {
+    "1": 120,
+    "2": 50,
+    "3": 24,
+    "4": 3,
+    "5": 1,
+    "6": 2
+  },
+  "input_directory": "data/smoke/raw",
+  "normalization_schema_version": "1.0",
+  "output_directory": "data/smoke/normalized",
+  "splits": {
+    "test": {
+      "input_path": "data/smoke/raw/test.jsonl",
+      "input_records": 40,
+      "input_sha256": "89209e1fe3e24ca2d9e01ee374976f2067e877e4642ee718296d1169378e52b5",
+      "normalized_records": 40,
+      "output_path": "data/smoke/normalized/test.jsonl",
+      "output_sha256": "0a4801f7eb0e985e9f010ca695c4e77e62928373049386bfddaa588dee3c8dd7"
+    },
+    "train": {
+      "input_path": "data/smoke/raw/train.jsonl",
+      "input_records": 120,
+      "input_sha256": "351e9927f24f9bfe378744d4695159c20e341a00cd438b9937bc37b9e4f781d6",
+      "normalized_records": 120,
+      "output_path": "data/smoke/normalized/train.jsonl",
+      "output_sha256": "f433d3dfa4da00aad6b6f7d18741817b92a034ba9141ca40036a37c52238b460"
+    },
+    "validation": {
+      "input_path": "data/smoke/raw/validation.jsonl",
+      "input_records": 40,
+      "input_sha256": "d8eb554c582fefece62aff9d6dd34e1174125f1e60d97b7e34327e8338d09874",
+      "normalized_records": 40,
+      "output_path": "data/smoke/normalized/validation.jsonl",
+      "output_sha256": "9845cbe63fd80a75dfe00c2d9f2b926924f2e291771b35b99a495730794b1df4"
+    }
+  },
+  "total_errors": 0,
+  "total_input_records": 200,
+  "total_normalized_records": 200
+}

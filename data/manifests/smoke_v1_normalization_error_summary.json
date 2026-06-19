@@ -1,0 +1,281 @@
+{
+  "total_errors": 121,
+  "error_categories": [
+    {
+      "error_pattern": "Unsupported parameter type: 'str, optional'. Add an explicit mapping instead of silently guessing.",
+      "count": 52,
+      "examples": [
+        {
+          "split": "train",
+          "line_number": 6,
+          "source_id": 3082,
+          "original_error": "Unsupported parameter type: 'str, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "train",
+          "line_number": 8,
+          "source_id": 3184,
+          "original_error": "Unsupported parameter type: 'str, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "train",
+          "line_number": 12,
+          "source_id": 40357,
+          "original_error": "Unsupported parameter type: 'str, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "train",
+          "line_number": 16,
+          "source_id": 57924,
+          "original_error": "Unsupported parameter type: 'str, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "train",
+          "line_number": 25,
+          "source_id": 9602,
+          "original_error": "Unsupported parameter type: 'str, optional'. Add an explicit mapping instead of silently guessing."
+        }
+      ]
+    },
+    {
+      "error_pattern": "Unsupported parameter type: 'int, optional'. Add an explicit mapping instead of silently guessing.",
+      "count": 37,
+      "examples": [
+        {
+          "split": "train",
+          "line_number": 5,
+          "source_id": 23664,
+          "original_error": "Unsupported parameter type: 'int, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "train",
+          "line_number": 11,
+          "source_id": 3260,
+          "original_error": "Unsupported parameter type: 'int, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "train",
+          "line_number": 13,
+          "source_id": 33519,
+          "original_error": "Unsupported parameter type: 'int, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "train",
+          "line_number": 15,
+          "source_id": 57260,
+          "original_error": "Unsupported parameter type: 'int, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "train",
+          "line_number": 17,
+          "source_id": 39220,
+          "original_error": "Unsupported parameter type: 'int, optional'. Add an explicit mapping instead of silently guessing."
+        }
+      ]
+    },
+    {
+      "error_pattern": "Unsupported parameter type: 'float, optional'. Add an explicit mapping instead of silently guessing.",
+      "count": 12,
+      "examples": [
+        {
+          "split": "train",
+          "line_number": 2,
+          "source_id": 4086,
+          "original_error": "Unsupported parameter type: 'float, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "train",
+          "line_number": 33,
+          "source_id": 50228,
+          "original_error": "Unsupported parameter type: 'float, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "train",
+          "line_number": 48,
+          "source_id": 33219,
+          "original_error": "Unsupported parameter type: 'float, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "train",
+          "line_number": 64,
+          "source_id": 8976,
+          "original_error": "Unsupported parameter type: 'float, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "train",
+          "line_number": 69,
+          "source_id": 570,
+          "original_error": "Unsupported parameter type: 'float, optional'. Add an explicit mapping instead of silently guessing."
+        }
+      ]
+    },
+    {
+      "error_pattern": "Unsupported parameter type: 'bool, optional'. Add an explicit mapping instead of silently guessing.",
+      "count": 6,
+      "examples": [
+        {
+          "split": "train",
+          "line_number": 38,
+          "source_id": 48852,
+          "original_error": "Unsupported parameter type: 'bool, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "test",
+          "line_number": 8,
+          "source_id": 23914,
+          "original_error": "Unsupported parameter type: 'bool, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "test",
+          "line_number": 28,
+          "source_id": 59094,
+          "original_error": "Unsupported parameter type: 'bool, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "test",
+          "line_number": 29,
+          "source_id": 25814,
+          "original_error": "Unsupported parameter type: 'bool, optional'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "test",
+          "line_number": 33,
+          "source_id": 27591,
+          "original_error": "Unsupported parameter type: 'bool, optional'. Add an explicit mapping instead of silently guessing."
+        }
+      ]
+    },
+    {
+      "error_pattern": "Unsupported parameter type: 'List[Union[int, float]]'. Add an explicit mapping instead of silently guessing.",
+      "count": 4,
+      "examples": [
+        {
+          "split": "train",
+          "line_number": 21,
+          "source_id": 32787,
+          "original_error": "Unsupported parameter type: 'List[Union[int, float]]'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "train",
+          "line_number": 39,
+          "source_id": 33267,
+          "original_error": "Unsupported parameter type: 'List[Union[int, float]]'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "validation",
+          "line_number": 2,
+          "source_id": 13771,
+          "original_error": "Unsupported parameter type: 'List[Union[int, float]]'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "test",
+          "line_number": 9,
+          "source_id": 5537,
+          "original_error": "Unsupported parameter type: 'List[Union[int, float]]'. Add an explicit mapping instead of silently guessing."
+        }
+      ]
+    },
+    {
+      "error_pattern": "Unsupported parameter type: 'Tuple[float, float]'. Add an explicit mapping instead of silently guessing.",
+      "count": 2,
+      "examples": [
+        {
+          "split": "train",
+          "line_number": 53,
+          "source_id": 38931,
+          "original_error": "Unsupported parameter type: 'Tuple[float, float]'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "validation",
+          "line_number": 17,
+          "source_id": 44241,
+          "original_error": "Unsupported parameter type: 'Tuple[float, float]'. Add an explicit mapping instead of silently guessing."
+        }
+      ]
+    },
+    {
+      "error_pattern": "Unsupported parameter type: 'List[List[str]]'. Add an explicit mapping instead of silently guessing.",
+      "count": 2,
+      "examples": [
+        {
+          "split": "train",
+          "line_number": 72,
+          "source_id": 57179,
+          "original_error": "Unsupported parameter type: 'List[List[str]]'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "train",
+          "line_number": 75,
+          "source_id": 37689,
+          "original_error": "Unsupported parameter type: 'List[List[str]]'. Add an explicit mapping instead of silently guessing."
+        }
+      ]
+    },
+    {
+      "error_pattern": "Unsupported parameter type: 'List[List[int]]'. Add an explicit mapping instead of silently guessing.",
+      "count": 2,
+      "examples": [
+        {
+          "split": "validation",
+          "line_number": 11,
+          "source_id": 17612,
+          "original_error": "Unsupported parameter type: 'List[List[int]]'. Add an explicit mapping instead of silently guessing."
+        },
+        {
+          "split": "validation",
+          "line_number": 12,
+          "source_id": 7283,
+          "original_error": "Unsupported parameter type: 'List[List[int]]'. Add an explicit mapping instead of silently guessing."
+        }
+      ]
+    },
+    {
+      "error_pattern": "Row <ID>: duplicate tool names are present.",
+      "count": 1,
+      "examples": [
+        {
+          "split": "train",
+          "line_number": 35,
+          "source_id": 10462,
+          "original_error": "Row 10462: duplicate tool names are present."
+        }
+      ]
+    },
+    {
+      "error_pattern": "Unsupported parameter type: 'set'. Add an explicit mapping instead of silently guessing.",
+      "count": 1,
+      "examples": [
+        {
+          "split": "train",
+          "line_number": 47,
+          "source_id": 57927,
+          "original_error": "Unsupported parameter type: 'set'. Add an explicit mapping instead of silently guessing."
+        }
+      ]
+    },
+    {
+      "error_pattern": "Unsupported parameter type: 'List[Tuple[int, int]]'. Add an explicit mapping instead of silently guessing.",
+      "count": 1,
+      "examples": [
+        {
+          "split": "validation",
+          "line_number": 19,
+          "source_id": 22916,
+          "original_error": "Unsupported parameter type: 'List[Tuple[int, int]]'. Add an explicit mapping instead of silently guessing."
+        }
+      ]
+    },
+    {
+      "error_pattern": "Unsupported parameter type: 'List[Tuple[float, float]]'. Add an explicit mapping instead of silently guessing.",
+      "count": 1,
+      "examples": [
+        {
+          "split": "validation",
+          "line_number": 22,
+          "source_id": 19525,
+          "original_error": "Unsupported parameter type: 'List[Tuple[float, float]]'. Add an explicit mapping instead of silently guessing."
+        }
+      ]
+    }
+  ]
+}
