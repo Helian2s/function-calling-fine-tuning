@@ -14,125 +14,134 @@
   },
   "records": [
     {
-      "available_tool_count": 5,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 57014,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[float]",
-        "float",
-        "int, optional",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 57014,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 5,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 32432,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 32432,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 32617,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 32617,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 3,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 24902,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 24902,
-      "split": "train"
-    },
-    {
       "available_tool_count": 3,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
-      "generator": "mixtral",
+      "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 45145,
+      "id": 29726,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "int",
-        "int, optional",
+        "bool, optional",
         "str"
       ],
       "repeated_same_tool": false,
-      "row_index": 45145,
+      "row_index": 29726,
       "split": "train"
     },
     {
-      "available_tool_count": 5,
+      "available_tool_count": 1,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 2,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 17758,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 17758,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 46952,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 46952,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 3,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 40270,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 40270,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 2,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 53169,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "float",
+        "int"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 53169,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 32666,
+      "id": 26539,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "float",
-        "int",
         "str"
       ],
       "repeated_same_tool": false,
-      "row_index": 32666,
+      "row_index": 26539,
       "split": "train"
     },
     {
       "available_tool_count": 1,
-      "call_bucket": "single_call",
+      "call_bucket": "two_calls",
       "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
+      "expected_call_count": 2,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 52975,
+      "id": 45503,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "str"
+        "int"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 45503,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 46847,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "int"
       ],
       "repeated_same_tool": false,
-      "row_index": 52975,
+      "row_index": 46847,
       "split": "train"
     },
     {
@@ -154,6 +163,632 @@
     },
     {
       "available_tool_count": 4,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 4,
+      "expected_call_count": 4,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 13871,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "int",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 13871,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 58196,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[float]",
+        "List[int]",
+        "List[str]",
+        "bool, optional",
+        "float",
+        "float, optional",
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 58196,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 18383,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 18383,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 59607,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 59607,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 29925,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 29925,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 8,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": true,
+      "id": 26875,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[int]",
+        "float",
+        "int",
+        "int, optional",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 26875,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 50304,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 50304,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 2,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 33088,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 33088,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 57736,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "List[List[int]]",
+        "float"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 57736,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 52578,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[int]",
+        "float",
+        "float, optional",
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 52578,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 35484,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[int]",
+        "int"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 35484,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": true,
+      "id": 19614,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[float]",
+        "float",
+        "int"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 19614,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 47087,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 47087,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 2,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 45492,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[int]"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 45492,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 3,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 30848,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 30848,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 14500,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 14500,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 9758,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 9758,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 21528,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "int",
+        "int, optional",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 21528,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 50718,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 50718,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 6,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 26500,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "float",
+        "float, optional",
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 26500,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 2,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 10133,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 10133,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 7,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 16254,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 16254,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 41965,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[float]",
+        "List[int]",
+        "List[str]",
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 41965,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 41525,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 41525,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 52936,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 52936,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 58889,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 58889,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 53683,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 53683,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 50879,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "bool, optional",
+        "int",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 50879,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 514,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 514,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 5,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 57014,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[float]",
+        "float",
+        "int, optional",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 57014,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 6,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 48224,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[List[int]]",
+        "List[float]",
+        "float",
+        "float, optional",
+        "int",
+        "int, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 48224,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 48502,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 48502,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 54734,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 54734,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 25013,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "bool, optional",
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 25013,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 29393,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 29393,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 4,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
@@ -168,6 +803,94 @@
       ],
       "repeated_same_tool": false,
       "row_index": 34670,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 34917,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 34917,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": true,
+      "id": 15340,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[List[str]]",
+        "List[float]",
+        "float",
+        "int"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 15340,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 50435,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "float",
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 50435,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 2,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 42393,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 42393,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 3,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 45583,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 45583,
       "split": "train"
     },
     {
@@ -196,48 +919,13 @@
       "expected_call_count": 1,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 17666,
+      "id": 23660,
       "multiple_distinct_tools": false,
       "parameter_types": [
         "str"
       ],
       "repeated_same_tool": false,
-      "row_index": 17666,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 45791,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 45791,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 28198,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 28198,
+      "row_index": 23660,
       "split": "train"
     },
     {
@@ -247,119 +935,135 @@
       "expected_call_count": 1,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 36359,
+      "id": 57449,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "int",
+        "bool, optional",
         "int, optional",
         "str",
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 36359,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 4,
-      "expected_call_count": 4,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 13871,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "int",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 13871,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 44671,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 44671,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 4750,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 4750,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 50304,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 50304,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 59607,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 59607,
+      "row_index": 57449,
       "split": "train"
     },
     {
       "available_tool_count": 2,
       "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 1,
+      "distinct_expected_tool_count": 2,
       "expected_call_count": 2,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 56994,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 56994,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 5,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 1379,
+      "id": 32666,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "float",
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 32666,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 42523,
       "multiple_distinct_tools": false,
       "parameter_types": [
         "str",
         "str, optional"
       ],
-      "repeated_same_tool": true,
-      "row_index": 1379,
+      "repeated_same_tool": false,
+      "row_index": 42523,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 5,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 3,
+      "expected_call_count": 3,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 42005,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 42005,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 53351,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 53351,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 2909,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 2909,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 3,
+      "expected_call_count": 3,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 6917,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 6917,
       "split": "train"
     },
     {
@@ -384,367 +1088,73 @@
       "split": "train"
     },
     {
-      "available_tool_count": 3,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 21528,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "int",
-        "int, optional",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 21528,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 40327,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str, optional"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 40327,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 50718,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 50718,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 3,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 40270,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 40270,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 5,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 19810,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List",
-        "List[int]",
-        "bool, optional",
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 19810,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 2,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 33088,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 33088,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 3,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 45583,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 45583,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 3,
-      "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 25548,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[str]",
-        "str"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 25548,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 829,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "float",
-        "int",
-        "list",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 829,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 6,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 3581,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 3581,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 5,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 50033,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 50033,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 36733,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "List[List[float]]",
-        "int",
-        "list"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 36733,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 2,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 17758,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 17758,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 54734,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 54734,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 3,
-      "expected_call_count": 3,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 28917,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 28917,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 6,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 18144,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "bool, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 18144,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 2909,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 2909,
-      "split": "train"
-    },
-    {
       "available_tool_count": 2,
       "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
+      "distinct_expected_tool_count": 1,
       "expected_call_count": 2,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 4803,
-      "multiple_distinct_tools": true,
+      "id": 1379,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 1379,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 52975,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 52975,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 45145,
+      "multiple_distinct_tools": false,
       "parameter_types": [
         "int",
         "int, optional",
-        "str, optional"
+        "str"
       ],
       "repeated_same_tool": false,
-      "row_index": 4803,
+      "row_index": 45145,
       "split": "train"
     },
     {
-      "available_tool_count": 5,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 3,
-      "expected_call_count": 3,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 42005,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 42005,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
+      "available_tool_count": 3,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 42090,
+      "id": 36359,
       "multiple_distinct_tools": false,
       "parameter_types": [
+        "int",
+        "int, optional",
         "str",
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 42090,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 44552,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "float",
-        "int, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 44552,
+      "row_index": 36359,
       "split": "train"
     },
     {
@@ -752,85 +1162,17 @@
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 35484,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[int]",
-        "int"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 35484,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 5,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 48807,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "list",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 48807,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
+      "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 34917,
+      "id": 28198,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "int",
+        "int, optional",
         "str",
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 34917,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 46847,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "int"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 46847,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 57941,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "Dict",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 57941,
+      "row_index": 28198,
       "split": "train"
     },
     {
@@ -840,245 +1182,13 @@
       "expected_call_count": 2,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 15178,
+      "id": 1991,
       "multiple_distinct_tools": false,
       "parameter_types": [
         "str"
       ],
       "repeated_same_tool": true,
-      "row_index": 15178,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 54877,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 54877,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 5,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 9209,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[List[float]]",
-        "List[List[str]]",
-        "float",
-        "int"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 9209,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 19878,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 19878,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 41525,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 41525,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 25013,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "bool, optional",
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 25013,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 28464,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 28464,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 3,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 7750,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 7750,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 3369,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "bool, optional",
-        "float",
-        "int",
-        "list",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 3369,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 50435,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "float",
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 50435,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 36547,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 36547,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 45503,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 45503,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 3,
-      "expected_call_count": 3,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 43314,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "List[List[float]]",
-        "List[float]",
-        "List[int]"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 43314,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 13738,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 13738,
+      "row_index": 1991,
       "split": "train"
     },
     {
@@ -1103,88 +1213,16 @@
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 23660,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 23660,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 2,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 10133,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 10133,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 29726,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "bool, optional",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 29726,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
       "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 58196,
+      "has_complex_parameters": false,
+      "id": 45791,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "List[float]",
-        "List[int]",
-        "List[str]",
-        "bool, optional",
-        "float",
-        "float, optional",
-        "int",
-        "str"
+        "str",
+        "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 58196,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 3,
-      "expected_call_count": 3,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 6917,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 6917,
+      "row_index": 45791,
       "split": "train"
     },
     {
@@ -1193,72 +1231,31 @@
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
       "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 19614,
+      "has_complex_parameters": false,
+      "id": 28826,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "List[float]",
-        "float",
         "int"
       ],
       "repeated_same_tool": false,
-      "row_index": 19614,
+      "row_index": 28826,
       "split": "train"
     },
     {
-      "available_tool_count": 3,
+      "available_tool_count": 2,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 29393,
+      "id": 33253,
       "multiple_distinct_tools": false,
       "parameter_types": [
         "str",
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 29393,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 41965,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[float]",
-        "List[int]",
-        "List[str]",
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 41965,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 7974,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "bool, optional",
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 7974,
+      "row_index": 33253,
       "split": "train"
     },
     {
@@ -1268,137 +1265,48 @@
       "expected_call_count": 1,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 53351,
+      "id": 45960,
       "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 53351,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 46063,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "bool, optional",
-        "float",
-        "int",
-        "list",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 46063,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 2,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 1991,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 1991,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 3,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 38287,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 38287,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 6,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 48224,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[List[int]]",
-        "List[float]",
-        "float",
-        "float, optional",
-        "int",
-        "int, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 48224,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 46952,
-      "multiple_distinct_tools": true,
       "parameter_types": [
         "str",
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 46952,
+      "row_index": 45960,
       "split": "train"
     },
     {
       "available_tool_count": 2,
-      "call_bucket": "two_calls",
+      "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
-      "expected_call_count": 2,
+      "expected_call_count": 1,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 42393,
+      "id": 54877,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "int",
-        "str"
+        "str",
+        "str, optional"
       ],
-      "repeated_same_tool": true,
-      "row_index": 42393,
+      "repeated_same_tool": false,
+      "row_index": 54877,
       "split": "train"
     },
     {
-      "available_tool_count": 1,
-      "call_bucket": "two_calls",
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 45492,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 3337,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "List[int]"
+        "str",
+        "str, optional"
       ],
-      "repeated_same_tool": true,
-      "row_index": 45492,
+      "repeated_same_tool": false,
+      "row_index": 3337,
       "split": "train"
     },
     {
@@ -1407,31 +1315,31 @@
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
       "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 42959,
+      "has_complex_parameters": true,
+      "id": 40970,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "int, optional"
+        "List[Union[int, float]]"
       ],
       "repeated_same_tool": false,
-      "row_index": 42959,
+      "row_index": 40970,
       "split": "train"
     },
     {
       "available_tool_count": 2,
       "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 1,
+      "distinct_expected_tool_count": 2,
       "expected_call_count": 2,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 53169,
-      "multiple_distinct_tools": false,
+      "id": 47855,
+      "multiple_distinct_tools": true,
       "parameter_types": [
-        "float",
-        "int"
+        "int",
+        "str"
       ],
-      "repeated_same_tool": true,
-      "row_index": 53169,
+      "repeated_same_tool": false,
+      "row_index": 47855,
       "split": "train"
     },
     {
@@ -1468,40 +1376,6 @@
       "split": "train"
     },
     {
-      "available_tool_count": 2,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 3,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 14236,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 14236,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 18383,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 18383,
-      "split": "train"
-    },
-    {
       "available_tool_count": 4,
       "call_bucket": "two_calls",
       "distinct_expected_tool_count": 1,
@@ -1519,144 +1393,20 @@
       "split": "train"
     },
     {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 29925,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 29925,
-      "split": "train"
-    },
-    {
       "available_tool_count": 3,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
       "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 33351,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 33351,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 514,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 514,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 3,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 30848,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 30848,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
       "has_complex_parameters": true,
-      "id": 52578,
+      "id": 33561,
       "multiple_distinct_tools": false,
       "parameter_types": [
         "List[int]",
-        "float",
-        "float, optional",
-        "int",
         "str"
       ],
       "repeated_same_tool": false,
-      "row_index": 52578,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 52411,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "list",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 52411,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 48502,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 48502,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 3,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 48184,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 48184,
+      "row_index": 33561,
       "split": "train"
     },
     {
@@ -1678,59 +1428,6 @@
       "split": "train"
     },
     {
-      "available_tool_count": 7,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 5571,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List",
-        "List[int]",
-        "List[str]",
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 5571,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 3337,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 3337,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 58889,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 58889,
-      "split": "train"
-    },
-    {
       "available_tool_count": 1,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
@@ -1747,22 +1444,480 @@
       "split": "train"
     },
     {
+      "available_tool_count": 2,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 3,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 14236,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 14236,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 28464,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 28464,
+      "split": "train"
+    },
+    {
       "available_tool_count": 3,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
       "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 15340,
+      "has_complex_parameters": false,
+      "id": 33351,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "List[List[str]]",
-        "List[float]",
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 33351,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 5,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 50033,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 50033,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 3,
+      "generator": "deepseek",
+      "has_complex_parameters": true,
+      "id": 25548,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[str]",
+        "str"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 25548,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 44671,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 44671,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 3,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 48184,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 48184,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 57941,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "Dict",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 57941,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 3,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 7750,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 7750,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 44552,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
         "float",
+        "int, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 44552,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 2,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 15178,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 15178,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 2,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 43796,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 43796,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 5,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 32432,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 32432,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 46638,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[int]",
         "int"
       ],
       "repeated_same_tool": false,
-      "row_index": 15340,
+      "row_index": 46638,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 3,
+      "expected_call_count": 3,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 28917,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 28917,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 13738,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 13738,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 36547,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 36547,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 19878,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 19878,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 32617,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 32617,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 3,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 24902,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 24902,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 4,
+      "expected_call_count": 6,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 42956,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 42956,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 17666,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 17666,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 42959,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 42959,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 2,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 8802,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 8802,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 4750,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 4750,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 42090,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 42090,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 3,
+      "expected_call_count": 3,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 43314,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "List[List[float]]",
+        "List[float]",
+        "List[int]"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 43314,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 19941,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "int",
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 19941,
       "split": "train"
     },
     {
@@ -1779,6 +1934,39 @@
       ],
       "repeated_same_tool": false,
       "row_index": 15658,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 3,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 38287,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 38287,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 31273,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 31273,
       "split": "train"
     },
     {
@@ -1810,155 +1998,50 @@
       "expected_call_count": 1,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 26500,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "float",
-        "float, optional",
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 26500,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 34185,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 34185,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 57449,
+      "id": 18144,
       "multiple_distinct_tools": false,
       "parameter_types": [
         "bool, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 18144,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 22431,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
         "int, optional",
         "str",
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 57449,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 31273,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 31273,
+      "row_index": 22431,
       "split": "train"
     },
     {
       "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 40970,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[Union[int, float]]"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 40970,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 33561,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[int]",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 33561,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
       "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
+      "distinct_expected_tool_count": 1,
       "expected_call_count": 2,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 47855,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 47855,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 50879,
+      "id": 40327,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "bool, optional",
-        "int",
-        "str",
         "str, optional"
       ],
-      "repeated_same_tool": false,
-      "row_index": 50879,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 33253,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 33253,
+      "repeated_same_tool": true,
+      "row_index": 40327,
       "split": "train"
     },
     {
@@ -1966,131 +2049,9 @@
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 51991,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List",
-        "List[int]",
-        "List[str]",
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 51991,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 53683,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 53683,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 4,
-      "expected_call_count": 6,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 42956,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 42956,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 12351,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "list",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 12351,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 2,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 8802,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 8802,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 56994,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 56994,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 46638,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[int]",
-        "int"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 46638,
-      "split": "train"
-    },
-    {
-      "available_tool_count": 7,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 16254,
+      "id": 3581,
       "multiple_distinct_tools": false,
       "parameter_types": [
         "int",
@@ -2099,83 +2060,80 @@
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 16254,
+      "row_index": 3581,
       "split": "train"
     },
     {
       "available_tool_count": 4,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 19941,
-      "multiple_distinct_tools": true,
+      "id": 7974,
+      "multiple_distinct_tools": false,
       "parameter_types": [
-        "int",
+        "bool, optional",
         "int, optional",
         "str",
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 19941,
+      "row_index": 7974,
       "split": "train"
     },
     {
-      "available_tool_count": 4,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 4,
-      "expected_call_count": 4,
+      "available_tool_count": 2,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
       "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 10398,
+      "has_complex_parameters": false,
+      "id": 4803,
       "multiple_distinct_tools": true,
       "parameter_types": [
-        "List[Union[int, float]]",
+        "int",
+        "int, optional",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 4803,
+      "split": "train"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 19804,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 19804,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "deepseek",
+      "has_complex_parameters": true,
+      "id": 27063,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
         "List[float]",
-        "float",
+        "bool, optional",
         "int"
       ],
       "repeated_same_tool": false,
-      "row_index": 10398,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 36073,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 36073,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 7,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 4,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 42146,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "float, optional",
-        "int",
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 42146,
+      "row_index": 27063,
       "split": "validation"
     },
     {
@@ -2197,6 +2155,322 @@
       ],
       "repeated_same_tool": false,
       "row_index": 23922,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 3,
+      "expected_call_count": 3,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 34976,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "List[int]",
+        "float",
+        "int",
+        "int, optional",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 34976,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 39684,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[int]",
+        "float",
+        "int"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 39684,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 3,
+      "generator": "deepseek",
+      "has_complex_parameters": true,
+      "id": 23347,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "List[float]",
+        "bool, optional",
+        "int",
+        "int, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 23347,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 32965,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "int",
+        "int, optional",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 32965,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 17862,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 17862,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 52273,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 52273,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 42929,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 42929,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 25105,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "bool, optional",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 25105,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 35240,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 35240,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 3,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 8204,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 8204,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 46888,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "bool, optional",
+        "int",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 46888,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 16836,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 16836,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 44712,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 44712,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 41970,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[int]",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 41970,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 3,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 56687,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "int",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 56687,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 38334,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 38334,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 56254,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 56254,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 4,
+      "expected_call_count": 4,
+      "generator": "deepseek",
+      "has_complex_parameters": true,
+      "id": 10398,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "List[Union[int, float]]",
+        "List[float]",
+        "float",
+        "int"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 10398,
       "split": "validation"
     },
     {
@@ -2222,91 +2496,6 @@
       "expected_call_count": 1,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 35844,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "float"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 35844,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 48298,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 48298,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 6772,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[int]",
-        "int",
-        "list",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 6772,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 26906,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 26906,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 3,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 8204,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 8204,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
       "id": 49053,
       "multiple_distinct_tools": false,
       "parameter_types": [
@@ -2317,111 +2506,39 @@
       "split": "validation"
     },
     {
-      "available_tool_count": 3,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
+      "available_tool_count": 7,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 4,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 44712,
-      "multiple_distinct_tools": true,
+      "id": 42146,
+      "multiple_distinct_tools": false,
       "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 44712,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 3,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 56687,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "int",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 56687,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 3,
-      "expected_call_count": 3,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 34976,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "List[int]",
-        "float",
+        "float, optional",
         "int",
         "int, optional",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 34976,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 31763,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[float]",
-        "float",
-        "int"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 31763,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 27463,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int, optional",
         "str",
         "str, optional"
       ],
-      "repeated_same_tool": false,
-      "row_index": 27463,
+      "repeated_same_tool": true,
+      "row_index": 42146,
       "split": "validation"
     },
     {
-      "available_tool_count": 4,
+      "available_tool_count": 1,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
-      "generator": "deepseek",
+      "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 7154,
+      "id": 35844,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "str",
-        "str, optional"
+        "float"
       ],
       "repeated_same_tool": false,
-      "row_index": 7154,
+      "row_index": 35844,
       "split": "validation"
     },
     {
@@ -2444,52 +2561,19 @@
     },
     {
       "available_tool_count": 2,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 662,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 662,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 35240,
-      "multiple_distinct_tools": false,
+      "id": 48298,
+      "multiple_distinct_tools": true,
       "parameter_types": [
         "str",
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 35240,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 17862,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 17862,
+      "row_index": 48298,
       "split": "validation"
     },
     {
@@ -2509,73 +2593,54 @@
       "split": "validation"
     },
     {
-      "available_tool_count": 3,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 27063,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "List[float]",
-        "bool, optional",
-        "int"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 27063,
-      "split": "validation"
-    },
-    {
       "available_tool_count": 2,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 42929,
+      "id": 59148,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 42929,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 41970,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[int]",
         "str"
       ],
       "repeated_same_tool": false,
-      "row_index": 41970,
+      "row_index": 59148,
       "split": "validation"
     },
     {
-      "available_tool_count": 2,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 19804,
-      "multiple_distinct_tools": true,
+      "id": 27463,
+      "multiple_distinct_tools": false,
       "parameter_types": [
         "int, optional",
         "str",
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 19804,
+      "row_index": 27463,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 59036,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 59036,
       "split": "validation"
     },
     {
@@ -2583,53 +2648,67 @@
       "call_bucket": "two_calls",
       "distinct_expected_tool_count": 2,
       "expected_call_count": 2,
-      "generator": "mixtral",
+      "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 46888,
+      "id": 12151,
       "multiple_distinct_tools": true,
       "parameter_types": [
-        "bool, optional",
-        "int",
         "str",
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 46888,
+      "row_index": 12151,
       "split": "validation"
     },
     {
-      "available_tool_count": 1,
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": true,
+      "id": 31763,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[float]",
+        "float",
+        "int"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 31763,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 2,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 23604,
+      "id": 662,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "int, optional",
-        "str, optional"
+        "str"
       ],
       "repeated_same_tool": false,
-      "row_index": 23604,
+      "row_index": 662,
       "split": "validation"
     },
     {
       "available_tool_count": 4,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 32965,
-      "multiple_distinct_tools": true,
+      "id": 7154,
+      "multiple_distinct_tools": false,
       "parameter_types": [
-        "int",
-        "int, optional",
-        "str"
+        "str",
+        "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 32965,
+      "row_index": 7154,
       "split": "validation"
     },
     {
@@ -2653,73 +2732,19 @@
       "split": "validation"
     },
     {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 52273,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 52273,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 3,
-      "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 23347,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "List[float]",
-        "bool, optional",
-        "int",
-        "int, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 23347,
-      "split": "validation"
-    },
-    {
       "available_tool_count": 1,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 56254,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 56254,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 12151,
-      "multiple_distinct_tools": true,
+      "id": 26906,
+      "multiple_distinct_tools": false,
       "parameter_types": [
-        "str",
-        "str, optional"
+        "str"
       ],
       "repeated_same_tool": false,
-      "row_index": 12151,
+      "row_index": 26906,
       "split": "validation"
     },
     {
@@ -2740,188 +2765,121 @@
       "split": "validation"
     },
     {
-      "available_tool_count": 2,
+      "available_tool_count": 3,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 2,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 36073,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 36073,
+      "split": "validation"
+    },
+    {
+      "available_tool_count": 1,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 16836,
+      "id": 23604,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "str",
+        "int, optional",
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 16836,
+      "row_index": 23604,
       "split": "validation"
     },
     {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
+      "available_tool_count": 1,
+      "call_bucket": "three_or_more_calls",
       "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
+      "expected_call_count": 3,
+      "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 59036,
+      "id": 27245,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 59036,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 39684,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[int]",
-        "float",
         "int"
       ],
-      "repeated_same_tool": false,
-      "row_index": 39684,
-      "split": "validation"
+      "repeated_same_tool": true,
+      "row_index": 27245,
+      "split": "test"
     },
     {
-      "available_tool_count": 3,
+      "available_tool_count": 2,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 38334,
+      "id": 56152,
       "multiple_distinct_tools": false,
       "parameter_types": [
+        "int",
         "str"
       ],
       "repeated_same_tool": false,
-      "row_index": 38334,
-      "split": "validation"
+      "row_index": 56152,
+      "split": "test"
     },
     {
-      "available_tool_count": 6,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
+      "available_tool_count": 2,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
       "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 47112,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "Dict",
-        "List",
-        "int",
-        "set",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 47112,
-      "split": "validation"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 23541,
-      "multiple_distinct_tools": false,
+      "id": 42520,
+      "multiple_distinct_tools": true,
       "parameter_types": [
-        "bool, optional",
-        "int",
         "int, optional",
         "str",
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 23541,
+      "row_index": 42520,
       "split": "test"
     },
     {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 20880,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[int]",
-        "int",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 20880,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 3,
+      "available_tool_count": 1,
       "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 3,
+      "distinct_expected_tool_count": 1,
       "expected_call_count": 3,
       "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 34819,
-      "multiple_distinct_tools": true,
+      "has_complex_parameters": false,
+      "id": 52402,
+      "multiple_distinct_tools": false,
       "parameter_types": [
-        "List[float]",
-        "int",
         "str"
       ],
-      "repeated_same_tool": false,
-      "row_index": 34819,
+      "repeated_same_tool": true,
+      "row_index": 52402,
       "split": "test"
     },
     {
-      "available_tool_count": 2,
-      "call_bucket": "single_call",
+      "available_tool_count": 1,
+      "call_bucket": "two_calls",
       "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
+      "expected_call_count": 2,
       "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 1429,
+      "has_complex_parameters": false,
+      "id": 26390,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "List[float]",
-        "float, optional",
-        "int"
+        "str"
       ],
-      "repeated_same_tool": false,
-      "row_index": 1429,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": true,
-      "id": 1476,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[float]",
-        "List[int]",
-        "List[str]",
-        "float",
-        "list",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 1476,
+      "repeated_same_tool": true,
+      "row_index": 26390,
       "split": "test"
     },
     {
@@ -2945,19 +2903,251 @@
       "split": "test"
     },
     {
-      "available_tool_count": 1,
-      "call_bucket": "three_or_more_calls",
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
-      "expected_call_count": 3,
-      "generator": "mixtral",
+      "expected_call_count": 1,
+      "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 52402,
+      "id": 23541,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "bool, optional",
+        "int",
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 23541,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": true,
+      "id": 23794,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[float]",
+        "int"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 23794,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 4212,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 4212,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 6681,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "bool, optional",
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 6681,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 2,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 6747,
       "multiple_distinct_tools": false,
       "parameter_types": [
         "str"
       ],
       "repeated_same_tool": true,
-      "row_index": 52402,
+      "row_index": 6747,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 7,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 56326,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 56326,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 5,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 34974,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "bool, optional",
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 34974,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 5,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 45614,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 45614,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 5488,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 5488,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 3,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 25498,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 25498,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 3,
+      "expected_call_count": 3,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 34819,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "List[float]",
+        "int",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 34819,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": true,
+      "id": 10112,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[float]",
+        "List[int]",
+        "bool, optional",
+        "int"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 10112,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 40910,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "int, optional",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 40910,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": true,
+      "id": 56011,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[List[int]]",
+        "float, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 56011,
       "split": "test"
     },
     {
@@ -2967,14 +3157,14 @@
       "expected_call_count": 1,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 56152,
+      "id": 52209,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "int",
-        "str"
+        "str",
+        "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 56152,
+      "row_index": 52209,
       "split": "test"
     },
     {
@@ -3013,53 +3203,57 @@
       "split": "test"
     },
     {
-      "available_tool_count": 1,
+      "available_tool_count": 5,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
       "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 44489,
+      "has_complex_parameters": true,
+      "id": 38908,
       "multiple_distinct_tools": false,
       "parameter_types": [
+        "List[Tuple[float, float]]",
+        "List[int]",
+        "float",
+        "float, optional",
         "int"
       ],
       "repeated_same_tool": false,
-      "row_index": 44489,
+      "row_index": 38908,
       "split": "test"
     },
     {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
+      "available_tool_count": 2,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 2,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 40910,
-      "multiple_distinct_tools": false,
+      "id": 49449,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 49449,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 3,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 3,
+      "expected_call_count": 3,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 37468,
+      "multiple_distinct_tools": true,
       "parameter_types": [
         "int, optional",
         "str",
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 40910,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 2,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 6747,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 6747,
+      "row_index": 37468,
       "split": "test"
     },
     {
@@ -3079,73 +3273,19 @@
       "split": "test"
     },
     {
-      "available_tool_count": 5,
+      "available_tool_count": 1,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
       "generator": "deepseek",
       "has_complex_parameters": false,
-      "id": 4336,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "bool, optional",
-        "int",
-        "int, optional",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 4336,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 5,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 34974,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "bool, optional",
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 34974,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 3,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 27245,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 27245,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 49000,
+      "id": 13946,
       "multiple_distinct_tools": false,
       "parameter_types": [
         "str"
       ],
-      "repeated_same_tool": true,
-      "row_index": 49000,
+      "repeated_same_tool": false,
+      "row_index": 13946,
       "split": "test"
     },
     {
@@ -3168,184 +3308,6 @@
       "split": "test"
     },
     {
-      "available_tool_count": 2,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 50292,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[float]",
-        "bool, optional",
-        "float",
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 50292,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 3,
-      "expected_call_count": 3,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 37468,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 37468,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 13946,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 13946,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 7,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 56326,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 56326,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 3,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 25498,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 25498,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 4212,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 4212,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 5,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 38908,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[Tuple[float, float]]",
-        "List[int]",
-        "float",
-        "float, optional",
-        "int"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 38908,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 4,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 21198,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "bool, optional",
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 21198,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 5,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 45614,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "int, optional",
-        "str",
-        "str, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 45614,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 49449,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 49449,
-      "split": "test"
-    },
-    {
       "available_tool_count": 1,
       "call_bucket": "two_calls",
       "distinct_expected_tool_count": 1,
@@ -3360,105 +3322,6 @@
       ],
       "repeated_same_tool": true,
       "row_index": 15319,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "three_or_more_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 6,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 4428,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 4428,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": true,
-      "id": 56011,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "List[List[int]]",
-        "float, optional"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 56011,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 2,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 26390,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": true,
-      "row_index": 26390,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 1,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 38252,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 38252,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 3,
-      "call_bucket": "single_call",
-      "distinct_expected_tool_count": 1,
-      "expected_call_count": 1,
-      "generator": "deepseek",
-      "has_complex_parameters": false,
-      "id": 6681,
-      "multiple_distinct_tools": false,
-      "parameter_types": [
-        "bool, optional",
-        "int",
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 6681,
-      "split": "test"
-    },
-    {
-      "available_tool_count": 2,
-      "call_bucket": "two_calls",
-      "distinct_expected_tool_count": 2,
-      "expected_call_count": 2,
-      "generator": "mixtral",
-      "has_complex_parameters": false,
-      "id": 45008,
-      "multiple_distinct_tools": true,
-      "parameter_types": [
-        "str"
-      ],
-      "repeated_same_tool": false,
-      "row_index": 45008,
       "split": "test"
     },
     {
@@ -3482,35 +3345,52 @@
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
-      "generator": "deepseek",
+      "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 5488,
+      "id": 44473,
       "multiple_distinct_tools": false,
       "parameter_types": [
-        "int",
         "str"
       ],
       "repeated_same_tool": false,
-      "row_index": 5488,
+      "row_index": 44473,
       "split": "test"
     },
     {
-      "available_tool_count": 3,
+      "available_tool_count": 2,
       "call_bucket": "single_call",
       "distinct_expected_tool_count": 1,
       "expected_call_count": 1,
       "generator": "deepseek",
       "has_complex_parameters": true,
-      "id": 10112,
+      "id": 1429,
       "multiple_distinct_tools": false,
       "parameter_types": [
         "List[float]",
-        "List[int]",
-        "bool, optional",
+        "float, optional",
         "int"
       ],
       "repeated_same_tool": false,
-      "row_index": 10112,
+      "row_index": 1429,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": true,
+      "id": 20880,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "List[int]",
+        "int",
+        "str",
+        "str, optional"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 20880,
       "split": "test"
     },
     {
@@ -3520,15 +3400,99 @@
       "expected_call_count": 2,
       "generator": "mixtral",
       "has_complex_parameters": false,
-      "id": 42520,
+      "id": 45008,
       "multiple_distinct_tools": true,
       "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 45008,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 38252,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 38252,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 4,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 21198,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "bool, optional",
         "int, optional",
         "str",
         "str, optional"
       ],
       "repeated_same_tool": false,
-      "row_index": 42520,
+      "row_index": 21198,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 1,
+      "call_bucket": "two_calls",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 2,
+      "generator": "mixtral",
+      "has_complex_parameters": false,
+      "id": 49000,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": true,
+      "row_index": 49000,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 2,
+      "call_bucket": "three_or_more_calls",
+      "distinct_expected_tool_count": 2,
+      "expected_call_count": 6,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 4428,
+      "multiple_distinct_tools": true,
+      "parameter_types": [
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 4428,
+      "split": "test"
+    },
+    {
+      "available_tool_count": 5,
+      "call_bucket": "single_call",
+      "distinct_expected_tool_count": 1,
+      "expected_call_count": 1,
+      "generator": "deepseek",
+      "has_complex_parameters": false,
+      "id": 4336,
+      "multiple_distinct_tools": false,
+      "parameter_types": [
+        "bool, optional",
+        "int",
+        "int, optional",
+        "str"
+      ],
+      "repeated_same_tool": false,
+      "row_index": 4336,
       "split": "test"
     }
   ],

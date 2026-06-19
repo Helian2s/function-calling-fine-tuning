@@ -459,11 +459,10 @@ def collect_candidates(
     return candidates, rejected
 
 
-def select_records(
+def build_candidate_pools(
     candidates: list[dict[str, Any]],
-) -> dict[str, list[dict[str, Any]]]:
+) -> dict[tuple[str, str], list[dict[str, Any]]]:
     rng = random.Random(SEED)
-
     pools: dict[tuple[str, str], list[dict[str, Any]]] = {}
 
     for generator in GENERATORS:
@@ -481,6 +480,15 @@ def select_records(
 
             rng.shuffle(pool)
             pools[(generator, call_bucket)] = pool
+
+    return pools
+
+
+def select_records(
+    candidates: list[dict[str, Any]],
+) -> dict[str, list[dict[str, Any]]]:
+    rng = random.Random(SEED)
+    pools = build_candidate_pools(candidates)
 
     selected: dict[str, list[dict[str, Any]]] = {
         "train": [],
