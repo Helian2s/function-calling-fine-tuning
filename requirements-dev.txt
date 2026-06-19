@@ -4,3 +4,5 @@ ruff
 mypy
 pre-commit
 types-PyYAML
+transformers
+jinja2
