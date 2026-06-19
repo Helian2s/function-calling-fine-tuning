@@ -246,3 +246,7 @@ __marimo__/
 # Generated smoke dataset derived from xLAM
 /data/smoke/*
 !/data/smoke/README.md
+
+# Local inspection diagnostics
+/data/manifests/smoke_v1_template_report.json
+/data/manifests/smoke_v1_loss_mask_report.json
