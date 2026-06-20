@@ -1,4 +1,5 @@
 from __future__ import annotations
+# ruff: noqa: E402
 
 import hashlib
 import json
@@ -423,7 +424,7 @@ def collect_candidates(
         row = dataset[row_index]
 
         try:
-            source_id = int(row["id"])
+            int(row["id"])
         except (KeyError, TypeError, ValueError):
             rejected["invalid_source_id"] += 1
             continue

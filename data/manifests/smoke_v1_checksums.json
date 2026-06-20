@@ -1,0 +1,89 @@
+{
+  "checksum_schema_version": "1.0",
+  "groups": {
+    "manifests": [
+      {
+        "bytes": 91064,
+        "line_count": 3522,
+        "path": "data/manifests/smoke_v1_selection.json",
+        "sha256": "f99d24737fa76633a3016a6eb7ff00e1dded99f46246d328555c90c84a069bb3"
+      },
+      {
+        "bytes": 1493,
+        "line_count": 68,
+        "path": "data/manifests/smoke_v1_summary.json",
+        "sha256": "1b99edb7a85a206dc8512425e539317b16ef657128f54841e8d48bdb6cdc7d1b"
+      },
+      {
+        "bytes": 1636,
+        "line_count": 53,
+        "path": "data/manifests/smoke_v1_normalization_report.json",
+        "sha256": "8b68bbe1dfea2b0e0782db255b5e2024c22f0469bbde0c924d4fbe27695a4e80"
+      },
+      {
+        "bytes": 442,
+        "line_count": 18,
+        "path": "data/manifests/smoke_v1_validation_report.json",
+        "sha256": "c97e8a4b82456ab3f2a2260dec4067ef77d8124ba4269412e90b0d0f1683958c"
+      },
+      {
+        "bytes": 542,
+        "line_count": 28,
+        "path": "data/manifests/smoke_v1_split_verification.json",
+        "sha256": "27fff7eb4685bc5b2f17d8d5b4893278e38e822bbb44db407bf8d895964a9a6d"
+      },
+      {
+        "bytes": 39405,
+        "line_count": 350,
+        "path": "data/manifests/smoke_v1_template_report.json",
+        "sha256": "73654b153fca27295c1eacc0624e5d8f7cda8b6a311702ef329d9c91df9f827f"
+      },
+      {
+        "bytes": 221771,
+        "line_count": 9599,
+        "path": "data/manifests/smoke_v1_loss_mask_report.json",
+        "sha256": "3a8827f98c7cccdb5023e6e2a7f82ac31ff5a9b8d76e29ba1e01bf304e47ec5c"
+      }
+    ],
+    "normalized_splits": [
+      {
+        "bytes": 216733,
+        "line_count": 120,
+        "path": "data/smoke/normalized/train.jsonl",
+        "sha256": "dac1699d3a9f0164f440c18d9c1479d3d1b1eab3d57b39937a6f541954a6ee7d"
+      },
+      {
+        "bytes": 74569,
+        "line_count": 40,
+        "path": "data/smoke/normalized/validation.jsonl",
+        "sha256": "e0e252b06b7d8af69c92abde830f7273fb959994b7575a9e74217b6ff98d5174"
+      },
+      {
+        "bytes": 74830,
+        "line_count": 40,
+        "path": "data/smoke/normalized/test.jsonl",
+        "sha256": "f9c8d01d5cec20c828e809bee647e31a54adb1f9f9f71bf3fd76e89d19f57a4d"
+      }
+    ],
+    "raw_splits": [
+      {
+        "bytes": 177448,
+        "line_count": 120,
+        "path": "data/smoke/raw/train.jsonl",
+        "sha256": "dcc1c2ded5cfe32d6d565ed548716dad68089ef5744cf33d327ee943597ef5a6"
+      },
+      {
+        "bytes": 61489,
+        "line_count": 40,
+        "path": "data/smoke/raw/validation.jsonl",
+        "sha256": "3961c2be016f73a52c13be48d90a17daa7ab3446c967fc9b152b5a8fc183d29a"
+      },
+      {
+        "bytes": 62378,
+        "line_count": 40,
+        "path": "data/smoke/raw/test.jsonl",
+        "sha256": "6f934916f115ec8dddb8f350c00bd0cad4dd7e63405977152f4da2f971f3e6f2"
+      }
+    ]
+  }
+}

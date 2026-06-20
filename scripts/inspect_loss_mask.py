@@ -1,4 +1,5 @@
 from __future__ import annotations
+# ruff: noqa: E402
 
 import argparse
 import json
@@ -113,7 +114,7 @@ def _load_tokenizer(
 
 
 def _synthetic_tool_result_case() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    tools = [
+    tools: list[dict[str, Any]] = [
         {
             "type": "function",
             "function": {
@@ -129,7 +130,7 @@ def _synthetic_tool_result_case() -> tuple[list[dict[str, Any]], list[dict[str, 
             },
         }
     ]
-    messages = [
+    messages: list[dict[str, Any]] = [
         {
             "role": "user",
             "content": "What is the weather in Denver?",

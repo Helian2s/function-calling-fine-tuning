@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Protocol, Sequence
 
 from function_calling_ft.normalization import normalize_xlam_row
-from function_calling_ft.parser import ParseResult, ToolCall, parse_tool_calls
+from function_calling_ft.parser import ParseResult, parse_tool_calls
 from function_calling_ft.scorer import score_calls
 
 
@@ -525,22 +525,22 @@ def _extract_rendered_tool_calls(
             cursor = end_index + len(end_tag)
 
         if payloads:
-            parsed_calls: list[dict[str, Any]] = []
+            extracted_calls: list[dict[str, Any]] = []
 
             for payload in payloads:
                 result = _parse_payload_text(payload)
                 for call in result.calls:
-                    parsed_calls.append(
+                    extracted_calls.append(
                         {
                             "name": call.name,
                             "arguments": call.arguments,
                         }
                     )
 
-            return tuple(payloads), tuple(parsed_calls)
+            return tuple(payloads), tuple(extracted_calls)
 
     result = parse_tool_calls(text)
-    parsed_calls = tuple(
+    parsed_calls: tuple[dict[str, Any], ...] = tuple(
         {
             "name": call.name,
             "arguments": call.arguments,
@@ -608,6 +608,7 @@ def render_template_example(
             tool["function"]["name"] in tool_section_text
             for tool in tools
         )
+        assert tool_section_tags is not None
         section_end_index = decoded_text.find(
             tool_section_tags[1]
         ) + len(tool_section_tags[1])

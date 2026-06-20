@@ -1,0 +1,28 @@
+{
+  "expected_split_sizes": {
+    "test": 40,
+    "train": 120,
+    "validation": 40
+  },
+  "normalized": {
+    "directory": "data/smoke/normalized",
+    "split_counts": {
+      "test": 40,
+      "train": 120,
+      "validation": 40
+    },
+    "total_records": 200
+  },
+  "raw": {
+    "directory": "data/smoke/raw",
+    "split_counts": {
+      "test": 40,
+      "train": 120,
+      "validation": 40
+    },
+    "total_records": 200
+  },
+  "raw_and_normalized_ids_match": true,
+  "total_examples": 200,
+  "verification_schema_version": "1.0"
+}
