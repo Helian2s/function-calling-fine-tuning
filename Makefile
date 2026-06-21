@@ -61,7 +61,7 @@ calculate-checksums:
 	$(PYTHON) scripts/calculate_checksums.py
 
 shellcheck:
-	bash -n scripts/smoke_run.sh scripts/train_smoke.sh scripts/sync_results.sh
+	bash -n scripts/bootstrap_instance.sh scripts/smoke_run.sh scripts/train_smoke.sh scripts/sync_results.sh
 
 preflight:
 	$(MAKE) lint

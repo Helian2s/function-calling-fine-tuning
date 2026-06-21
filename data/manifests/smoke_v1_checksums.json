@@ -33,16 +33,16 @@
         "sha256": "27fff7eb4685bc5b2f17d8d5b4893278e38e822bbb44db407bf8d895964a9a6d"
       },
       {
-        "bytes": 39405,
-        "line_count": 350,
+        "bytes": 39469,
+        "line_count": 351,
         "path": "data/manifests/smoke_v1_template_report.json",
-        "sha256": "73654b153fca27295c1eacc0624e5d8f7cda8b6a311702ef329d9c91df9f827f"
+        "sha256": "b9ebfa0de18ca52319525f00b93083b154f5d96cab1bd17561c43532c7d5ca34"
       },
       {
-        "bytes": 221771,
-        "line_count": 9599,
+        "bytes": 221835,
+        "line_count": 9600,
         "path": "data/manifests/smoke_v1_loss_mask_report.json",
-        "sha256": "3a8827f98c7cccdb5023e6e2a7f82ac31ff5a9b8d76e29ba1e01bf304e47ec5c"
+        "sha256": "294afec03ccb595fde403267f4af514d56ded4ff460ca485574730a0468c8a3e"
       }
     ],
     "normalized_splits": [

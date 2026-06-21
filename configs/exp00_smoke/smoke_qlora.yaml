@@ -1,4 +1,5 @@
-# Smoke QLoRA recipe for the AutoModel 26.02 / v0.3.0 release line.
+# Smoke QLoRA recipe for AutoModel v0.3.0 in the
+# `nvcr.io/nvidia/nemo-automodel:25.11.00` container.
 #
 # Notes:
 # - Field names come from the v0.3.0 ChatDataset and QLoRA examples.
@@ -26,6 +27,7 @@ rng:
 model:
   _target_: nemo_automodel.NeMoAutoModelForCausalLM.from_pretrained
   pretrained_model_name_or_path: Qwen/Qwen3-8B
+  revision: b968826d9c46dd6066d109eabc6255188de91218
   torch_dtype: bfloat16
 
 compile:

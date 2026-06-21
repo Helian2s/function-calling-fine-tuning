@@ -15,6 +15,7 @@ if str(SRC_DIR) not in sys.path:
 
 from function_calling_ft.dataset import (
     DEFAULT_MODEL_NAME,
+    DEFAULT_MODEL_REVISION,
     DEFAULT_NORMALIZED_DIR,
     DEFAULT_TEMPLATE_CACHE_DIR,
     load_smoke_records,
@@ -40,6 +41,11 @@ def parse_args() -> argparse.Namespace:
         "--model",
         default=DEFAULT_MODEL_NAME,
         help="Hugging Face model name or local tokenizer path.",
+    )
+    parser.add_argument(
+        "--model-revision",
+        default=DEFAULT_MODEL_REVISION,
+        help="Exact Hugging Face model revision to load.",
     )
     parser.add_argument(
         "--normalized-dir",
@@ -84,6 +90,7 @@ def parse_args() -> argparse.Namespace:
 def _load_tokenizer(
     *,
     model_name: str,
+    model_revision: str,
     cache_dir: Path,
     trust_remote_code: bool,
 ) -> Any:
@@ -99,6 +106,7 @@ def _load_tokenizer(
 
     return AutoTokenizer.from_pretrained(
         model_name,
+        revision=model_revision,
         cache_dir=str(cache_dir),
         trust_remote_code=trust_remote_code,
     )
@@ -115,6 +123,7 @@ def main() -> None:
     )
     tokenizer = _load_tokenizer(
         model_name=args.model,
+        model_revision=args.model_revision,
         cache_dir=args.cache_dir,
         trust_remote_code=args.trust_remote_code,
     )
@@ -141,6 +150,7 @@ def main() -> None:
     ]
     report = {
         "model_name": args.model,
+        "model_revision": args.model_revision,
         "dataset_source": dataset_source,
         "normalized_dir": str(args.normalized_dir),
         "cache_dir": str(args.cache_dir),
@@ -165,6 +175,7 @@ def main() -> None:
     )
 
     print(f"Model: {args.model}")
+    print(f"Model revision: {args.model_revision}")
     print(f"Dataset source: {dataset_source}")
     print(
         f"Rendered {len(rendered_examples)} representative example(s)."
