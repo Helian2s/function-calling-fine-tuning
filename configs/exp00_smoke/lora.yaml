@@ -1,0 +1,4 @@
+# Compatibility placeholder.
+#
+# Use configs/exp00_smoke/smoke_lora.yaml for Experiment 0. This file is
+# intentionally not consumed by the C0 smoke pipeline.

@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -Eeuo pipefail
+
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT_LOCAL="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
+# shellcheck source=configs/common/exp00.env
+source "${REPO_ROOT_LOCAL}/configs/common/exp00.env"
 
 if [[ "${EUID}" -ne 0 ]]; then
   printf '[bootstrap-instance] Run this script with sudo.\n' >&2
@@ -8,12 +13,13 @@ fi
 
 DEFAULT_USER="${SUDO_USER:-ubuntu}"
 OWNER_GROUP="$(id -gn "${DEFAULT_USER}")"
-WORKSPACE_ROOT="${WORKSPACE_ROOT:-/workspace}"
-REPO_ROOT="${REPO_ROOT:-${WORKSPACE_ROOT}/function-calling-fine-tuning}"
-DATA_ROOT="${DATA_ROOT:-${WORKSPACE_ROOT}/data}"
-OUTPUT_ROOT="${OUTPUT_ROOT:-${WORKSPACE_ROOT}/outputs}"
-RESULTS_ROOT="${RESULTS_ROOT:-${WORKSPACE_ROOT}/results}"
-CUDA_TEST_IMAGE="${CUDA_TEST_IMAGE:-nvcr.io/nvidia/cuda:13.0.0-base-ubuntu24.04}"
+WORKSPACE_ROOT="${WORKSPACE_ROOT:-${HOST_WORKSPACE_ROOT}}"
+REPO_ROOT="${REPO_ROOT:-${HOST_PROJECT_ROOT}}"
+DATA_ROOT="${DATA_ROOT:-${HOST_DATA_ROOT}}"
+CHECKPOINT_ROOT="${CHECKPOINT_ROOT:-${HOST_CHECKPOINT_ROOT}}"
+RESULTS_ROOT="${RESULTS_ROOT:-${HOST_RESULTS_ROOT}}"
+LOGS_ROOT="${LOGS_ROOT:-${HOST_LOGS_ROOT}}"
+RUN_INFO_ROOT="${RUN_INFO_ROOT:-${HOST_RUN_INFO_ROOT}}"
 
 log() {
   printf '[bootstrap-instance] %s\n' "$*"
@@ -43,7 +49,13 @@ require_command git
 require_command aws
 require_command nvidia-smi
 
-mkdir -p "${WORKSPACE_ROOT}" "${DATA_ROOT}" "${OUTPUT_ROOT}" "${RESULTS_ROOT}"
+mkdir -p \
+  "${WORKSPACE_ROOT}" \
+  "${DATA_ROOT}" \
+  "${CHECKPOINT_ROOT}" \
+  "${RESULTS_ROOT}" \
+  "${LOGS_ROOT}" \
+  "${RUN_INFO_ROOT}"
 chown -R "${DEFAULT_USER}:${OWNER_GROUP}" "${WORKSPACE_ROOT}"
 
 log "Verifying host GPU visibility"
@@ -69,10 +81,12 @@ cat <<EOF
 [bootstrap-instance] Completed successfully.
 [bootstrap-instance] Recommended next steps:
   1. git clone <this-repo> "${REPO_ROOT}"
-  2. docker pull nvcr.io/nvidia/nemo-automodel:25.11.00
+  2. docker pull ${AUTOMODEL_IMAGE}
   3. Run the container with persistent mounts for:
-     - ${REPO_ROOT} -> /workspace/function-calling-fine-tuning
-     - ${DATA_ROOT} -> /workspace/data
-     - ${OUTPUT_ROOT} -> /workspace/outputs
-     - ${RESULTS_ROOT} -> /workspace/results
+     - ${REPO_ROOT} -> ${CONTAINER_PROJECT_ROOT}
+     - ${DATA_ROOT} -> ${CONTAINER_DATA_ROOT}
+     - ${CHECKPOINT_ROOT} -> ${CONTAINER_CHECKPOINT_ROOT}
+     - ${RESULTS_ROOT} -> ${CONTAINER_RESULTS_ROOT}
+     - ${LOGS_ROOT} -> ${CONTAINER_LOGS_ROOT}
+     - ${RUN_INFO_ROOT} -> ${CONTAINER_RUN_INFO_ROOT}
 EOF

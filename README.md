@@ -39,8 +39,34 @@ Local preparation repo for xLAM-based function-calling fine-tuning on Qwen 3 wit
 ## EC2 + Docker
 
 - Base image: `nvcr.io/nvidia/nemo-automodel:25.11.00`
+- AutoModel CLI: `automodel finetune llm -c configs/exp00_smoke/smoke_qlora.yaml`
+- Runtime constants: [configs/common/exp00.env](/home/val/Documents/py-projects/function-calling-fine-tuning/configs/common/exp00.env)
 - Repo Dockerfile: [Dockerfile](/home/val/Documents/py-projects/function-calling-fine-tuning/Dockerfile)
 - Host bootstrap: [scripts/bootstrap_instance.sh](/home/val/Documents/py-projects/function-calling-fine-tuning/scripts/bootstrap_instance.sh)
+- Container runner: [scripts/run_automodel_container.sh](/home/val/Documents/py-projects/function-calling-fine-tuning/scripts/run_automodel_container.sh)
 - Container smoke orchestration: [scripts/smoke_run.sh](/home/val/Documents/py-projects/function-calling-fine-tuning/scripts/smoke_run.sh)
 
-Mount checkpoints and results onto persistent storage. Do not rely on state inside a container started with `--rm`.
+Persistent host paths under `/mnt/workspace` are mounted to `/workspace` inside
+the container. Checkpoints must land under `/workspace/checkpoints`; results,
+logs, and run-info must land under their matching `/workspace/*` mounts. Do not
+rely on state inside a container started with `--rm`.
+
+Useful C0 commands:
+
+```bash
+make preflight
+make smoke-preflight
+make smoke-baseline
+make smoke-train
+make smoke-reload-check
+make smoke-evaluate
+make smoke-run
+scripts/run_automodel_container.sh --pull --login-ngc make smoke-run
+scripts/publish_exp00_source_bundle.sh --dry-run
+scripts/audit_launch_template.sh
+```
+
+`smoke-run` does not upload artifacts or shut the host down. Use
+`scripts/sync_results.sh --dry-run` or the installed
+`sudo /usr/local/sbin/ft-exp00-shutdown-and-sync --dry-run` helper to inspect
+the final upload plan.

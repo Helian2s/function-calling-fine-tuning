@@ -1,0 +1,23 @@
+evaluation:
+  order_matters: false
+  deterministic_decoding:
+    do_sample: false
+    seed: 42
+    max_new_tokens: 256
+  prompt_construction:
+    remove_target_assistant_message: true
+    add_generation_prompt: true
+    enable_thinking: false
+    preserve_tools: true
+  baseline:
+    test_limit: 20
+    predictions: /workspace/results/exp-00/baseline/predictions.jsonl
+    output_dir: /workspace/results/exp-00/baseline
+  full_test:
+    expected_records: 40
+    predictions: /workspace/results/exp-00/predictions.jsonl
+    output_dir: /workspace/results/exp-00
+  outputs:
+    scored_predictions: scored_predictions.jsonl
+    parse_failures: parse_failures.jsonl
+    scores: scores.json

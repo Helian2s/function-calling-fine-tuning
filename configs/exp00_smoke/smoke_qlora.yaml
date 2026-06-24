@@ -39,7 +39,7 @@ compile:
 
 checkpoint:
   enabled: true
-  checkpoint_dir: /workspace/outputs/smoke-qlora
+  checkpoint_dir: /workspace/checkpoints/exp-00/smoke-qlora
   model_save_format: safetensors
   save_consolidated: false
 

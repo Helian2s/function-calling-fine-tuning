@@ -1,0 +1,22 @@
+dataset:
+  source: Salesforce/xlam-function-calling-60k
+  source_revision: 26d14ebfe18b1f7b524bd39b404b50af5dc97866
+  frozen_split: smoke-v1
+  s3_uri: s3://finetuning-lab-1-037678282394-us-west-2-an/finetuning/data/smoke-v1/
+  container_root: /workspace/data
+  checksum_manifest: /workspace/data/checksums.sha256
+  splits:
+    train:
+      path: /workspace/data/train.jsonl
+      count: 120
+    validation:
+      path: /workspace/data/validation.jsonl
+      count: 40
+    test:
+      path: /workspace/data/test.jsonl
+      count: 40
+  policy:
+    frozen: true
+    do_not_regenerate: true
+    do_not_reshuffle: true
+    do_not_renormalize: true
