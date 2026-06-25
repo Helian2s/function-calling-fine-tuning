@@ -44,6 +44,7 @@ unit-tests:
 		tests/test_validation.py \
 		tests/test_template.py \
 		tests/test_loss_mask.py \
+		tests/test_model_config.py \
 		tests/test_preflight_scripts.py \
 		-v
 
@@ -79,6 +80,7 @@ calculate-checksums:
 
 shellcheck:
 	bash -n scripts/bootstrap_instance.sh scripts/smoke_run.sh scripts/train_smoke.sh scripts/sync_results.sh scripts/run_automodel_container.sh infrastructure/aws/bootstrap/bootstrap_instance.sh infrastructure/aws/bootstrap/shutdown_and_sync.sh scripts/publish_exp00_source_bundle.sh scripts/build_exp00_source_bundle.sh scripts/audit_launch_template.sh scripts/sync_source_to_s3.sh
+	$(PYTHON) -m py_compile scripts/resolve_exp00_config.py
 	@if [ -n "$(SHELLCHECK_BIN)" ]; then \
 		"$(SHELLCHECK_BIN)" -x scripts/bootstrap_instance.sh scripts/smoke_run.sh scripts/train_smoke.sh scripts/sync_results.sh scripts/run_automodel_container.sh infrastructure/aws/bootstrap/bootstrap_instance.sh infrastructure/aws/bootstrap/shutdown_and_sync.sh scripts/publish_exp00_source_bundle.sh scripts/build_exp00_source_bundle.sh scripts/audit_launch_template.sh scripts/sync_source_to_s3.sh; \
 	else \
@@ -91,6 +93,7 @@ sync-source-dry-run:
 validate-smoke-configs:
 	$(PYTHON) scripts/validate_smoke_config.py configs/exp00_smoke/smoke_qlora.yaml
 	$(PYTHON) scripts/validate_smoke_config.py configs/exp00_smoke/smoke_lora.yaml
+	$(PYTHON) scripts/resolve_exp00_config.py --json
 
 preflight:
 	$(MAKE) lint
@@ -111,6 +114,7 @@ preflight:
 
 smoke-preflight:
 	$(MAKE) unit-tests
+	$(PYTEST) tests/test_model_config.py -v
 	$(MAKE) test-parser
 	$(MAKE) test-scorer
 	$(MAKE) test-evaluation

@@ -8,8 +8,8 @@ import yaml
 
 
 CANONICAL_CHECKPOINT_ROOT = Path("/workspace/checkpoints")
-EXPECTED_MODEL_NAME = "Qwen/Qwen3-8B"
-EXPECTED_MODEL_REVISION = "b968826d9c46dd6066d109eabc6255188de91218"
+EXPECTED_MODEL_NAME = "Qwen/Qwen3-1.7B"
+EXPECTED_MODEL_REVISION = "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
 
 
 @dataclass(frozen=True)

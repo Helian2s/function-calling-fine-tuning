@@ -12,8 +12,8 @@ Each JSONL prediction record must include:
 {
   "id": "xlam-...",
   "source_id": 123,
-  "model_name": "Qwen/Qwen3-8B",
-  "model_revision": "b968826d9c46dd6066d109eabc6255188de91218",
+  "model_name": "Qwen/Qwen3-1.7B",
+  "model_revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
   "adapter_path": null,
   "raw_generation": "{\"name\":\"...\",\"arguments\":{...}}",
   "prompt_token_count": 1234,

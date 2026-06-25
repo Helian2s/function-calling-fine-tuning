@@ -12,8 +12,8 @@ from function_calling_ft.parser import ParseResult, parse_tool_calls
 from function_calling_ft.scorer import score_calls
 
 
-DEFAULT_MODEL_NAME = "Qwen/Qwen3-8B"
-DEFAULT_MODEL_REVISION = "b968826d9c46dd6066d109eabc6255188de91218"
+DEFAULT_MODEL_NAME = "Qwen/Qwen3-1.7B"
+DEFAULT_MODEL_REVISION = "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
 DEFAULT_RAW_DIR = Path("data/smoke/raw")
 DEFAULT_NORMALIZED_DIR = Path("data/smoke/normalized")
 DEFAULT_TEMPLATE_CACHE_DIR = Path(".cache/huggingface")

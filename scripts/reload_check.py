@@ -17,7 +17,7 @@ from function_calling_ft.generation import (
     generate_prediction_records,
     load_transformers_model,
     read_jsonl,
-    validate_adapter_path,
+    validate_adapter_base_model,
 )
 
 
@@ -45,7 +45,10 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    resolved_adapter = validate_adapter_path(args.adapter_path)
+    resolved_adapter = validate_adapter_base_model(
+        args.adapter_path,
+        args.model_name,
+    )
     records = read_jsonl(args.dataset)[: args.limit]
     tokenizer, model, loaded_adapter_path = load_transformers_model(
         model_name=args.model_name,

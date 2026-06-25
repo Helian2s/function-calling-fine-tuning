@@ -221,6 +221,29 @@ def validate_adapter_path(adapter_path: Path) -> Path:
     return resolved
 
 
+def validate_adapter_base_model(
+    adapter_path: Path,
+    expected_model_name: str,
+) -> Path:
+    resolved = validate_adapter_path(adapter_path)
+    config_path = resolved / "adapter_config.json"
+    try:
+        config = json.loads(config_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ValueError(
+            f"Adapter config is not valid JSON: {config_path}",
+        ) from exc
+
+    actual_model_name = config.get("base_model_name_or_path")
+    if actual_model_name and actual_model_name != expected_model_name:
+        raise ValueError(
+            "Adapter base_model_name_or_path does not match expected model: "
+            f"{actual_model_name!r} != {expected_model_name!r}",
+        )
+
+    return resolved
+
+
 def set_generation_seed(seed: int) -> None:
     random.seed(seed)
 
@@ -416,7 +439,10 @@ def load_transformers_model(
     resolved_adapter_path: str | None = None
 
     if adapter_path is not None:
-        resolved_adapter = validate_adapter_path(adapter_path)
+        resolved_adapter = validate_adapter_base_model(
+            adapter_path,
+            model_name,
+        )
         try:
             from peft import PeftModel
         except ModuleNotFoundError as exc:

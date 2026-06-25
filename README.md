@@ -8,12 +8,23 @@ Local preparation repo for xLAM-based function-calling fine-tuning on Qwen 3 wit
 - AutoModel container: `nvcr.io/nvidia/nemo-automodel:25.11.00`
 - AutoModel container digest: `sha256:c4f613005518d520c2ac3d9206d95617a2385f86cf8aa09582aad8d35957e2f2`
 - Runtime-reported `nemo_automodel` version: `0.2.0rc0`
-- Model: `Qwen/Qwen3-8B`
-- Model revision: `b968826d9c46dd6066d109eabc6255188de91218`
+- Model: `Qwen/Qwen3-1.7B`
+- Model revision: `70d244cc86ccca08cf5af4e1e306ecf908b1ad5e`
 - Dataset: `Salesforce/xlam-function-calling-60k`
 - Dataset revision: `26d14ebfe18b1f7b524bd39b404b50af5dc97866`
 - Dataset license: `cc-by-4.0`
 - Python dependencies: pinned in [requirements-dev.txt](/home/val/Documents/py-projects/function-calling-fine-tuning/requirements-dev.txt)
+
+## Experiment 0 Model Switch
+
+Experiment 0 now uses `Qwen/Qwen3-1.7B`. The original `Qwen/Qwen3-8B`
+baseline achieved a strong result on the initial full 40-case function-calling
+test, leaving limited headroom for observing measurable fine-tuning
+improvement. `Qwen/Qwen3-1.7B` preserves the modern Qwen3 architecture while
+providing more adaptation headroom and reducing GPU cost. This change does not
+imply that fine-tuning is guaranteed to improve the smaller model; Experiment 0
+still primarily validates the end-to-end training, checkpoint, reload, and
+evaluation pipeline.
 
 ## Layout
 
@@ -130,6 +141,7 @@ make smoke-reload-check
 make smoke-evaluate
 make smoke-run
 scripts/run_automodel_container.sh --pull --login-ngc make smoke-run
+scripts/resolve_exp00_config.py
 scripts/sync_source_to_s3.sh --dry-run
 scripts/publish_exp00_source_bundle.sh --dry-run
 scripts/audit_launch_template.sh

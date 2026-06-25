@@ -17,7 +17,7 @@ from function_calling_ft.generation import (
     generate_prediction_records,
     load_transformers_model,
     read_jsonl,
-    validate_adapter_path,
+    validate_adapter_base_model,
     write_jsonl,
 )
 
@@ -60,7 +60,9 @@ def main() -> None:
     resolved_adapter_path: str | None = None
 
     if args.adapter_path is not None:
-        resolved_adapter_path = str(validate_adapter_path(args.adapter_path))
+        resolved_adapter_path = str(
+            validate_adapter_base_model(args.adapter_path, args.model_name),
+        )
 
     if args.validate_adapter_only:
         print(f"adapter_path={resolved_adapter_path}")

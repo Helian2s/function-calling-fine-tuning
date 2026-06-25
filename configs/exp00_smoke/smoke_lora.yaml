@@ -28,8 +28,8 @@ rng:
 
 model:
   _target_: nemo_automodel.NeMoAutoModelForCausalLM.from_pretrained
-  pretrained_model_name_or_path: Qwen/Qwen3-8B
-  revision: b968826d9c46dd6066d109eabc6255188de91218
+  pretrained_model_name_or_path: Qwen/Qwen3-1.7B
+  revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
   torch_dtype: bfloat16
 
 compile:

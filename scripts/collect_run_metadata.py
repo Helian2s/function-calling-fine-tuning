@@ -77,10 +77,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--training-log", type=Path, default=Path("/workspace/logs/exp-00/training.log"))
     parser.add_argument("--config", type=Path, default=Path("configs/exp00_smoke/smoke_qlora.yaml"))
     parser.add_argument("--adapter-path", default="/workspace/checkpoints/exp-00/smoke-qlora")
-    parser.add_argument("--model-name", default="Qwen/Qwen3-8B")
+    parser.add_argument("--model-name", default="Qwen/Qwen3-1.7B")
     parser.add_argument(
         "--model-revision",
-        default="b968826d9c46dd6066d109eabc6255188de91218",
+        default="70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
     )
     return parser.parse_args()
 

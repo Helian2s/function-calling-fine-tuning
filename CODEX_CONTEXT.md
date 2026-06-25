@@ -5,7 +5,7 @@
 Build a reproducible hands-on fine-tuning pipeline for function calling using:
 
 * Dataset: `Salesforce/xlam-function-calling-60k`
-* Target model: Qwen3-8B
+* Target model: Qwen3-1.7B
 * Training framework: NVIDIA NeMo AutoModel
 * Fine-tuning methods: LoRA and QLoRA
 * Cloud environment: AWS EC2 with NVIDIA GPUs

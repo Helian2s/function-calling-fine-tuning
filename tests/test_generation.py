@@ -10,6 +10,7 @@ from function_calling_ft.generation import (
     build_generation_prompt,
     build_inference_messages,
     generate_prediction_records,
+    validate_adapter_base_model,
     validate_adapter_path,
 )
 
@@ -130,7 +131,7 @@ def test_generate_prediction_records_preserves_per_record_errors(
         records=[_record()],
         tokenizer=tokenizer,
         model=FakeModel(),
-        model_name="Qwen/Qwen3-8B",
+        model_name="Qwen/Qwen3-1.7B",
         model_revision="revision",
         adapter_path=None,
         seed=42,
@@ -162,3 +163,49 @@ def test_validate_adapter_path_requires_config_and_weights(
     )
 
     assert validate_adapter_path(adapter_dir) == adapter_dir
+
+
+def test_validate_adapter_base_model_rejects_wrong_base_model(
+    tmp_path: Path,
+) -> None:
+    adapter_dir = tmp_path / "adapter"
+    adapter_dir.mkdir()
+    (adapter_dir / "adapter_config.json").write_text(
+        json.dumps(
+            {
+                "base_model_name_or_path": "Qwen/Qwen3-8B",
+            },
+        ),
+        encoding="utf-8",
+    )
+    (adapter_dir / "adapter_model.safetensors").write_text(
+        "weights",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ValueError, match="base_model_name_or_path"):
+        validate_adapter_base_model(adapter_dir, "Qwen/Qwen3-1.7B")
+
+
+def test_validate_adapter_base_model_accepts_matching_base_model(
+    tmp_path: Path,
+) -> None:
+    adapter_dir = tmp_path / "adapter"
+    adapter_dir.mkdir()
+    (adapter_dir / "adapter_config.json").write_text(
+        json.dumps(
+            {
+                "base_model_name_or_path": "Qwen/Qwen3-1.7B",
+            },
+        ),
+        encoding="utf-8",
+    )
+    (adapter_dir / "adapter_model.safetensors").write_text(
+        "weights",
+        encoding="utf-8",
+    )
+
+    assert (
+        validate_adapter_base_model(adapter_dir, "Qwen/Qwen3-1.7B")
+        == adapter_dir
+    )
