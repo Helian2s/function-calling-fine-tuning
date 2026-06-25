@@ -13,6 +13,29 @@ This runbook is for the existing Experiment 0 EC2 instance:
 The instance must be stopped at the end. Do not run model training in this
 plan. Do not print or persist secret values.
 
+## C4 Version Correction
+
+- Previously expected AutoModel version: `0.3.0`
+- Runtime-observed AutoModel version: `0.2.0rc0`
+- Container tag: `nvcr.io/nvidia/nemo-automodel:25.11.00`
+- Container digest: `sha256:c4f613005518d520c2ac3d9206d95617a2385f86cf8aa09582aad8d35957e2f2`
+- CLI validation: passed
+- Recipe target resolution: passed
+- C4 disposition: pass with corrected version evidence
+
+The earlier expectation that this image contained AutoModel `0.3.0` was
+incorrect. The actual container was validated directly:
+
+- `nemo_automodel` imports successfully
+- the AutoModel CLI is available
+- the Experiment 0 LoRA and QLoRA target classes resolve
+- persistent checkpoint paths validate
+- template and loss-mask checks pass
+
+The container must not be changed solely to match the previously expected
+package-version string. Runtime execution results are authoritative for
+Experiment 0.
+
 ## C3 - Authenticate to NGC and Pull the Pinned Container
 
 Run on the EC2 instance through SSM:
