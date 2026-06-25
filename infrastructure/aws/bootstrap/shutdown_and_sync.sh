@@ -21,7 +21,7 @@ die() {
 usage() {
   cat <<'EOF'
 Usage: sudo /usr/local/sbin/ft-exp00-shutdown-and-sync [--dry-run]
-                                                        [--stage baseline|final]
+                                                        [--stage baseline|baseline-1000|final]
                                                         [--include-final-adapter|--no-final-adapter]
 
 Uploads required Experiment 0 artifacts to S3 and then calls shutdown -h now.
@@ -75,6 +75,16 @@ verify_required_artifacts() {
       "/mnt/workspace/results/${EXPERIMENT}/baseline/parse_failures.jsonl"
       "/mnt/workspace/results/${EXPERIMENT}/baseline/scores.json"
       "/mnt/workspace/logs/${EXPERIMENT}/baseline.log"
+      "/mnt/workspace/run-info/bootstrap.env"
+    )
+  elif [[ "$stage" == "baseline-1000" ]]; then
+    required_paths+=(
+      "/mnt/workspace/results/${EXPERIMENT}/baseline-1000/predictions.jsonl"
+      "/mnt/workspace/results/${EXPERIMENT}/baseline-1000/generation_metadata.json"
+      "/mnt/workspace/results/${EXPERIMENT}/baseline-1000/scored_predictions.jsonl"
+      "/mnt/workspace/results/${EXPERIMENT}/baseline-1000/parse_failures.jsonl"
+      "/mnt/workspace/results/${EXPERIMENT}/baseline-1000/scores.json"
+      "/mnt/workspace/logs/${EXPERIMENT}/baseline-1000.log"
       "/mnt/workspace/run-info/bootstrap.env"
     )
   else
@@ -132,7 +142,7 @@ main() {
   done
 
   case "$stage" in
-    baseline|final)
+    baseline|baseline-1000|final)
       ;;
     *)
       die "Unsupported stage: $stage"

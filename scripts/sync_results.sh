@@ -20,7 +20,7 @@ die() {
 
 usage() {
   cat <<'EOF'
-Usage: scripts/sync_results.sh [--dry-run] [--verify-only] [--stage baseline|final]
+Usage: scripts/sync_results.sh [--dry-run] [--verify-only] [--stage baseline|baseline-1000|final]
                                [--include-final-adapter|--no-final-adapter]
 
 Synchronizes Experiment 0 results, logs, run-info, and final adapter artifacts
@@ -67,7 +67,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 case "$STAGE" in
-  baseline|final)
+  baseline|baseline-1000|final)
     ;;
   *)
     die "Unsupported stage: $STAGE"
@@ -104,6 +104,16 @@ if [[ "$STAGE" == "baseline" ]]; then
     "${RESULTS_DIR}/baseline/parse_failures.jsonl"
     "${RESULTS_DIR}/baseline/scores.json"
     "${LOGS_DIR}/baseline.log"
+    "${RUN_INFO_DIR}/bootstrap.env"
+  )
+elif [[ "$STAGE" == "baseline-1000" ]]; then
+  required_paths+=(
+    "${RESULTS_DIR}/baseline-1000/predictions.jsonl"
+    "${RESULTS_DIR}/baseline-1000/generation_metadata.json"
+    "${RESULTS_DIR}/baseline-1000/scored_predictions.jsonl"
+    "${RESULTS_DIR}/baseline-1000/parse_failures.jsonl"
+    "${RESULTS_DIR}/baseline-1000/scores.json"
+    "${LOGS_DIR}/baseline-1000.log"
     "${RUN_INFO_DIR}/bootstrap.env"
   )
 else

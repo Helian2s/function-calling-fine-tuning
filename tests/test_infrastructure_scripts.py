@@ -48,7 +48,8 @@ def test_shutdown_script_has_dry_run_and_never_terminates() -> None:
     assert "terminate-instances" not in text
     assert "--delete" not in text
     assert "/mnt/workspace/run-info" in text
-    assert "--stage baseline|final" in text
+    assert "--stage baseline|baseline-1000|final" in text
+    assert "baseline-1000/predictions.jsonl" in text
     assert "/mnt/workspace/checkpoints/${EXPERIMENT}/smoke-qlora" in text
     assert '"/mnt/workspace/checkpoints/${EXPERIMENT}"' not in text
 
@@ -61,7 +62,8 @@ def test_artifact_sync_policy_skips_intermediate_checkpoints() -> None:
         ROOT / "infrastructure/aws/bootstrap/shutdown_and_sync.sh"
     ).read_text(encoding="utf-8")
 
-    assert "--stage baseline|final" in sync_script
+    assert "--stage baseline|baseline-1000|final" in sync_script
+    assert "baseline-1000/predictions.jsonl" in sync_script
     assert "FINAL_ADAPTER_DIR" in sync_script
     assert 'sync_dir "$CHECKPOINT_DIR" "$CHECKPOINT_URI"' not in sync_script
     assert "intermediate training checkpoints" in sync_script

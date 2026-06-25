@@ -218,6 +218,7 @@ __marimo__/
 
 # Generated datasets
 /data/raw/*
+/data/eval/*
 /data/processed/*
 
 # Keep directory documentation

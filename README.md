@@ -45,7 +45,9 @@ evaluation pipeline.
 4. Normalize and validate it:
    `./.venv/bin/python scripts/normalize_xlam.py`
    `./.venv/bin/python scripts/validate_examples.py`
-5. Run the full local gate:
+5. Build the optional 1,000-record stratified baseline benchmark:
+   `./.venv/bin/python scripts/select_stratified_eval_sample.py`
+6. Run the full local gate:
    `make preflight`
 
 ## EC2 + Docker
@@ -101,6 +103,12 @@ C6 baseline subset:
 scripts/sync_results.sh --stage baseline
 ```
 
+For the 1,000-case stratified baseline benchmark:
+
+```bash
+scripts/sync_results.sh --stage baseline-1000
+```
+
 For a completed training and full-evaluation run:
 
 ```bash
@@ -136,6 +144,7 @@ Useful C0 commands:
 make preflight
 make smoke-preflight
 make smoke-baseline
+make smoke-baseline-1000
 make smoke-train
 make smoke-reload-check
 make smoke-evaluate
@@ -143,6 +152,7 @@ make smoke-run
 scripts/run_automodel_container.sh --pull --login-ngc make smoke-run
 scripts/resolve_exp00_config.py
 scripts/sync_source_to_s3.sh --dry-run
+scripts/publish_eval_dataset.sh --dry-run
 scripts/publish_exp00_source_bundle.sh --dry-run
 scripts/audit_launch_template.sh
 ```
