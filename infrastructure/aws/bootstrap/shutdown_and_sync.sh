@@ -6,6 +6,8 @@ readonly PREFIX="${FT_S3_PREFIX:-finetuning}"
 readonly REGION="${FT_AWS_REGION:-us-west-2}"
 readonly EXPERIMENT="${FT_EXPERIMENT:-exp-00}"
 readonly DRY_RUN_DEFAULT="${FT_SYNC_DRY_RUN:-0}"
+readonly STAGE_DEFAULT="${FT_SYNC_STAGE:-final}"
+readonly INCLUDE_FINAL_ADAPTER_DEFAULT="${FT_SYNC_INCLUDE_FINAL_ADAPTER:-auto}"
 
 log() {
   printf '[%s] %s\n' "$(date --iso-8601=seconds)" "$*"
@@ -19,8 +21,13 @@ die() {
 usage() {
   cat <<'EOF'
 Usage: sudo /usr/local/sbin/ft-exp00-shutdown-and-sync [--dry-run]
+                                                        [--stage baseline|final]
+                                                        [--include-final-adapter|--no-final-adapter]
 
 Uploads required Experiment 0 artifacts to S3 and then calls shutdown -h now.
+Results, logs, run-info, and final adapters are synced. Base model caches,
+Docker/NGC caches, and intermediate training checkpoints are intentionally not
+uploaded.
 The EC2 launch template must be configured with shutdown behavior Stop.
 EOF
 }
@@ -55,15 +62,34 @@ sync_directory() {
 }
 
 verify_required_artifacts() {
-  local required_paths=(
-    "/mnt/workspace/results/${EXPERIMENT}/scores.json"
-    "/mnt/workspace/results/${EXPERIMENT}/predictions.jsonl"
-    "/mnt/workspace/results/${EXPERIMENT}/run_metadata.json"
-    "/mnt/workspace/checkpoints/${EXPERIMENT}/smoke-qlora"
-    "/mnt/workspace/logs/${EXPERIMENT}/training.log"
-    "/mnt/workspace/run-info/bootstrap.env"
-  )
+  local stage="$1"
+  local sync_final_adapter="$2"
+  local required_paths=()
   local path
+
+  if [[ "$stage" == "baseline" ]]; then
+    required_paths+=(
+      "/mnt/workspace/results/${EXPERIMENT}/baseline/predictions.jsonl"
+      "/mnt/workspace/results/${EXPERIMENT}/baseline/generation_metadata.json"
+      "/mnt/workspace/results/${EXPERIMENT}/baseline/scored_predictions.jsonl"
+      "/mnt/workspace/results/${EXPERIMENT}/baseline/parse_failures.jsonl"
+      "/mnt/workspace/results/${EXPERIMENT}/baseline/scores.json"
+      "/mnt/workspace/logs/${EXPERIMENT}/baseline.log"
+      "/mnt/workspace/run-info/bootstrap.env"
+    )
+  else
+    required_paths+=(
+      "/mnt/workspace/results/${EXPERIMENT}/scores.json"
+      "/mnt/workspace/results/${EXPERIMENT}/predictions.jsonl"
+      "/mnt/workspace/results/${EXPERIMENT}/run_metadata.json"
+      "/mnt/workspace/logs/${EXPERIMENT}/training.log"
+      "/mnt/workspace/run-info/bootstrap.env"
+    )
+  fi
+
+  if [[ "$sync_final_adapter" == "1" ]]; then
+    required_paths+=("/mnt/workspace/checkpoints/${EXPERIMENT}/smoke-qlora")
+  fi
 
   for path in "${required_paths[@]}"; do
     [[ -e "$path" ]] || die "Required artifact is missing: $path"
@@ -72,11 +98,27 @@ verify_required_artifacts() {
 
 main() {
   local dry_run="$DRY_RUN_DEFAULT"
+  local stage="$STAGE_DEFAULT"
+  local include_final_adapter="$INCLUDE_FINAL_ADAPTER_DEFAULT"
+  local sync_final_adapter=0
 
   while [[ $# -gt 0 ]]; do
     case "$1" in
       --dry-run)
         dry_run=1
+        shift
+        ;;
+      --stage)
+        [[ $# -ge 2 ]] || die "--stage requires a value"
+        stage="$2"
+        shift 2
+        ;;
+      --include-final-adapter)
+        include_final_adapter=1
+        shift
+        ;;
+      --no-final-adapter)
+        include_final_adapter=0
         shift
         ;;
       -h|--help)
@@ -89,20 +131,36 @@ main() {
     esac
   done
 
+  case "$stage" in
+    baseline|final)
+      ;;
+    *)
+      die "Unsupported stage: $stage"
+      ;;
+  esac
+
+  case "$include_final_adapter" in
+    auto|0|1)
+      ;;
+    *)
+      die "Unsupported final-adapter setting: $include_final_adapter"
+      ;;
+  esac
+
+  if [[ "$include_final_adapter" == "1" ]] ||
+    [[ "$include_final_adapter" == "auto" && "$stage" == "final" ]]; then
+    sync_final_adapter=1
+  fi
+
   command -v aws >/dev/null 2>&1 || die "AWS CLI is not installed."
 
-  verify_required_artifacts
+  verify_required_artifacts "$stage" "$sync_final_adapter"
 
-  log "Starting final artifact synchronization."
+  log "Starting artifact synchronization for stage=${stage}."
 
   sync_directory \
     "/mnt/workspace/results/${EXPERIMENT}" \
     "s3://${BUCKET}/${PREFIX}/results/${EXPERIMENT}" \
-    "$dry_run"
-
-  sync_directory \
-    "/mnt/workspace/checkpoints/${EXPERIMENT}" \
-    "s3://${BUCKET}/${PREFIX}/checkpoints/${EXPERIMENT}" \
     "$dry_run"
 
   sync_directory \
@@ -114,6 +172,15 @@ main() {
     "/mnt/workspace/run-info" \
     "s3://${BUCKET}/${PREFIX}/logs/${EXPERIMENT}/run-info" \
     "$dry_run"
+
+  if [[ "$sync_final_adapter" == "1" ]]; then
+    sync_directory \
+      "/mnt/workspace/checkpoints/${EXPERIMENT}/smoke-qlora" \
+      "s3://${BUCKET}/${PREFIX}/checkpoints/${EXPERIMENT}/smoke-qlora" \
+      "$dry_run"
+  else
+    log "Final adapter upload skipped for stage=${stage}."
+  fi
 
   log "Artifact synchronization completed successfully."
 

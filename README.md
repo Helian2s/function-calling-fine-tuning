@@ -52,6 +52,55 @@ the container. Checkpoints must land under `/workspace/checkpoints`; results,
 logs, and run-info must land under their matching `/workspace/*` mounts. Do not
 rely on state inside a container started with `--rm`.
 
+## Experiment Storage Policy
+
+Before each EC2 experiment stage, publish the current clean Git commit to S3:
+
+```bash
+scripts/sync_source_to_s3.sh --execute
+```
+
+This builds a revisioned source archive, uploads it to
+`s3://finetuning-lab-1-037678282394-us-west-2-an/finetuning/source-bundles/`,
+and updates the convenience `exp00-source.tar.gz` alias by default.
+
+Storage rules:
+
+| Artifact group | Git | Workspace EBS | S3 |
+| --- | --- | --- | --- |
+| Source code, configs, scripts, tests | yes | yes | yes, as source bundle |
+| Frozen smoke dataset | no | yes, copied at bootstrap | yes, canonical copy |
+| Dataset manifests and checksums | yes | yes | yes |
+| Results and predictions | no | yes | yes, before stopping EC2 |
+| Logs | no | yes | yes, before stopping EC2 |
+| Run-info and environment reports | no | yes | yes, before stopping EC2 |
+| Base model and Hugging Face cache | no | yes | no |
+| Docker and NGC caches | no | yes | no |
+| Intermediate training checkpoints | no | yes | no, unless explicitly requested |
+| Final LoRA/QLoRA adapter | no | yes | yes |
+
+The frozen smoke dataset prefix is small, about 454 KiB
+(`464592` bytes), so S3 remains the canonical source and bootstrap copies it to
+the workspace EBS volume for each prepared host.
+
+After a stage creates artifacts, sync them before stopping the instance. For the
+C6 baseline subset:
+
+```bash
+scripts/sync_results.sh --stage baseline
+```
+
+For a completed training and full-evaluation run:
+
+```bash
+scripts/sync_results.sh --stage final
+```
+
+The final-stage sync uploads the final adapter directory
+`/mnt/workspace/checkpoints/exp-00/smoke-qlora` to S3. It does not upload base
+LLM weights, Hugging Face caches, Docker layers, NGC caches, or intermediate
+checkpoint directories.
+
 ## C4 Version Correction
 
 - Previously expected AutoModel version: `0.3.0`
@@ -81,11 +130,12 @@ make smoke-reload-check
 make smoke-evaluate
 make smoke-run
 scripts/run_automodel_container.sh --pull --login-ngc make smoke-run
+scripts/sync_source_to_s3.sh --dry-run
 scripts/publish_exp00_source_bundle.sh --dry-run
 scripts/audit_launch_template.sh
 ```
 
-`smoke-run` does not upload artifacts or shut the host down. Use
-`scripts/sync_results.sh --dry-run` or the installed
-`sudo /usr/local/sbin/ft-exp00-shutdown-and-sync --dry-run` helper to inspect
-the final upload plan.
+`smoke-run` does not shut the host down. Use `scripts/sync_results.sh
+--stage baseline --dry-run`, `scripts/sync_results.sh --stage final --dry-run`,
+or the installed `sudo /usr/local/sbin/ft-exp00-shutdown-and-sync --dry-run`
+helper to inspect the upload plan before stopping the instance.

@@ -17,7 +17,7 @@ SHELLCHECK_BIN := $(shell if command -v shellcheck >/dev/null 2>&1; then command
 	inspect-loss-masks test-parser test-scorer test-evaluation test-generation \
 	test-infrastructure calculate-checksums preflight smoke-preflight \
 	smoke-baseline smoke-train smoke-reload-check smoke-evaluate smoke-run \
-	shellcheck validate-smoke-configs
+	shellcheck validate-smoke-configs sync-source-dry-run
 
 help:
 	@printf '%s\n' \
@@ -27,6 +27,7 @@ help:
 		'make smoke-train      Run 30-step AutoModel smoke training' \
 		'make smoke-evaluate   Generate and score the full 40-record test split' \
 		'make smoke-run   Run the container/EC2 smoke pipeline scaffold' \
+		'make sync-source-dry-run   Preview source publication to S3' \
 		'make lint        Run Ruff' \
 		'make typecheck   Run mypy'
 
@@ -77,12 +78,15 @@ calculate-checksums:
 	$(PYTHON) scripts/calculate_checksums.py
 
 shellcheck:
-	bash -n scripts/bootstrap_instance.sh scripts/smoke_run.sh scripts/train_smoke.sh scripts/sync_results.sh scripts/run_automodel_container.sh infrastructure/aws/bootstrap/bootstrap_instance.sh infrastructure/aws/bootstrap/shutdown_and_sync.sh scripts/publish_exp00_source_bundle.sh scripts/build_exp00_source_bundle.sh scripts/audit_launch_template.sh
+	bash -n scripts/bootstrap_instance.sh scripts/smoke_run.sh scripts/train_smoke.sh scripts/sync_results.sh scripts/run_automodel_container.sh infrastructure/aws/bootstrap/bootstrap_instance.sh infrastructure/aws/bootstrap/shutdown_and_sync.sh scripts/publish_exp00_source_bundle.sh scripts/build_exp00_source_bundle.sh scripts/audit_launch_template.sh scripts/sync_source_to_s3.sh
 	@if [ -n "$(SHELLCHECK_BIN)" ]; then \
-		"$(SHELLCHECK_BIN)" -x scripts/bootstrap_instance.sh scripts/smoke_run.sh scripts/train_smoke.sh scripts/sync_results.sh scripts/run_automodel_container.sh infrastructure/aws/bootstrap/bootstrap_instance.sh infrastructure/aws/bootstrap/shutdown_and_sync.sh scripts/publish_exp00_source_bundle.sh scripts/build_exp00_source_bundle.sh scripts/audit_launch_template.sh; \
+		"$(SHELLCHECK_BIN)" -x scripts/bootstrap_instance.sh scripts/smoke_run.sh scripts/train_smoke.sh scripts/sync_results.sh scripts/run_automodel_container.sh infrastructure/aws/bootstrap/bootstrap_instance.sh infrastructure/aws/bootstrap/shutdown_and_sync.sh scripts/publish_exp00_source_bundle.sh scripts/build_exp00_source_bundle.sh scripts/audit_launch_template.sh scripts/sync_source_to_s3.sh; \
 	else \
 		printf '%s\n' 'shellcheck not installed; bash -n completed and shellcheck was skipped.'; \
 	fi
+
+sync-source-dry-run:
+	./scripts/sync_source_to_s3.sh --dry-run
 
 validate-smoke-configs:
 	$(PYTHON) scripts/validate_smoke_config.py configs/exp00_smoke/smoke_qlora.yaml
