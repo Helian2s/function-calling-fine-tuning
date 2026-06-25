@@ -6,6 +6,7 @@ REPO_ROOT="$(cd -- "${SCRIPT_DIR}/.." && pwd)"
 # shellcheck source=configs/common/exp00.env
 source "${REPO_ROOT}/configs/common/exp00.env"
 
+PROFILE="${AWS_PROFILE:-finetuning-local}"
 DRY_RUN=1
 DATASET_DIR="${DATASET_DIR:-${REPO_ROOT}/data/eval/stratified_1000}"
 S3_DATASET_PREFIX="${S3_DATASET_PREFIX:-${FT_S3_PREFIX}/data/eval/stratified_1000}"
@@ -92,11 +93,13 @@ command -v aws >/dev/null 2>&1 || die "aws CLI is required for uploads"
 aws s3 sync \
   "${DATASET_DIR}/" \
   "${S3_URI}/" \
+  --profile "$PROFILE" \
   --region "$FT_AWS_REGION" \
   --only-show-errors
 
 aws s3 ls \
   "${S3_URI}/" \
+  --profile "$PROFILE" \
   --region "$FT_AWS_REGION" \
   --recursive \
   --summarize
