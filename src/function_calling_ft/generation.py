@@ -3,6 +3,7 @@ from __future__ import annotations
 import inspect
 import json
 import random
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Protocol, Sequence
@@ -323,6 +324,87 @@ def _generate_one(
     return raw_generation, len(generated_ids)
 
 
+def generate_prediction_record(
+    *,
+    record: dict[str, Any],
+    tokenizer: GenerationTokenizer,
+    model: Any,
+    model_name: str,
+    model_revision: str,
+    adapter_path: str | None,
+    max_new_tokens: int,
+    device: str | None = None,
+) -> dict[str, Any]:
+    record_id = str(record.get("id", ""))
+    metadata = record.get("metadata")
+    source_id = (
+        metadata.get("source_id") if isinstance(metadata, dict) else None
+    )
+    base_record = {
+        "id": record_id,
+        "source_id": source_id,
+        "model_name": model_name,
+        "model_revision": model_revision,
+        "adapter_path": adapter_path,
+        "raw_generation": "",
+        "prompt_token_count": 0,
+        "generated_token_count": 0,
+        "generation_error": None,
+    }
+
+    try:
+        prompt = build_generation_prompt(
+            tokenizer,
+            record,
+            enable_thinking=False,
+        )
+        raw_generation, generated_count = _generate_one(
+            tokenizer=tokenizer,
+            model=model,
+            prompt=prompt,
+            max_new_tokens=max_new_tokens,
+            device=device,
+        )
+        return {
+            **base_record,
+            "raw_generation": raw_generation,
+            "prompt_token_count": prompt.prompt_token_count,
+            "generated_token_count": generated_count,
+        }
+    except Exception as exc:  # noqa: BLE001 - preserve per-record errors.
+        return {
+            **base_record,
+            "generation_error": f"{type(exc).__name__}: {exc}",
+        }
+
+
+def iter_prediction_records(
+    *,
+    records: Sequence[dict[str, Any]],
+    tokenizer: GenerationTokenizer,
+    model: Any,
+    model_name: str,
+    model_revision: str,
+    adapter_path: str | None,
+    seed: int,
+    max_new_tokens: int,
+    device: str | None = None,
+) -> Iterator[dict[str, Any]]:
+    set_generation_seed(seed)
+
+    for record in records:
+        yield generate_prediction_record(
+            record=record,
+            tokenizer=tokenizer,
+            model=model,
+            model_name=model_name,
+            model_revision=model_revision,
+            adapter_path=adapter_path,
+            max_new_tokens=max_new_tokens,
+            device=device,
+        )
+
+
 def generate_prediction_records(
     *,
     records: Sequence[dict[str, Any]],
@@ -335,59 +417,19 @@ def generate_prediction_records(
     max_new_tokens: int,
     device: str | None = None,
 ) -> list[dict[str, Any]]:
-    set_generation_seed(seed)
-    predictions: list[dict[str, Any]] = []
-
-    for record in records:
-        record_id = str(record.get("id", ""))
-        metadata = record.get("metadata")
-        source_id = (
-            metadata.get("source_id")
-            if isinstance(metadata, dict)
-            else None
+    return list(
+        iter_prediction_records(
+            records=records,
+            tokenizer=tokenizer,
+            model=model,
+            model_name=model_name,
+            model_revision=model_revision,
+            adapter_path=adapter_path,
+            seed=seed,
+            max_new_tokens=max_new_tokens,
+            device=device,
         )
-        base_record = {
-            "id": record_id,
-            "source_id": source_id,
-            "model_name": model_name,
-            "model_revision": model_revision,
-            "adapter_path": adapter_path,
-            "raw_generation": "",
-            "prompt_token_count": 0,
-            "generated_token_count": 0,
-            "generation_error": None,
-        }
-
-        try:
-            prompt = build_generation_prompt(
-                tokenizer,
-                record,
-                enable_thinking=False,
-            )
-            raw_generation, generated_count = _generate_one(
-                tokenizer=tokenizer,
-                model=model,
-                prompt=prompt,
-                max_new_tokens=max_new_tokens,
-                device=device,
-            )
-            predictions.append(
-                {
-                    **base_record,
-                    "raw_generation": raw_generation,
-                    "prompt_token_count": prompt.prompt_token_count,
-                    "generated_token_count": generated_count,
-                }
-            )
-        except Exception as exc:  # noqa: BLE001 - preserve per-record errors.
-            predictions.append(
-                {
-                    **base_record,
-                    "generation_error": f"{type(exc).__name__}: {exc}",
-                }
-            )
-
-    return predictions
+    )
 
 
 def load_transformers_model(

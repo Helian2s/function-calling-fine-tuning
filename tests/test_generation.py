@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+import importlib.util
 from pathlib import Path
+from typing import Any, Sequence
 
 import pytest
 
@@ -15,7 +17,24 @@ from function_calling_ft.generation import (
 )
 
 
-def _record() -> dict[str, object]:
+GENERATE_PREDICTIONS_PATH = (
+    Path(__file__).resolve().parents[1]
+    / "scripts"
+    / "generate_predictions.py"
+)
+GENERATE_PREDICTIONS_SPEC = importlib.util.spec_from_file_location(
+    "generate_predictions",
+    GENERATE_PREDICTIONS_PATH,
+)
+assert GENERATE_PREDICTIONS_SPEC is not None
+assert GENERATE_PREDICTIONS_SPEC.loader is not None
+generate_predictions = importlib.util.module_from_spec(
+    GENERATE_PREDICTIONS_SPEC,
+)
+GENERATE_PREDICTIONS_SPEC.loader.exec_module(generate_predictions)
+
+
+def _record() -> dict[str, Any]:
     return {
         "id": "xlam-1",
         "tools": [
@@ -53,17 +72,19 @@ class FakeTokenizer:
     pad_token_id = 0
 
     def __init__(self) -> None:
-        self.calls: list[dict[str, object]] = []
+        self.calls: list[dict[str, Any]] = []
 
     def apply_chat_template(
         self,
-        conversation,
+        conversation: list[dict[str, Any]],
         *,
-        tools=None,
-        tokenize=False,
-        add_generation_prompt=False,
-        enable_thinking=False,
-    ):
+        tools: list[dict[str, Any]] | None = None,
+        tokenize: bool = False,
+        add_generation_prompt: bool = False,
+        enable_thinking: bool = False,
+        **kwargs: Any,
+    ) -> Any:
+        del kwargs
         self.calls.append(
             {
                 "conversation": conversation,
@@ -86,7 +107,12 @@ class FakeTokenizer:
             return {"input_ids": [ord(char) for char in rendered]}
         return rendered
 
-    def decode(self, token_ids, *, skip_special_tokens=True):
+    def decode(
+        self,
+        token_ids: Sequence[int],
+        *,
+        skip_special_tokens: bool = True,
+    ) -> str:
         del skip_special_tokens
         return "".join(chr(token_id) for token_id in token_ids)
 
@@ -141,6 +167,61 @@ def test_generate_prediction_records_preserves_per_record_errors(
     assert predictions[0]["raw_generation"].startswith('{"name"')
     assert predictions[0]["generation_error"] is None
     assert predictions[0]["generated_token_count"] == 12
+
+
+def test_streaming_predictions_flush_and_resume(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    output = tmp_path / "predictions.jsonl"
+    records = [{"id": "one"}, {"id": "two"}]
+
+    def fake_iter_prediction_records(**kwargs):
+        del kwargs
+        yield {"id": "one", "raw_generation": "first"}
+        yield {"id": "two", "raw_generation": "second"}
+
+    monkeypatch.setattr(
+        generate_predictions,
+        "iter_prediction_records",
+        fake_iter_prediction_records,
+    )
+
+    written, skipped = generate_predictions._write_streaming_predictions(
+        output=output,
+        records=records,
+        tokenizer=object(),
+        model=object(),
+        model_name="Qwen/Qwen3-1.7B",
+        model_revision="revision",
+        adapter_path=None,
+        seed=42,
+        max_new_tokens=10,
+        device=None,
+        resume=False,
+        progress_interval=1,
+    )
+
+    assert (written, skipped) == (2, 0)
+    assert len(output.read_text(encoding="utf-8").splitlines()) == 2
+
+    written, skipped = generate_predictions._write_streaming_predictions(
+        output=output,
+        records=records,
+        tokenizer=object(),
+        model=object(),
+        model_name="Qwen/Qwen3-1.7B",
+        model_revision="revision",
+        adapter_path=None,
+        seed=42,
+        max_new_tokens=10,
+        device=None,
+        resume=True,
+        progress_interval=1,
+    )
+
+    assert (written, skipped) == (0, 2)
+    assert len(output.read_text(encoding="utf-8").splitlines()) == 2
 
 
 def test_validate_adapter_path_requires_config_and_weights(
