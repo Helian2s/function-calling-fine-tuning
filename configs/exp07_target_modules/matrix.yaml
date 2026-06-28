@@ -1,0 +1,31 @@
+schema_version: "1.0"
+experiment_id: exp-07
+task_id: task-12
+title: LoRA target-module placement comparison
+selected_peft_method: bf16_lora
+selected_rank: 4
+selected_alpha: 8
+instance_type: g6e.2xlarge
+reuse_attention_if_equivalent: true
+target_profiles:
+  - name: attention
+    config: configs/exp07_target_modules/attention.yaml
+    reusable_reference_config: configs/exp06_lora_rank/rank4_alpha8.yaml
+    reusable_reference_results: /workspace/results/exp-06/rank4-alpha8
+    reusable_reference_checkpoint: /workspace/checkpoints/exp-06/rank4-alpha8/full-epoch
+  - name: attention_mlp
+    config: configs/exp07_target_modules/attention_mlp.yaml
+evaluation:
+  validation_dataset: /workspace/data/processed/xlam_splits_v1/validation.jsonl
+  no_tool_development_dataset: /workspace/data/eval/no_tool_relevance_v1/dev.jsonl
+  deterministic_decoding:
+    do_sample: false
+    max_new_tokens: 256
+    seed: 42
+selection_rule:
+  default: keep attention-only
+  meaningful_gain_absolute:
+    executable_complete_match_rate: 0.01
+    complete_call_f1: 0.005
+  no_tool_false_positive_max_worsening_absolute: 0.05
+  rationale: broader MLP targeting must earn its extra trainable parameters and compute

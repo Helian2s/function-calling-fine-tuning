@@ -3,6 +3,7 @@ model:
   revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
   torch_dtype: bfloat16
   tokenizer:
+    revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
     add_generation_prompt: true
     enable_thinking: false
     trust_remote_code: false

@@ -1,0 +1,24 @@
+schema_version: "1.0"
+experiment_id: exp-02
+run_id: nf4-deterministic
+title: NF4 4-bit base deterministic decoding
+model:
+  name: Qwen/Qwen3-1.7B
+  revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+  tokenizer_revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+  torch_dtype: bfloat16
+  load_in_4bit: true
+decoding:
+  do_sample: false
+  max_new_tokens: 256
+  seed: 42
+  enable_thinking: false
+generation:
+  batch_size: 16
+  progress_interval: 25
+  stream_output: true
+  resume: true
+method:
+  name: base
+  precision: bfloat16
+  quantization: nf4

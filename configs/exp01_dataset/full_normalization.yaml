@@ -1,0 +1,34 @@
+schema_version: "1.0"
+experiment_id: exp-01
+task_id: Task02
+title: Full xLAM source snapshot and deterministic normalization
+dataset:
+  repository_id: Salesforce/xlam-function-calling-60k
+  repository_type: dataset
+  config: default
+  split: train
+  revision: 26d14ebfe18b1f7b524bd39b404b50af5dc97866
+  raw_path: data/raw/xlam/xlam_function_calling_60k.json
+  source_manifest: data/manifests/xlam_source.json
+  license: cc-by-4.0
+  access: gated
+normalization:
+  command: ./.venv/bin/python scripts/normalize_xlam_full.py
+  output_dir: data/processed/xlam_full_v1
+  normalized_output: data/processed/xlam_full_v1/normalized.jsonl
+  quarantine_output: data/processed/xlam_full_v1/quarantine.jsonl
+  report: data/processed/xlam_full_v1/manifests/normalization_report.json
+  checksums: data/processed/xlam_full_v1/checksums.sha256
+  schema_version: "1.0"
+  canonical_serialization:
+    format: jsonl
+    ensure_ascii: false
+    sort_keys: true
+    separators: [",", ":"]
+  quarantine_invalid_records: true
+  streaming: true
+  context_token_limit: 8192
+policy:
+  preserve_exp00_smoke_split: true
+  no_splitting_or_deduplication: true
+  no_model_generated_repairs: true

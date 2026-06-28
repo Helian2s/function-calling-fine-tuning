@@ -1,0 +1,54 @@
+schema_version: "1.0"
+experiment_id: exp-01
+task_id: Task03
+title: Grouping, exact deduplication, and leakage-audit metadata
+input:
+  normalized_dataset: data/processed/xlam_full_v1/normalized.jsonl
+  normalization_report: data/processed/xlam_full_v1/manifests/normalization_report.json
+output:
+  output_dir: data/processed/xlam_curated_v1
+  deduplicated_dataset: data/processed/xlam_curated_v1/deduplicated.jsonl
+  duplicate_map: data/processed/xlam_curated_v1/duplicate_map.jsonl
+  group_metadata: data/processed/xlam_curated_v1/group_metadata.jsonl
+  fuzzy_candidates: data/processed/xlam_curated_v1/fuzzy_candidates.jsonl
+  fuzzy_review_sample: data/processed/xlam_curated_v1/fuzzy_review_sample.jsonl
+  curation_report: data/processed/xlam_curated_v1/manifests/curation_report.json
+  leakage_audit_report: data/processed/xlam_curated_v1/manifests/leakage_audit_report.json
+  checksums: data/processed/xlam_curated_v1/checksums.sha256
+grouping:
+  strategy: tool_set_schema_family_v1
+  conservative_split_group_key:
+    - exact presented tool-set signature
+    - schema-shape fingerprint independent of function names
+    - derived tool-family labels
+    - derived API/category labels
+  tradeoff: >
+    This key is deliberately conservative for leakage prevention. It may make
+    later train/validation/test balance harder because common tool sets and
+    schema shapes must remain within one split group.
+exact_deduplication:
+  independent_method: sha256 over canonical user request, canonical presented tools, and ordered expected calls
+  retained_record_rule: smallest numeric source_id, then example_id
+  no_silent_removal: true
+curator:
+  execution_mode: docker_on_gpu_ec2
+  docker_image: nvcr.io/nvidia/nemo-curator:25.09
+  local_gpu_required: false
+  ec2_instance_id: i-0c769a18f50fd1fe6
+  ec2_instance_type: g6.xlarge
+  command: scripts/run_curator_exact_dedup_docker.sh
+  status: pass
+  comparison_report: data/processed/xlam_curated_v1/manifests/curator_comparison_report.json
+  ec2_report: data/processed/xlam_curated_v1/manifests/curator_ec2_report.json
+fuzzy_candidates:
+  method: request_text_minhash_lsh_jaccard
+  threshold: 0.82
+  disposition: review_only
+leakage_audit:
+  command: scripts/audit_xlam_leakage.py
+  fail_on_cross_split_group_overlap: true
+policy:
+  preserve_exp00_smoke_split: true
+  no_bfcl_training_filters: true
+  no_fuzzy_auto_removal: true
+  no_model_performance_filtering: true

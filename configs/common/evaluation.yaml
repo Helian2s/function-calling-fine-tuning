@@ -1,4 +1,6 @@
 evaluation:
+  metric_schema_version: "1.0"
+  scored_prediction_schema_version: "1.0"
   order_matters: false
   deterministic_decoding:
     do_sample: false
@@ -26,3 +28,21 @@ evaluation:
     scored_predictions: scored_predictions.jsonl
     parse_failures: parse_failures.jsonl
     scores: scores.json
+    requested_metrics: requested_metrics.json
+    failure_sample: failure_sample.jsonl
+    summary_markdown: summary.md
+    checksums: checksums.sha256
+  grouped_metrics:
+    - call_category
+    - primary_tool_family
+    - primary_api_category
+    - seen_status
+    - length_bucket
+    - expected_call_count_bucket
+    - tool_count_bucket
+    - split_lock_status
+    - primary_split
+  paired_comparison:
+    bootstrap_seed: 42
+    bootstrap_samples: 1000
+    bootstrap_confidence: 0.95

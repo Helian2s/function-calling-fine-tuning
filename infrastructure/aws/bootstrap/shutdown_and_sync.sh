@@ -91,14 +91,29 @@ verify_required_artifacts() {
     required_paths+=(
       "/mnt/workspace/results/${EXPERIMENT}/scores.json"
       "/mnt/workspace/results/${EXPERIMENT}/predictions.jsonl"
+      "/mnt/workspace/results/${EXPERIMENT}/scored_predictions.jsonl"
+      "/mnt/workspace/results/${EXPERIMENT}/parse_failures.jsonl"
+      "/mnt/workspace/results/${EXPERIMENT}/generation_metadata.json"
       "/mnt/workspace/results/${EXPERIMENT}/run_metadata.json"
+      "/mnt/workspace/results/${EXPERIMENT}/run_manifest.json"
+      "/mnt/workspace/results/${EXPERIMENT}/training_metrics.json"
+      "/mnt/workspace/results/${EXPERIMENT}/training_torch_memory.json"
+      "/mnt/workspace/results/${EXPERIMENT}/environment_report.json"
+      "/mnt/workspace/results/${EXPERIMENT}/nvidia-smi.txt"
+      "/mnt/workspace/results/${EXPERIMENT}/package_versions.txt"
+      "/mnt/workspace/results/${EXPERIMENT}/resolved_config.yaml"
+      "/mnt/workspace/results/${EXPERIMENT}/requested_metrics.json"
+      "/mnt/workspace/results/${EXPERIMENT}/case_report.json"
+      "/mnt/workspace/results/${EXPERIMENT}/case_report.md"
+      "/mnt/workspace/results/${EXPERIMENT}/checksums.sha256"
       "/mnt/workspace/logs/${EXPERIMENT}/training.log"
+      "/mnt/workspace/logs/${EXPERIMENT}/evaluation.log"
       "/mnt/workspace/run-info/bootstrap.env"
     )
   fi
 
   if [[ "$sync_final_adapter" == "1" ]]; then
-    required_paths+=("/mnt/workspace/checkpoints/${EXPERIMENT}/smoke-qlora")
+    required_paths+=("/mnt/workspace/checkpoints/${EXPERIMENT}/smoke-lora")
   fi
 
   for path in "${required_paths[@]}"; do
@@ -185,8 +200,8 @@ main() {
 
   if [[ "$sync_final_adapter" == "1" ]]; then
     sync_directory \
-      "/mnt/workspace/checkpoints/${EXPERIMENT}/smoke-qlora" \
-      "s3://${BUCKET}/${PREFIX}/checkpoints/${EXPERIMENT}/smoke-qlora" \
+      "/mnt/workspace/checkpoints/${EXPERIMENT}/smoke-lora" \
+      "s3://${BUCKET}/${PREFIX}/checkpoints/${EXPERIMENT}/smoke-lora" \
       "$dry_run"
   else
     log "Final adapter upload skipped for stage=${stage}."

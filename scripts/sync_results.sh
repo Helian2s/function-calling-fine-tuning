@@ -84,13 +84,13 @@ esac
 
 RESULTS_DIR="${RESULTS_DIR:-${HOST_RESULTS_ROOT}/${FT_EXPERIMENT}}"
 CHECKPOINT_DIR="${CHECKPOINT_DIR:-${HOST_CHECKPOINT_ROOT}/${FT_EXPERIMENT}}"
-FINAL_ADAPTER_DIR="${FINAL_ADAPTER_DIR:-${CHECKPOINT_DIR}/smoke-qlora}"
+FINAL_ADAPTER_DIR="${FINAL_ADAPTER_DIR:-${CHECKPOINT_DIR}/smoke-lora}"
 LOGS_DIR="${LOGS_DIR:-${HOST_LOGS_ROOT}/${FT_EXPERIMENT}}"
 RUN_INFO_DIR="${RUN_INFO_DIR:-${HOST_RUN_INFO_ROOT}}"
 
 RESULTS_URI="s3://${FT_S3_BUCKET}/${FT_S3_PREFIX}/results/${FT_EXPERIMENT}"
 CHECKPOINT_URI="s3://${FT_S3_BUCKET}/${FT_S3_PREFIX}/checkpoints/${FT_EXPERIMENT}"
-FINAL_ADAPTER_URI="${CHECKPOINT_URI}/smoke-qlora"
+FINAL_ADAPTER_URI="${CHECKPOINT_URI}/smoke-lora"
 LOGS_URI="s3://${FT_S3_BUCKET}/${FT_S3_PREFIX}/logs/${FT_EXPERIMENT}"
 RUN_INFO_URI="${LOGS_URI}/run-info"
 
@@ -120,8 +120,23 @@ else
   required_paths+=(
     "${RESULTS_DIR}/scores.json"
     "${RESULTS_DIR}/predictions.jsonl"
+    "${RESULTS_DIR}/scored_predictions.jsonl"
+    "${RESULTS_DIR}/parse_failures.jsonl"
+    "${RESULTS_DIR}/generation_metadata.json"
     "${RESULTS_DIR}/run_metadata.json"
+    "${RESULTS_DIR}/run_manifest.json"
+    "${RESULTS_DIR}/training_metrics.json"
+    "${RESULTS_DIR}/training_torch_memory.json"
+    "${RESULTS_DIR}/environment_report.json"
+    "${RESULTS_DIR}/nvidia-smi.txt"
+    "${RESULTS_DIR}/package_versions.txt"
+    "${RESULTS_DIR}/resolved_config.yaml"
+    "${RESULTS_DIR}/requested_metrics.json"
+    "${RESULTS_DIR}/case_report.json"
+    "${RESULTS_DIR}/case_report.md"
+    "${RESULTS_DIR}/checksums.sha256"
     "${LOGS_DIR}/training.log"
+    "${LOGS_DIR}/evaluation.log"
     "${RUN_INFO_DIR}/bootstrap.env"
   )
 fi

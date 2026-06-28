@@ -1,0 +1,133 @@
+# Reference NF4 QLoRA recipe for Experiment 4 / Task 08.
+# Derived from Experiment 3 BF16 LoRA; the intended experimental variable is
+# frozen-base NF4 4-bit loading with BF16 compute and double quantization.
+
+schema_version: "1.0"
+experiment_id: exp-04
+task_id: task-08
+run_id: reference-nf4-qlora-r8-attention
+title: Reference NF4 QLoRA rank-8 attention-only training
+
+step_scheduler:
+  global_batch_size: 4
+  local_batch_size: 1
+  ckpt_every_steps: 100
+  val_every_steps: 50
+  max_steps: 100
+
+dist_env:
+  backend: nccl
+  timeout_minutes: 5
+
+rng:
+  _target_: nemo_automodel.components.training.rng.StatefulRNG
+  seed: 42
+  ranked: true
+
+model:
+  _target_: nemo_automodel.NeMoAutoModelForCausalLM.from_pretrained
+  pretrained_model_name_or_path: Qwen/Qwen3-1.7B
+  revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+  torch_dtype: bfloat16
+  # Required for NF4 loading in nemo_automodel==0.2.0rc0. Without this,
+  # AutoModel recognizes the BitsAndBytes config but fails while dispatching
+  # meta tensors into the quantized model.
+  force_hf: true
+
+compile:
+  enabled: false
+  mode: "default"
+  fullgraph: false
+  dynamic: false
+  backend: null
+
+checkpoint:
+  enabled: true
+  checkpoint_dir: /workspace/checkpoints/exp-04/reference-nf4-qlora-r8-attention/pilot
+  model_save_format: safetensors
+  save_consolidated: false
+
+peft:
+  _target_: nemo_automodel.components._peft.lora.PeftConfig
+  target_modules:
+    - "*q_proj"
+    - "*k_proj"
+    - "*v_proj"
+    - "*o_proj"
+  match_all_linear: false
+  dim: 8
+  alpha: 16
+  dropout: 0.05
+  use_triton: true
+
+quantization:
+  load_in_4bit: true
+  load_in_8bit: false
+  bnb_4bit_compute_dtype: bfloat16
+  bnb_4bit_use_double_quant: true
+  bnb_4bit_quant_type: nf4
+  bnb_4bit_quant_storage: bfloat16
+
+distributed:
+  _target_: nemo_automodel.components.distributed.fsdp2.FSDP2Manager
+  dp_size: none
+  tp_size: 1
+  cp_size: 1
+  sequence_parallel: false
+
+loss_fn:
+  _target_: nemo_automodel.components.loss.masked_ce.MaskedCrossEntropy
+
+dataset:
+  _target_: nemo_automodel.components.datasets.llm.chat_dataset.ChatDataset
+  path_or_dataset_id: /workspace/data/processed/xlam_splits_v1/train_10k.jsonl
+  seq_length: 2048
+  padding: do_not_pad
+  truncation: do_not_truncate
+
+packed_sequence:
+  packed_sequence_size: 0
+
+dataloader:
+  _target_: torchdata.stateful_dataloader.StatefulDataLoader
+  collate_fn: nemo_automodel.components.datasets.utils.default_collater
+  shuffle: true
+
+validation_dataset:
+  _target_: nemo_automodel.components.datasets.llm.chat_dataset.ChatDataset
+  path_or_dataset_id: /workspace/data/processed/xlam_splits_v1/validation.jsonl
+  seq_length: 2048
+  padding: do_not_pad
+  truncation: do_not_truncate
+
+validation_dataloader:
+  _target_: torchdata.stateful_dataloader.StatefulDataLoader
+  collate_fn: nemo_automodel.components.datasets.utils.default_collater
+
+optimizer:
+  _target_: torch.optim.AdamW
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+  lr: 1.0e-4
+  weight_decay: 0.0
+
+lr_scheduler:
+  lr_decay_style: cosine
+  lr_warmup_steps: 3
+  min_lr: 1.0e-6
+
+task08_policy:
+  matched_reference_experiment: exp-03
+  matched_reference_run_id: reference-bf16-lora-r8-attention
+  sole_method_variable: nf4_frozen_base_quantization
+  batch_probe_sizes: [1, 2, 4, 8]
+  pilot_steps: 100
+  full_epoch_source: train_10k
+  checkpoint_selection:
+    primary:
+      - validation_executable_complete_accuracy
+      - validation_complete_call_f1
+    constraints:
+      malformed_call_rate_max: 0.02
+      unnecessary_call_regression_allowed: false
+    validation_loss_role: secondary

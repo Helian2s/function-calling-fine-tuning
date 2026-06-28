@@ -1,0 +1,106 @@
+# Full-parameter BF16 SFT feasibility pilot for Experiment 5A / Task 09.
+# This is intentionally separate from LoRA rank sweeps in configs/exp05_rank/.
+
+schema_version: "1.0"
+experiment_id: exp-05a
+task_id: task-09
+run_id: full-parameter-sft-bf16-pilot
+title: Full-parameter BF16 SFT feasibility pilot
+
+step_scheduler:
+  global_batch_size: 4
+  local_batch_size: 1
+  ckpt_every_steps: 100
+  val_every_steps: 50
+  max_steps: 100
+
+dist_env:
+  backend: nccl
+  timeout_minutes: 5
+
+rng:
+  _target_: nemo_automodel.components.training.rng.StatefulRNG
+  seed: 42
+  ranked: true
+
+model:
+  _target_: nemo_automodel.NeMoAutoModelForCausalLM.from_pretrained
+  pretrained_model_name_or_path: Qwen/Qwen3-1.7B
+  revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+  torch_dtype: bfloat16
+
+compile:
+  enabled: false
+  mode: "default"
+  fullgraph: false
+  dynamic: false
+  backend: null
+
+checkpoint:
+  enabled: true
+  checkpoint_dir: /workspace/checkpoints/exp-05a/full-parameter-sft-bf16-pilot/pilot
+  model_save_format: safetensors
+  save_consolidated: true
+
+distributed:
+  _target_: nemo_automodel.components.distributed.fsdp2.FSDP2Manager
+  dp_size: none
+  tp_size: 1
+  cp_size: 1
+  sequence_parallel: false
+  activation_checkpointing: false
+
+loss_fn:
+  _target_: nemo_automodel.components.loss.masked_ce.MaskedCrossEntropy
+
+dataset:
+  _target_: nemo_automodel.components.datasets.llm.chat_dataset.ChatDataset
+  path_or_dataset_id: /workspace/data/processed/xlam_splits_v1/train_2k.jsonl
+  seq_length: 2048
+  padding: do_not_pad
+  truncation: do_not_truncate
+
+packed_sequence:
+  packed_sequence_size: 0
+
+dataloader:
+  _target_: torchdata.stateful_dataloader.StatefulDataLoader
+  collate_fn: nemo_automodel.components.datasets.utils.default_collater
+  shuffle: true
+
+validation_dataset:
+  _target_: nemo_automodel.components.datasets.llm.chat_dataset.ChatDataset
+  path_or_dataset_id: /workspace/data/processed/xlam_splits_v1/validation.jsonl
+  seq_length: 2048
+  padding: do_not_pad
+  truncation: do_not_truncate
+
+validation_dataloader:
+  _target_: torchdata.stateful_dataloader.StatefulDataLoader
+  collate_fn: nemo_automodel.components.datasets.utils.default_collater
+
+optimizer:
+  _target_: torch.optim.AdamW
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+  lr: 1.0e-5
+  weight_decay: 0.0
+
+lr_scheduler:
+  lr_decay_style: cosine
+  lr_warmup_steps: 3
+  min_lr: 1.0e-6
+
+task09_policy:
+  method: full_parameter_sft
+  instance_type: g6e.2xlarge
+  train_source: train_2k
+  pilot_steps: 100
+  gradient_clip_norm: 1.0
+  gradient_clip_source: nemo_automodel_0.2.0rc0_train_ft_hardcoded
+  no_peft: true
+  no_quantization: true
+  retry_once_with_activation_checkpointing_on_oom: true
+  clean_reload_eval:
+    validation_tool_records: 100
+    no_tool_records: 100

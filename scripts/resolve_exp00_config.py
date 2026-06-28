@@ -24,7 +24,7 @@ from function_calling_ft.smoke_config import (  # noqa: E402
 
 
 DEFAULT_MODEL_CONFIG = ROOT / "configs/common/model_qwen3_1_7b.yaml"
-DEFAULT_SMOKE_CONFIG = ROOT / "configs/exp00_smoke/smoke_qlora.yaml"
+DEFAULT_SMOKE_CONFIG = ROOT / "configs/exp00_smoke/smoke_lora.yaml"
 DEFAULT_ENV_FILE = ROOT / "configs/common/exp00.env"
 
 
@@ -90,6 +90,11 @@ def resolve_config(
         "experiment": "exp00_smoke",
         "base_model": model.get("name"),
         "tokenizer": model.get("name"),
+        "tokenizer_revision": (
+            model.get("tokenizer", {}).get("revision")
+            if isinstance(model.get("tokenizer"), dict)
+            else None
+        ),
         "model_revision": model.get("revision"),
         "training_mode": (
             "qlora" if "qlora" in smoke_config_path.name else "lora"
@@ -115,6 +120,7 @@ def resolve_config(
     }
     revision_pairs = {
         "common revision": resolved["model_revision"],
+        "tokenizer revision": resolved["tokenizer_revision"],
         "env revision": resolved["env_model_revision"],
         "smoke revision": resolved["smoke_model_revision"],
         "validator revision": EXPECTED_MODEL_REVISION,
@@ -162,6 +168,7 @@ def main() -> None:
         ("Experiment", "experiment"),
         ("Base model", "base_model"),
         ("Tokenizer", "tokenizer"),
+        ("Tokenizer revision", "tokenizer_revision"),
         ("Model revision", "model_revision"),
         ("Training mode", "training_mode"),
         ("Train split", "train_path"),

@@ -34,9 +34,12 @@ def test_common_model_config_resolves_to_qwen3_1_7b() -> None:
     config = _load_yaml(ROOT / "configs/common/model_qwen3_1_7b.yaml")
     model = config["model"]
     assert isinstance(model, dict)
+    tokenizer = model["tokenizer"]
+    assert isinstance(tokenizer, dict)
 
     assert model["name"] == EXPECTED_MODEL
     assert model["revision"] == EXPECTED_REVISION
+    assert tokenizer["revision"] == EXPECTED_REVISION
 
 
 def test_exp00_lora_and_qlora_configs_resolve_to_qwen3_1_7b() -> None:
@@ -59,18 +62,19 @@ def test_baseline_training_and_evaluation_resolve_same_model() -> None:
 
     resolved = resolver.resolve_config(
         model_config_path=ROOT / "configs/common/model_qwen3_1_7b.yaml",
-        smoke_config_path=ROOT / "configs/exp00_smoke/smoke_qlora.yaml",
+        smoke_config_path=ROOT / "configs/exp00_smoke/smoke_lora.yaml",
         env_file_path=ROOT / "configs/common/exp00.env",
     )
 
     assert resolved["base_model"] == EXPECTED_MODEL
     assert resolved["tokenizer"] == EXPECTED_MODEL
+    assert resolved["tokenizer_revision"] == EXPECTED_REVISION
     assert resolved["env_model"] == EXPECTED_MODEL
     assert resolved["smoke_model"] == EXPECTED_MODEL
     assert resolved["model_revision"] == EXPECTED_REVISION
     assert resolved["env_model_revision"] == EXPECTED_REVISION
     assert resolved["smoke_model_revision"] == EXPECTED_REVISION
-    assert resolved["training_mode"] == "qlora"
+    assert resolved["training_mode"] == "lora"
     assert resolved["train_path"] == "/workspace/data/train.jsonl"
     assert resolved["validation_path"] == "/workspace/data/validation.jsonl"
     assert resolved["test_path"] == "/workspace/data/test.jsonl"
@@ -80,7 +84,6 @@ def test_active_configs_do_not_reference_qwen3_8b() -> None:
     active_paths = [
         ROOT / "configs/common/exp00.env",
         ROOT / "configs/common/model_qwen3_1_7b.yaml",
-        ROOT / "configs/exp00_smoke/smoke_qlora.yaml",
         ROOT / "configs/exp00_smoke/smoke_lora.yaml",
         ROOT / "scripts/collect_run_metadata.py",
         ROOT / "src/function_calling_ft/dataset.py",
@@ -94,3 +97,38 @@ def test_active_configs_do_not_reference_qwen3_8b() -> None:
 def test_common_model_config_filename_reflects_active_model() -> None:
     assert (ROOT / "configs/common/model_qwen3_1_7b.yaml").is_file()
     assert not (ROOT / "configs/common/model_qwen3_8b.yaml").exists()
+
+
+def test_active_metadata_does_not_claim_old_automodel_version() -> None:
+    active_paths = [
+        ROOT / "configs/common/exp00.env",
+        ROOT / "configs/exp00_smoke/smoke_lora.yaml",
+        ROOT / "configs/exp00_smoke/smoke_qlora.yaml",
+        ROOT / "scripts/collect_run_metadata.py",
+    ]
+
+    for path in active_paths:
+        text = path.read_text(encoding="utf-8")
+        assert "nemo-automodel:26.02.00" not in text
+        assert "nemo_automodel==0.3.0" not in text
+
+
+def test_contract_classifies_stale_metadata_as_inactive() -> None:
+    text = (ROOT / "docs/experiment_contract.md").read_text(
+        encoding="utf-8",
+    )
+
+    assert "`nemo-automodel:26.02.00` | Not active." in text
+    assert (
+        "`nemo_automodel==0.3.0` | Historical expectation only"
+        in text
+    )
+
+
+def test_sequence_length_is_not_part_of_common_model_identity() -> None:
+    common_model_text = (
+        ROOT / "configs/common/model_qwen3_1_7b.yaml"
+    ).read_text(encoding="utf-8")
+
+    assert "4096" not in common_model_text
+    assert "seq_length" not in common_model_text

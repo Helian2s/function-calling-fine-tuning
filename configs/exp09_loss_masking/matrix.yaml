@@ -1,0 +1,29 @@
+schema_version: "1.0"
+experiment_id: exp-09a
+task_id: task-14
+title: Loss masking proof and short full-sequence ablation
+status: planned
+configs:
+  assistant_only_short: configs/exp09_loss_masking/assistant_only_short.yaml
+  full_sequence_short: configs/exp09_loss_masking/full_sequence_short.yaml
+controlled_variables:
+  model: Qwen/Qwen3-1.7B
+  model_revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+  peft_method: bf16_lora
+  rank: 8
+  alpha: 16
+  target_modules: attention
+  train_manifest: /workspace/data/processed/xlam_splits_v1/train_10k.jsonl
+  sequence_length: 2048
+  max_steps: 300
+  seed: 42
+experimental_variable: dataset.loss_mask_policy
+outputs:
+  - loss_mask_audit_report
+  - automodel_loss_mask_probe
+  - assistant_only_short_checkpoint
+  - full_sequence_short_checkpoint
+  - validation_slice_predictions
+  - no_tool_dev_predictions
+  - paired_comparison
+  - checksums

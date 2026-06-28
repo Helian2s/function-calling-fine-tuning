@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import json
+import os
+import re
+import hashlib
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
@@ -14,6 +17,13 @@ from function_calling_ft.scorer import CallSetScore, score_calls
 SCORED_PREDICTIONS_FILENAME = "scored_predictions.jsonl"
 PARSE_FAILURES_FILENAME = "parse_failures.jsonl"
 SCORES_FILENAME = "scores.json"
+REQUESTED_METRICS_FILENAME = "requested_metrics.json"
+FAILURE_SAMPLE_FILENAME = "failure_sample.jsonl"
+SUMMARY_MARKDOWN_FILENAME = "summary.md"
+CHECKSUMS_FILENAME = "checksums.sha256"
+METRIC_SCHEMA_VERSION = "1.0"
+SCORED_PREDICTION_SCHEMA_VERSION = "1.0"
+EVALUATION_SUMMARY_SCHEMA_VERSION = "1.0"
 
 
 @dataclass(frozen=True)
@@ -21,6 +31,10 @@ class EvaluationOutputs:
     scored_predictions_path: Path
     parse_failures_path: Path
     scores_path: Path
+    requested_metrics_path: Path | None = None
+    failure_sample_path: Path | None = None
+    summary_markdown_path: Path | None = None
+    checksums_path: Path | None = None
 
 
 @dataclass(frozen=True)
@@ -31,6 +45,27 @@ class EmissionClassification:
     parseable_given_emission: bool
     prose_only_response: bool
     extra_prose_with_tool_call: bool
+
+
+@dataclass(frozen=True)
+class PredictionPayload:
+    value: str | dict[str, Any] | list[Any] | None
+    raw_generation: str
+    response_content: str
+    prediction_format: str
+    structured_tool_call_present: bool
+
+
+@dataclass(frozen=True)
+class NoToolScore:
+    status: str
+    expected_response_type: str | None
+    has_gold_reference: bool
+    correct_direct_answer: bool | None
+    correct_clarification: bool | None
+    unnecessary_tool_call: bool
+    unusable_prose: bool
+    unsupported_without_gold: bool
 
 
 @dataclass(frozen=True)
@@ -75,15 +110,48 @@ def read_jsonl(path: Path) -> list[dict[str, Any]]:
     return records
 
 
+def _atomic_write_text(path: Path, text: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temp_path = path.with_name(f".{path.name}.tmp")
+    temp_path.write_text(text, encoding="utf-8")
+    os.replace(temp_path, path)
+
+
 def write_jsonl(path: Path, records: Iterable[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    temp_path = path.with_name(f".{path.name}.tmp")
 
-    with path.open("w", encoding="utf-8") as file:
+    with temp_path.open("w", encoding="utf-8") as file:
         for record in records:
             file.write(
                 json.dumps(record, ensure_ascii=False, sort_keys=True),
             )
             file.write("\n")
+
+    os.replace(temp_path, path)
+
+
+def _write_json(path: Path, payload: dict[str, Any]) -> None:
+    _atomic_write_text(
+        path,
+        json.dumps(payload, indent=2, sort_keys=True) + "\n",
+    )
+
+
+def _file_sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as file:
+        for chunk in iter(lambda: file.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def write_checksums(path: Path, files: Iterable[Path]) -> None:
+    rows = [
+        f"{_file_sha256(file_path)}  {file_path.name}"
+        for file_path in sorted(files, key=lambda item: item.name)
+    ]
+    _atomic_write_text(path, "\n".join(rows) + "\n")
 
 
 def _call_to_dict(call: ToolCall) -> dict[str, Any]:
@@ -144,9 +212,15 @@ def classify_emission(
     *,
     raw_generation: str,
     parse_result: ParseResult,
+    response_content: str = "",
+    structured_tool_call_present: bool = False,
 ) -> EmissionClassification:
     has_tool_tag = bool(_tool_call_blocks(raw_generation))
-    tool_call_emitted = has_tool_tag or bool(parse_result.calls)
+    tool_call_emitted = (
+        has_tool_tag
+        or bool(parse_result.calls)
+        or structured_tool_call_present
+    )
     no_tool_call_emitted = not tool_call_emitted
     malformed_tool_call = tool_call_emitted and not parse_result.valid_structure
     parseable_given_emission = (
@@ -160,6 +234,8 @@ def classify_emission(
         extra_prose_with_tool_call = _has_prose_outside_tool_blocks(
             raw_generation,
         )
+    elif structured_tool_call_present:
+        extra_prose_with_tool_call = bool(response_content.strip())
     else:
         extra_prose_with_tool_call = (
             tool_call_emitted and parse_result.had_extra_prose
@@ -199,6 +275,120 @@ def _parse_result_to_dict(result: ParseResult) -> dict[str, Any]:
         "had_extra_prose": result.had_extra_prose,
         "calls": [_call_to_dict(call) for call in result.calls],
     }
+
+
+def _message_payload(message: dict[str, Any]) -> PredictionPayload:
+    tool_calls = message.get("tool_calls")
+    content = message.get("content")
+    response_content = content if isinstance(content, str) else ""
+
+    if tool_calls is not None:
+        return PredictionPayload(
+            value={"tool_calls": tool_calls},
+            raw_generation=response_content,
+            response_content=response_content,
+            prediction_format="openai_message_tool_calls",
+            structured_tool_call_present=True,
+        )
+
+    return PredictionPayload(
+        value=response_content,
+        raw_generation=response_content,
+        response_content=response_content,
+        prediction_format="openai_message_content",
+        structured_tool_call_present=False,
+    )
+
+
+def prediction_payload(prediction: dict[str, Any] | None) -> PredictionPayload:
+    if prediction is None:
+        return PredictionPayload(
+            value="",
+            raw_generation="",
+            response_content="",
+            prediction_format="missing_prediction",
+            structured_tool_call_present=False,
+        )
+
+    raw_value = prediction.get("raw_generation")
+    has_structured = any(
+        key in prediction
+        for key in (
+            "structured_tool_calls",
+            "tool_calls",
+            "parallel_tool_calls",
+            "function_calls",
+            "response",
+            "message",
+        )
+    )
+    if isinstance(raw_value, str) and (raw_value or not has_structured):
+        return PredictionPayload(
+            value=raw_value,
+            raw_generation=raw_value,
+            response_content=raw_value,
+            prediction_format="raw_generation",
+            structured_tool_call_present=False,
+        )
+
+    for key in (
+        "structured_tool_calls",
+        "tool_calls",
+        "parallel_tool_calls",
+        "function_calls",
+    ):
+        if key in prediction:
+            return PredictionPayload(
+                value={key: prediction[key]},
+                raw_generation=raw_value if isinstance(raw_value, str) else "",
+                response_content=(
+                    raw_value if isinstance(raw_value, str) else ""
+                ),
+                prediction_format=key,
+                structured_tool_call_present=True,
+            )
+
+    message = prediction.get("message")
+    if isinstance(message, dict):
+        return _message_payload(message)
+
+    response = prediction.get("response")
+    if isinstance(response, dict):
+        choices = response.get("choices")
+        if isinstance(choices, list) and choices:
+            first_choice = choices[0]
+            if isinstance(first_choice, dict):
+                choice_message = first_choice.get("message")
+                if isinstance(choice_message, dict):
+                    return _message_payload(choice_message)
+        response_message = response.get("message")
+        if isinstance(response_message, dict):
+            return _message_payload(response_message)
+        if "tool_calls" in response:
+            return PredictionPayload(
+                value={"tool_calls": response["tool_calls"]},
+                raw_generation="",
+                response_content="",
+                prediction_format="openai_response_tool_calls",
+                structured_tool_call_present=True,
+            )
+        content = response.get("content")
+        if isinstance(content, str):
+            return PredictionPayload(
+                value=content,
+                raw_generation=content,
+                response_content=content,
+                prediction_format="openai_response_content",
+                structured_tool_call_present=False,
+            )
+
+    return PredictionPayload(
+        value=raw_value if isinstance(raw_value, str) else "",
+        raw_generation=raw_value if isinstance(raw_value, str) else "",
+        response_content=raw_value if isinstance(raw_value, str) else "",
+        prediction_format="raw_generation",
+        structured_tool_call_present=False,
+    )
 
 
 def _score_to_dict(score: CallSetScore) -> dict[str, Any]:
@@ -750,12 +940,254 @@ def _headline_scores(
     }
 
 
-def _source_id(record: dict[str, Any]) -> int | None:
+def _source_id(record: dict[str, Any]) -> int | str | None:
     metadata = record.get("metadata")
     if not isinstance(metadata, dict):
         return None
     value = metadata.get("source_id")
-    return int(value) if value is not None else None
+    if value is None:
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str):
+        return value
+    return str(value)
+
+
+def _normalize_text(value: str) -> str:
+    return re.sub(r"\s+", " ", value.strip().casefold())
+
+
+def _no_tool_reference(
+    record: dict[str, Any],
+) -> tuple[str | None, tuple[str, ...]]:
+    response = record.get("expected_response")
+    if isinstance(response, dict):
+        response_type = response.get("type")
+        normalized_type = (
+            response_type if isinstance(response_type, str) else "direct_answer"
+        )
+        candidates: list[str] = []
+        for key in ("content", "answer", "text"):
+            value = response.get(key)
+            if isinstance(value, str):
+                candidates.append(value)
+        acceptable = response.get("acceptable_answers")
+        if isinstance(acceptable, list):
+            candidates.extend(
+                item for item in acceptable if isinstance(item, str)
+            )
+        return normalized_type, tuple(candidates)
+
+    for key in ("expected_answer", "gold_answer", "direct_answer"):
+        value = record.get(key)
+        if isinstance(value, str):
+            return "direct_answer", (value,)
+
+    clarification = record.get("expected_clarification")
+    if isinstance(clarification, str):
+        return "clarification", (clarification,)
+
+    return None, ()
+
+
+def score_no_tool_response(
+    *,
+    expected_call_count: int,
+    raw_generation: str,
+    emission: EmissionClassification,
+    generation_error: str | None,
+    missing_prediction: bool,
+    dataset_record: dict[str, Any],
+) -> NoToolScore:
+    if expected_call_count > 0:
+        return NoToolScore(
+            status="not_applicable_tool_required",
+            expected_response_type=None,
+            has_gold_reference=False,
+            correct_direct_answer=None,
+            correct_clarification=None,
+            unnecessary_tool_call=False,
+            unusable_prose=False,
+            unsupported_without_gold=False,
+        )
+
+    response_type, references = _no_tool_reference(dataset_record)
+    has_gold_reference = bool(references)
+    if emission.tool_call_emitted:
+        return NoToolScore(
+            status="unnecessary_tool_call",
+            expected_response_type=response_type,
+            has_gold_reference=has_gold_reference,
+            correct_direct_answer=False if has_gold_reference else None,
+            correct_clarification=False if has_gold_reference else None,
+            unnecessary_tool_call=True,
+            unusable_prose=False,
+            unsupported_without_gold=not has_gold_reference,
+        )
+
+    if missing_prediction or generation_error is not None or not raw_generation.strip():
+        return NoToolScore(
+            status="unusable_prose",
+            expected_response_type=response_type,
+            has_gold_reference=has_gold_reference,
+            correct_direct_answer=False if has_gold_reference else None,
+            correct_clarification=False if has_gold_reference else None,
+            unnecessary_tool_call=False,
+            unusable_prose=True,
+            unsupported_without_gold=not has_gold_reference,
+        )
+
+    if not has_gold_reference:
+        return NoToolScore(
+            status="unsupported_without_gold",
+            expected_response_type=response_type,
+            has_gold_reference=False,
+            correct_direct_answer=None,
+            correct_clarification=None,
+            unnecessary_tool_call=False,
+            unusable_prose=False,
+            unsupported_without_gold=True,
+        )
+
+    normalized_generation = _normalize_text(raw_generation)
+    normalized_references = {
+        _normalize_text(reference) for reference in references
+    }
+    matched = normalized_generation in normalized_references
+    is_clarification = response_type == "clarification"
+
+    return NoToolScore(
+        status=(
+            "correct_clarification"
+            if matched and is_clarification
+            else "correct_direct_answer"
+            if matched
+            else "incorrect_no_tool_response"
+        ),
+        expected_response_type=response_type,
+        has_gold_reference=True,
+        correct_direct_answer=matched and not is_clarification,
+        correct_clarification=matched and is_clarification,
+        unnecessary_tool_call=False,
+        unusable_prose=False,
+        unsupported_without_gold=False,
+    )
+
+
+def _no_tool_score_to_dict(score: NoToolScore) -> dict[str, Any]:
+    return {
+        "status": score.status,
+        "expected_response_type": score.expected_response_type,
+        "has_gold_reference": score.has_gold_reference,
+        "correct_direct_answer": score.correct_direct_answer,
+        "correct_clarification": score.correct_clarification,
+        "unnecessary_tool_call": score.unnecessary_tool_call,
+        "unusable_prose": score.unusable_prose,
+        "unsupported_without_gold": score.unsupported_without_gold,
+    }
+
+
+def _count_bucket(value: Any) -> str:
+    try:
+        count = int(value)
+    except (TypeError, ValueError):
+        return "unknown"
+    if count <= 0:
+        return "0"
+    if count == 1:
+        return "1"
+    if count == 2:
+        return "2"
+    if count <= 4:
+        return "3-4"
+    return "5+"
+
+
+def _length_bucket(value: Any) -> str:
+    try:
+        tokens = int(value)
+    except (TypeError, ValueError):
+        return "unknown"
+    if tokens <= 512:
+        return "0001-0512"
+    if tokens <= 1024:
+        return "0513-1024"
+    if tokens <= 2048:
+        return "1025-2048"
+    if tokens <= 4096:
+        return "2049-4096"
+    return "4097+"
+
+
+def _fallback_call_category(expected_call_count: Any) -> str:
+    try:
+        count = int(expected_call_count)
+    except (TypeError, ValueError):
+        return "unknown"
+    if count <= 0:
+        return "no_tool"
+    if count == 1:
+        return "single"
+    return "multiple"
+
+
+def evaluation_groups(record: dict[str, Any]) -> dict[str, str]:
+    metadata = record.get("metadata")
+    metadata = metadata if isinstance(metadata, dict) else {}
+    curation = record.get("curation_metadata")
+    curation = curation if isinstance(curation, dict) else {}
+    split_metadata = record.get("split_metadata")
+    split_metadata = split_metadata if isinstance(split_metadata, dict) else {}
+    token_counts = split_metadata.get("token_counts")
+    token_counts = token_counts if isinstance(token_counts, dict) else {}
+
+    expected_call_count = (
+        curation.get("expected_call_count")
+        if "expected_call_count" in curation
+        else metadata.get("expected_call_count")
+    )
+    tool_count = (
+        curation.get("tool_count")
+        if "tool_count" in curation
+        else metadata.get("available_tool_count")
+    )
+    primary_split = str(
+        split_metadata.get("primary_split", metadata.get("split", "unknown")),
+    )
+    split_lock_status = str(
+        split_metadata.get("split_lock_status", "unregistered"),
+    )
+
+    if primary_split == "reserved_challenge_locked":
+        seen_status = "reserved_challenge_held_out"
+    elif "seen_status" in split_metadata:
+        seen_status = str(split_metadata["seen_status"])
+    elif "seen_status" in curation:
+        seen_status = str(curation["seen_status"])
+    else:
+        seen_status = "not_recorded"
+
+    return {
+        "call_category": str(
+            curation.get(
+                "call_category",
+                _fallback_call_category(expected_call_count),
+            )
+        ),
+        "primary_tool_family": str(
+            curation.get("primary_tool_family", "unknown"),
+        ),
+        "primary_api_category": str(
+            curation.get("primary_api_category", "unknown"),
+        ),
+        "seen_status": seen_status,
+        "length_bucket": _length_bucket(token_counts.get("full_tokens")),
+        "expected_call_count_bucket": _count_bucket(expected_call_count),
+        "tool_count_bucket": _count_bucket(tool_count),
+        "split_lock_status": split_lock_status,
+        "primary_split": primary_split,
+    }
 
 
 def _prediction_id(prediction: dict[str, Any]) -> str:
@@ -786,6 +1218,459 @@ def index_predictions(
         indexed[prediction_id] = prediction
 
     return indexed
+
+
+def _rate(numerator: int | float, denominator: int | float) -> float | None:
+    if denominator == 0:
+        return None
+    return float(numerator) / float(denominator)
+
+
+def _metric(
+    *,
+    value: float | None,
+    numerator: int | float | None,
+    denominator: int | float | None,
+    definition: str,
+) -> dict[str, Any]:
+    return {
+        "value": value,
+        "numerator": numerator,
+        "denominator": denominator,
+        "definition": definition,
+    }
+
+
+def _no_tool_summary(scored_records: list[dict[str, Any]]) -> dict[str, int]:
+    no_tool_records = [
+        record
+        for record in scored_records
+        if int(
+            record.get("call_metrics", {}).get("expected_call_count", 0)
+            or 0,
+        )
+        == 0
+    ]
+    return {
+        "no_tool_record_count": len(no_tool_records),
+        "no_tool_correct_direct_answer_count": sum(
+            int(
+                record.get("no_tool_score", {}).get(
+                    "correct_direct_answer",
+                )
+                is True
+            )
+            for record in no_tool_records
+        ),
+        "no_tool_correct_clarification_count": sum(
+            int(
+                record.get("no_tool_score", {}).get(
+                    "correct_clarification",
+                )
+                is True
+            )
+            for record in no_tool_records
+        ),
+        "no_tool_unnecessary_tool_call_count": sum(
+            int(
+                bool(
+                    record.get("no_tool_score", {}).get(
+                        "unnecessary_tool_call",
+                    )
+                )
+            )
+            for record in no_tool_records
+        ),
+        "no_tool_unusable_prose_count": sum(
+            int(
+                bool(record.get("no_tool_score", {}).get("unusable_prose"))
+            )
+            for record in no_tool_records
+        ),
+        "no_tool_unsupported_gold_count": sum(
+            int(
+                bool(
+                    record.get("no_tool_score", {}).get(
+                        "unsupported_without_gold",
+                    )
+                )
+            )
+            for record in no_tool_records
+        ),
+    }
+
+
+def requested_metrics(
+    *,
+    scored_records: list[dict[str, Any]],
+    scores: dict[str, Any],
+) -> dict[str, Any]:
+    total_records = int(scores.get("total_records", len(scored_records)) or 0)
+    predicted_call_count = int(scores.get("predicted_call_count", 0) or 0)
+    expected_call_count = int(scores.get("expected_call_count", 0) or 0)
+    matched_call_count = int(scores.get("matched_call_count", 0) or 0)
+    strict_complete_call_count = int(
+        scores.get("strict_complete_call_count", 0) or 0,
+    )
+    executable_complete_match_count = int(
+        scores.get("executable_complete_match_count", 0) or 0,
+    )
+    strict_complete_match_count = int(
+        scores.get("strict_complete_match_count", 0) or 0,
+    )
+    schema_validation_success_count = int(
+        scores.get("schema_validation_success_count", 0) or 0,
+    )
+    extra_call_count = int(scores.get("extra_call_count", 0) or 0)
+    undeclared_argument_count = int(
+        scores.get("undeclared_argument_count", 0) or 0,
+    )
+    malformed_tool_call_count = int(
+        scores.get("malformed_tool_call_count", 0) or 0,
+    )
+
+    tool_required_records = [
+        record
+        for record in scored_records
+        if int(
+            record.get("call_metrics", {}).get("expected_call_count", 0)
+            or 0,
+        )
+        > 0
+    ]
+    no_tool_call_on_tool_required = sum(
+        int(record.get("emission", {}).get("no_tool_call_emitted", False))
+        for record in tool_required_records
+    )
+    no_tool_records = [
+        record
+        for record in scored_records
+        if int(
+            record.get("call_metrics", {}).get("expected_call_count", 0)
+            or 0,
+        )
+        == 0
+    ]
+    no_tool_false_positive_count = sum(
+        int(record.get("emission", {}).get("tool_call_emitted", False))
+        for record in no_tool_records
+    )
+    protocol_clean_count = sum(
+        int(
+            not record.get("missing_prediction")
+            and record.get("generation_error") is None
+            and (
+                bool(record.get("parse", {}).get("valid_structure"))
+                or int(
+                    record.get("call_metrics", {}).get(
+                        "expected_call_count",
+                        0,
+                    )
+                    or 0,
+                )
+                == 0
+            )
+            and not bool(
+                record.get("emission", {}).get("extra_prose_with_tool_call"),
+            )
+            and not bool(record.get("emission", {}).get("malformed_tool_call"))
+            and not bool(record.get("emission", {}).get("prose_only_response"))
+        )
+        for record in scored_records
+    )
+
+    return {
+        "metric_schema_version": METRIC_SCHEMA_VERSION,
+        "executable_complete_accuracy_record_level": _metric(
+            value=_rate(executable_complete_match_count, total_records),
+            numerator=executable_complete_match_count,
+            denominator=total_records,
+            definition=(
+                "records where all expected calls are executable complete "
+                "matches divided by total records"
+            ),
+        ),
+        "strict_complete_accuracy": _metric(
+            value=_rate(strict_complete_match_count, total_records),
+            numerator=strict_complete_match_count,
+            denominator=total_records,
+            definition=(
+                "records where all expected calls strictly match divided "
+                "by total records"
+            ),
+        ),
+        "complete_call_recall": _metric(
+            value=_rate(strict_complete_call_count, expected_call_count),
+            numerator=strict_complete_call_count,
+            denominator=expected_call_count,
+            definition=(
+                "strictly complete matched calls divided by expected calls"
+            ),
+        ),
+        "no_tool_call_rate_on_tool_required_records": _metric(
+            value=_rate(
+                no_tool_call_on_tool_required,
+                len(tool_required_records),
+            ),
+            numerator=no_tool_call_on_tool_required,
+            denominator=len(tool_required_records),
+            definition=(
+                "tool-required records with no emitted tool call divided "
+                "by tool-required records"
+            ),
+        ),
+        "complete_call_precision": _metric(
+            value=_rate(strict_complete_call_count, predicted_call_count),
+            numerator=strict_complete_call_count,
+            denominator=predicted_call_count,
+            definition=(
+                "strictly complete matched calls divided by predicted calls"
+            ),
+        ),
+        "schema_validation_success": _metric(
+            value=_rate(schema_validation_success_count, matched_call_count),
+            numerator=schema_validation_success_count,
+            denominator=matched_call_count,
+            definition=(
+                "matched calls passing schema validation divided by matched "
+                "calls"
+            ),
+        ),
+        "argument_value_accuracy": _metric(
+            value=scores.get("average_argument_value_accuracy"),
+            numerator=None,
+            denominator=matched_call_count,
+            definition=(
+                "mean argument value accuracy across matched call comparisons"
+            ),
+        ),
+        "protocol_clean_response_rate": _metric(
+            value=_rate(protocol_clean_count, total_records),
+            numerator=protocol_clean_count,
+            denominator=total_records,
+            definition=(
+                "records with no generation error, no malformed call, and no "
+                "extra prose; no-tool records are clean only when they avoid "
+                "tool calls"
+            ),
+        ),
+        "function_name_precision": _metric(
+            value=_rate(matched_call_count, predicted_call_count),
+            numerator=matched_call_count,
+            denominator=predicted_call_count,
+            definition="matched function names divided by predicted calls",
+        ),
+        "extra_call_rate": _metric(
+            value=_rate(extra_call_count, predicted_call_count),
+            numerator=extra_call_count,
+            denominator=predicted_call_count,
+            definition="extra predicted calls divided by predicted calls",
+        ),
+        "undeclared_argument_rate": _metric(
+            value=_rate(undeclared_argument_count, matched_call_count),
+            numerator=undeclared_argument_count,
+            denominator=matched_call_count,
+            definition=(
+                "undeclared argument count divided by matched calls; "
+                "argument-level denominator is not emitted by the scorer"
+            ),
+        ),
+        "no_tool_false_positive_rate": _metric(
+            value=_rate(no_tool_false_positive_count, len(no_tool_records)),
+            numerator=no_tool_false_positive_count,
+            denominator=len(no_tool_records),
+            definition=(
+                "records with no expected tool calls but an emitted tool call "
+                "divided by records with no expected tool calls"
+            ),
+        ),
+        "malformed_call_rate": _metric(
+            value=_rate(malformed_tool_call_count, total_records),
+            numerator=malformed_tool_call_count,
+            denominator=total_records,
+            definition=(
+                "records with malformed tool-call emission divided by total "
+                "records"
+            ),
+        ),
+    }
+
+
+def _compact_group_summary(
+    records: list[dict[str, Any]],
+) -> dict[str, Any]:
+    total = len(records)
+    strict = sum(
+        int(
+            bool(
+                record.get("headline_scores", {}).get(
+                    "strict_complete_match",
+                )
+            )
+        )
+        for record in records
+    )
+    schema = sum(
+        int(
+            bool(
+                record.get("headline_scores", {}).get(
+                    "schema_equivalent_complete_match",
+                )
+            )
+        )
+        for record in records
+    )
+    executable = sum(
+        int(
+            bool(
+                record.get("headline_scores", {}).get(
+                    "executable_complete_match",
+                )
+            )
+        )
+        for record in records
+    )
+    expected_calls = sum(
+        int(record.get("call_metrics", {}).get("expected_call_count", 0) or 0)
+        for record in records
+    )
+    predicted_calls = sum(
+        int(record.get("call_metrics", {}).get("predicted_call_count", 0) or 0)
+        for record in records
+    )
+    matched_calls = sum(
+        int(record.get("call_metrics", {}).get("matched_call_count", 0) or 0)
+        for record in records
+    )
+    strict_calls = sum(
+        int(
+            record.get("call_metrics", {}).get(
+                "strict_complete_call_count",
+                0,
+            )
+            or 0
+        )
+        for record in records
+    )
+    no_tool = sum(
+        int(record.get("emission", {}).get("no_tool_call_emitted", False))
+        for record in records
+    )
+    malformed = sum(
+        int(record.get("emission", {}).get("malformed_tool_call", False))
+        for record in records
+    )
+    extra_prose = sum(
+        int(
+            record.get("emission", {}).get("extra_prose_with_tool_call", False)
+        )
+        for record in records
+    )
+    complete_precision = _safe_rate(strict_calls, predicted_calls)
+    complete_recall = _safe_rate(strict_calls, expected_calls)
+    function_precision = _safe_rate(matched_calls, predicted_calls)
+    function_recall = _safe_rate(matched_calls, expected_calls)
+    return {
+        "total_records": total,
+        "strict_complete_match_count": strict,
+        "schema_equivalent_complete_match_count": schema,
+        "executable_complete_match_count": executable,
+        "strict_complete_match_rate": _safe_rate(strict, total),
+        "schema_equivalent_complete_match_rate": _safe_rate(schema, total),
+        "executable_complete_match_rate": _safe_rate(executable, total),
+        "expected_call_count": expected_calls,
+        "predicted_call_count": predicted_calls,
+        "matched_call_count": matched_calls,
+        "function_name_precision": function_precision,
+        "function_name_recall": function_recall,
+        "function_name_f1": _f1(function_precision, function_recall),
+        "complete_call_precision": complete_precision,
+        "complete_call_recall": complete_recall,
+        "complete_call_f1": _f1(complete_precision, complete_recall),
+        "no_tool_call_emitted_count": no_tool,
+        "malformed_tool_call_count": malformed,
+        "extra_prose_with_tool_call_count": extra_prose,
+    }
+
+
+def metrics_by_group(
+    scored_records: list[dict[str, Any]],
+) -> dict[str, dict[str, dict[str, Any]]]:
+    dimensions = (
+        "call_category",
+        "primary_tool_family",
+        "primary_api_category",
+        "seen_status",
+        "length_bucket",
+        "expected_call_count_bucket",
+        "tool_count_bucket",
+        "split_lock_status",
+        "primary_split",
+    )
+    grouped: dict[str, dict[str, list[dict[str, Any]]]] = {
+        dimension: {} for dimension in dimensions
+    }
+
+    for record in scored_records:
+        values = record.get("groups")
+        values = values if isinstance(values, dict) else {}
+        for dimension in dimensions:
+            value = str(values.get(dimension, "unknown"))
+            grouped[dimension].setdefault(value, []).append(record)
+
+    return {
+        dimension: {
+            value: _compact_group_summary(records)
+            for value, records in sorted(values.items())
+        }
+        for dimension, values in grouped.items()
+    }
+
+
+def _format_metric(value: Any) -> str:
+    if isinstance(value, float):
+        return f"{value:.6f}"
+    if value is None:
+        return "null"
+    return str(value)
+
+
+def _summary_markdown(
+    scores: dict[str, Any],
+    requested: dict[str, Any],
+) -> str:
+    requested_rows = []
+    for name, metric in requested.items():
+        if name == "metric_schema_version" or not isinstance(metric, dict):
+            continue
+        requested_rows.append(
+            "| "
+            f"{name} | {_format_metric(metric.get('value'))} | "
+            f"{metric.get('numerator')} | {metric.get('denominator')} |"
+        )
+
+    lines = [
+        "# Evaluation Summary",
+        "",
+        f"- Metric schema: `{scores.get('metric_schema_version')}`",
+        f"- Total records: `{scores.get('total_records')}`",
+        f"- Predictions present: `{scores.get('predictions_present')}`",
+        f"- Missing predictions: `{scores.get('missing_predictions')}`",
+        f"- Strict complete accuracy: "
+        f"`{_format_metric(scores.get('strict_complete_match_rate'))}`",
+        f"- Schema-equivalent complete accuracy: "
+        f"`{_format_metric(scores.get('schema_equivalent_complete_match_rate'))}`",
+        f"- Executable complete accuracy: "
+        f"`{_format_metric(scores.get('executable_complete_match_rate'))}`",
+        "",
+        "## Requested Metrics",
+        "",
+        "| Metric | Value | Numerator | Denominator |",
+        "| --- | ---: | ---: | ---: |",
+        *requested_rows,
+        "",
+    ]
+    return "\n".join(lines)
 
 
 def score_prediction_records(
@@ -842,18 +1727,17 @@ def score_prediction_records(
         record_id = str(dataset_record["id"])
         prediction = predictions_by_id.get(record_id)
         missing_prediction = prediction is None
-        raw_generation = ""
         generation_error = None
+        payload = prediction_payload(prediction)
+        raw_generation = payload.raw_generation
 
         if prediction is not None:
-            raw_value = prediction.get("raw_generation", "")
-            raw_generation = raw_value if isinstance(raw_value, str) else ""
             error_value = prediction.get("generation_error")
             generation_error = (
                 str(error_value) if error_value is not None else None
             )
 
-        parse_result = parse_tool_calls(raw_generation)
+        parse_result = parse_tool_calls(payload.value)
         expected_calls = extract_expected_tool_calls(dataset_record)
         score = score_calls(
             parse_result,
@@ -863,6 +1747,10 @@ def score_prediction_records(
         emission = classify_emission(
             raw_generation=raw_generation,
             parse_result=parse_result,
+            response_content=payload.response_content,
+            structured_tool_call_present=(
+                payload.structured_tool_call_present
+            ),
         )
         expected_parse_result = parse_tool_calls(list(expected_calls))
         schemas_by_name = _tool_schemas_by_name(dataset_record)
@@ -882,10 +1770,23 @@ def score_prediction_records(
             predicted_call_count=call_metrics["predicted_call_count"],
             matches=call_matches,
         )
+        no_tool_score = score_no_tool_response(
+            expected_call_count=call_metrics["expected_call_count"],
+            raw_generation=raw_generation,
+            emission=emission,
+            generation_error=generation_error,
+            missing_prediction=missing_prediction,
+            dataset_record=dataset_record,
+        )
+
+        expected_tool_response = call_metrics["expected_call_count"] > 0
+        no_tool_response_without_call = (
+            not expected_tool_response and emission.no_tool_call_emitted
+        )
 
         if score.valid_structure:
             counts["valid_structure_count"] += 1
-        else:
+        elif not no_tool_response_without_call:
             counts["parse_failure_count"] += 1
 
         if emission.extra_prose_with_tool_call:
@@ -943,12 +1844,17 @@ def score_prediction_records(
             argument_comparison_count += 1
 
         scored_record = {
+            "scored_prediction_schema_version": (
+                SCORED_PREDICTION_SCHEMA_VERSION
+            ),
             "id": record_id,
             "source_id": _source_id(dataset_record),
             "missing_prediction": missing_prediction,
             "generation_error": generation_error,
+            "prediction_format": payload.prediction_format,
             "raw_generation": raw_generation,
             "expected_calls": list(expected_calls),
+            "groups": evaluation_groups(dataset_record),
             "parse": _parse_result_to_dict(parse_result),
             "emission": _emission_to_dict(emission),
             "score": _score_to_dict(score),
@@ -957,14 +1863,18 @@ def score_prediction_records(
             "call_matches": [
                 _comparison_to_dict(match) for match in call_matches
             ],
+            "no_tool_score": _no_tool_score_to_dict(no_tool_score),
         }
         scored_records.append(scored_record)
 
         if (
             missing_prediction
             or generation_error is not None
-            or not parse_result.valid_structure
-            or parse_result.errors
+            or (
+                not parse_result.valid_structure
+                and not no_tool_response_without_call
+            )
+            or (parse_result.errors and not no_tool_response_without_call)
         ):
             parse_failures.append(scored_record)
 
@@ -1047,8 +1957,14 @@ def score_prediction_records(
             argument_value_accuracy_sum,
             argument_comparison_count,
         ),
+        **_no_tool_summary(scored_records),
+        "metric_schema_version": METRIC_SCHEMA_VERSION,
+        "evaluation_summary_schema_version": (
+            EVALUATION_SUMMARY_SCHEMA_VERSION
+        ),
         "order_matters": order_matters,
     }
+    summary["metrics_by_group"] = metrics_by_group(scored_records)
 
     return scored_records, parse_failures, summary
 
@@ -1075,17 +1991,53 @@ def evaluate_predictions(
     scored_path = output_dir / SCORED_PREDICTIONS_FILENAME
     failures_path = output_dir / PARSE_FAILURES_FILENAME
     scores_path = output_dir / SCORES_FILENAME
+    requested_metrics_path = output_dir / REQUESTED_METRICS_FILENAME
+    failure_sample_path = output_dir / FAILURE_SAMPLE_FILENAME
+    summary_markdown_path = output_dir / SUMMARY_MARKDOWN_FILENAME
+    checksums_path = output_dir / CHECKSUMS_FILENAME
+    requested = requested_metrics(
+        scored_records=scored_records,
+        scores=summary,
+    )
+    failed_records = [
+        record
+        for record in scored_records
+        if not bool(
+            record.get("headline_scores", {}).get(
+                "executable_complete_match",
+            )
+        )
+        and record.get("no_tool_score", {}).get("status")
+        not in {"correct_direct_answer", "correct_clarification"}
+    ][:50]
 
     write_jsonl(scored_path, scored_records)
     write_jsonl(failures_path, parse_failures)
-    output_dir.mkdir(parents=True, exist_ok=True)
-    scores_path.write_text(
-        json.dumps(summary, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
+    write_jsonl(failure_sample_path, failed_records)
+    _write_json(scores_path, summary)
+    _write_json(requested_metrics_path, requested)
+    _atomic_write_text(
+        summary_markdown_path,
+        _summary_markdown(summary, requested),
+    )
+    write_checksums(
+        checksums_path,
+        (
+            scored_path,
+            failures_path,
+            scores_path,
+            requested_metrics_path,
+            failure_sample_path,
+            summary_markdown_path,
+        ),
     )
 
     return EvaluationOutputs(
         scored_predictions_path=scored_path,
         parse_failures_path=failures_path,
         scores_path=scores_path,
+        requested_metrics_path=requested_metrics_path,
+        failure_sample_path=failure_sample_path,
+        summary_markdown_path=summary_markdown_path,
+        checksums_path=checksums_path,
     )

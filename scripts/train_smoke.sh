@@ -8,6 +8,9 @@ source "${REPO_ROOT}/configs/common/exp00.env"
 
 AUTOMODEL_BIN="${AUTOMODEL_BIN:-automodel}"
 TRAINING_LOG_PATH="${TRAINING_LOG_PATH:-/workspace/logs/exp-00/training.log}"
+TRAINING_METRICS_PATH="${TRAINING_METRICS_PATH:-/workspace/results/exp-00/training_metrics.json}"
+TRAINING_TORCH_MEMORY_PATH="${TRAINING_TORCH_MEMORY_PATH:-/workspace/results/exp-00/training_torch_memory.json}"
+GPU_MONITOR_LOG_PATH="${GPU_MONITOR_LOG_PATH:-/workspace/logs/exp-00/gpu-monitor.csv}"
 TRAIN_SMOKE_DRY_RUN="${TRAIN_SMOKE_DRY_RUN:-${SMOKE_DRY_RUN:-0}}"
 RUN_INFO_DIR="${RUN_INFO_DIR:-/workspace/run-info}"
 RESOLVED_CONFIG_PATH="${RUN_INFO_DIR}/resolved_config.yaml"
@@ -32,13 +35,16 @@ cmd=("$AUTOMODEL_BIN" finetune llm -c "$SMOKE_CONFIG_PATH")
 
 log "Command: ${cmd[*]}"
 log "Log: $TRAINING_LOG_PATH"
+log "Metrics: $TRAINING_METRICS_PATH"
+log "Torch memory: $TRAINING_TORCH_MEMORY_PATH"
+log "GPU monitor: $GPU_MONITOR_LOG_PATH"
 
 if [[ "$TRAIN_SMOKE_DRY_RUN" == "1" ]]; then
   log "Dry run requested; not writing metadata or executing training."
   exit 0
 fi
 
-mkdir -p "$(dirname "$TRAINING_LOG_PATH")" "$RUN_INFO_DIR"
+mkdir -p "$(dirname "$TRAINING_LOG_PATH")" "$(dirname "$TRAINING_METRICS_PATH")" "$RUN_INFO_DIR"
 cp "$SMOKE_CONFIG_PATH" "$RESOLVED_CONFIG_PATH"
 
 python3 - "$TRAIN_COMMAND_PATH" "$SMOKE_CONFIG_PATH" "$TRAINING_LOG_PATH" <<'PY'
@@ -63,8 +69,17 @@ command -v "$AUTOMODEL_BIN" >/dev/null 2>&1 || {
 }
 
 set +e
-"${cmd[@]}" 2>&1 | tee -a "$TRAINING_LOG_PATH"
-status="${PIPESTATUS[0]}"
+python3 scripts/run_training_with_monitor.py \
+  --log "$TRAINING_LOG_PATH" \
+  --metrics-output "$TRAINING_METRICS_PATH" \
+  --gpu-log "$GPU_MONITOR_LOG_PATH" \
+  --torch-memory-output "$TRAINING_TORCH_MEMORY_PATH" \
+  --checkpoint-path "$SMOKE_ADAPTER_PATH" \
+  --checkpoint-root "$CONTAINER_CHECKPOINT_ROOT" \
+  --require-checkpoint-root-mount \
+  -- \
+  "${cmd[@]}"
+status="$?"
 set -e
 
 exit "$status"

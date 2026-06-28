@@ -1,0 +1,81 @@
+schema_version: "1.0"
+final_evaluation_flag: "--final-evaluation"
+screening_default: allow
+allowed_screening_splits:
+  - name: smoke-v1-train
+    split_lock_status: frozen_smoke
+    paths:
+      - data/smoke/normalized/train.jsonl
+      - /workspace/data/train.jsonl
+  - name: smoke-v1-validation
+    split_lock_status: frozen_smoke
+    paths:
+      - data/smoke/normalized/validation.jsonl
+      - /workspace/data/validation.jsonl
+  - name: smoke-v1-test
+    split_lock_status: frozen_smoke
+    paths:
+      - data/smoke/normalized/test.jsonl
+      - /workspace/data/test.jsonl
+  - name: eval-stratified-1000-v1
+    split_lock_status: screening_allowed
+    paths:
+      - data/eval/stratified_1000/normalized/test.jsonl
+      - /workspace/data/eval/stratified_1000/normalized/test.jsonl
+  - name: xlam-splits-v1-train-full
+    split_lock_status: screening_allowed
+    paths:
+      - data/processed/xlam_splits_v1/train_full.jsonl
+      - /workspace/data/processed/xlam_splits_v1/train_full.jsonl
+  - name: xlam-splits-v1-train-10k
+    split_lock_status: screening_allowed
+    paths:
+      - data/processed/xlam_splits_v1/train_10k.jsonl
+      - /workspace/data/processed/xlam_splits_v1/train_10k.jsonl
+  - name: xlam-splits-v1-train-2k
+    split_lock_status: screening_allowed
+    paths:
+      - data/processed/xlam_splits_v1/train_2k.jsonl
+      - /workspace/data/processed/xlam_splits_v1/train_2k.jsonl
+  - name: xlam-splits-v1-validation
+    split_lock_status: screening_allowed
+    paths:
+      - data/processed/xlam_splits_v1/validation.jsonl
+      - /workspace/data/processed/xlam_splits_v1/validation.jsonl
+  - name: xlam-splits-v1-dev-eval-1k
+    split_lock_status: screening_allowed
+    paths:
+      - data/processed/xlam_splits_v1/dev_eval_1k.jsonl
+      - /workspace/data/processed/xlam_splits_v1/dev_eval_1k.jsonl
+  - name: no-tool-relevance-v1-dev
+    split_lock_status: screening_allowed
+    paths:
+      - data/eval/no_tool_relevance_v1/dev.jsonl
+      - /workspace/data/eval/no_tool_relevance_v1/dev.jsonl
+locked_splits:
+  - name: final-internal-test
+    split_lock_status: locked_final_internal_test
+    requires_final_config: true
+    reason: Do not use for screening, tuning, or hyperparameter selection.
+    path_patterns:
+      - /final_internal_test/
+      - final_internal_test.jsonl
+      - internal_test_locked.jsonl
+  - name: reserved-challenge
+    split_lock_status: locked_reserved_challenge
+    requires_final_config: true
+    reason: Do not use for screening, tuning, or failure-driven correction.
+    path_patterns:
+      - /reserved_challenge/
+      - /challenge/
+      - reserved_challenge.jsonl
+      - reserved_challenge_locked.jsonl
+  - name: final-no-tool
+    split_lock_status: locked_final_no_tool
+    requires_final_config: true
+    reason: Do not use for no-tool false-positive tuning.
+    path_patterns:
+      - /final_no_tool/
+      - final_no_tool.jsonl
+      - data/eval/no_tool_relevance_v1/final_locked.jsonl
+      - /workspace/data/eval/no_tool_relevance_v1/final_locked.jsonl

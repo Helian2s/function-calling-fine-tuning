@@ -1,0 +1,71 @@
+schema_version: "1.0"
+experiment_id: exp-01
+task_id: Task04
+title: Group-aware split and manifest freeze
+seed: 20260626
+
+input:
+  deduplicated_dataset: data/processed/xlam_curated_v1/deduplicated.jsonl
+  curation_report: data/processed/xlam_curated_v1/manifests/curation_report.json
+  normalization_report: data/processed/xlam_full_v1/manifests/normalization_report.json
+
+output:
+  output_dir: data/processed/xlam_splits_v1
+  train_full: data/processed/xlam_splits_v1/train_full.jsonl
+  train_10k: data/processed/xlam_splits_v1/train_10k.jsonl
+  train_2k: data/processed/xlam_splits_v1/train_2k.jsonl
+  validation: data/processed/xlam_splits_v1/validation.jsonl
+  dev_eval_1k: data/processed/xlam_splits_v1/dev_eval_1k.jsonl
+  internal_test_locked: data/processed/xlam_splits_v1/internal_test_locked.jsonl
+  reserved_challenge_locked: data/processed/xlam_splits_v1/reserved_challenge_locked.jsonl
+  excluded_overlength: data/processed/xlam_splits_v1/excluded_overlength.jsonl
+  split_report: data/processed/xlam_splits_v1/manifests/split_report.json
+  dataset_card: data/processed/xlam_splits_v1/DATASET_CARD.md
+  checksums: data/processed/xlam_splits_v1/checksums.sha256
+
+splits:
+  primary_split_unit: split_group_id
+  validation_target_records: 5000
+  internal_test_target_records: 5000
+  challenge_target_records: 5000
+  train_10k_target_records: 10000
+  train_2k_target_records: 2000
+  dev_eval_target_records: 1000
+  max_overshoot_records: 150
+  challenge_strategy: rare_primary_tool_family_holdout_then_hard_category_score
+  balancing_objectives:
+    - call_category
+    - primary_api_category
+    - primary_tool_family
+    - tool_count_bucket
+    - expected_call_count_bucket
+    - schema_complexity_bucket
+    - rendered_token_length_bucket
+
+sequence_length:
+  tokenizer_model: Qwen/Qwen3-1.7B
+  tokenizer_revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+  native_qwen_tool_template: true
+  enable_thinking: false
+  preferred_max_length: 2048
+  fallback_max_length: 4096
+  preferred_coverage_threshold: 0.99
+  overlength_policy: exclude_whole_split_group
+
+locks:
+  screening_allowed:
+    - train_full
+    - train_10k
+    - train_2k
+    - validation
+    - dev_eval_1k
+  final_evaluation_only:
+    - internal_test_locked
+    - reserved_challenge_locked
+
+policy:
+  preserve_exp00_smoke_split: true
+  no_bfcl_training_filters: true
+  no_model_performance_filtering: true
+  no_silent_target_truncation: true
+  exact_counts_may_deviate_for_group_integrity: true

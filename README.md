@@ -33,6 +33,7 @@ evaluation pipeline.
 - Core package: [src/function_calling_ft](/home/val/Documents/py-projects/function-calling-fine-tuning/src/function_calling_ft)
 - Tests: [tests](/home/val/Documents/py-projects/function-calling-fine-tuning/tests)
 - Public manifests: [data/manifests](/home/val/Documents/py-projects/function-calling-fine-tuning/data/manifests)
+- Experiment contract: [docs/experiment_contract.md](/home/val/Documents/py-projects/function-calling-fine-tuning/docs/experiment_contract.md)
 
 ## Local Workflow
 
@@ -47,23 +48,34 @@ evaluation pipeline.
    `./.venv/bin/python scripts/validate_examples.py`
 5. Build the optional 1,000-record stratified baseline benchmark:
    `./.venv/bin/python scripts/select_stratified_eval_sample.py`
-6. Run the full local gate:
+6. Normalize the full local xLAM source dataset:
+   `make normalize-xlam-full`
+7. Build full-dataset grouping, exact-dedup, and leakage metadata:
+   `make xlam-curate`
+8. Freeze group-aware train/validation/final-evaluation splits:
+   `make xlam-freeze-splits`
+9. Run the full local gate:
    `make preflight`
 
 ## EC2 + Docker
 
 - Base image: `nvcr.io/nvidia/nemo-automodel:25.11.00`
-- AutoModel CLI: `automodel finetune llm -c configs/exp00_smoke/smoke_qlora.yaml`
+- AutoModel CLI: `automodel finetune llm -c configs/exp00_smoke/smoke_lora.yaml`
 - Runtime constants: [configs/common/exp00.env](/home/val/Documents/py-projects/function-calling-fine-tuning/configs/common/exp00.env)
 - Repo Dockerfile: [Dockerfile](/home/val/Documents/py-projects/function-calling-fine-tuning/Dockerfile)
 - Host bootstrap: [scripts/bootstrap_instance.sh](/home/val/Documents/py-projects/function-calling-fine-tuning/scripts/bootstrap_instance.sh)
 - Container runner: [scripts/run_automodel_container.sh](/home/val/Documents/py-projects/function-calling-fine-tuning/scripts/run_automodel_container.sh)
 - Container smoke orchestration: [scripts/smoke_run.sh](/home/val/Documents/py-projects/function-calling-fine-tuning/scripts/smoke_run.sh)
+- EC2 instance sizing and switching policy: [docs/ec2_instance_policy.md](/home/val/Documents/py-projects/function-calling-fine-tuning/docs/ec2_instance_policy.md)
 
 Persistent host paths under `/mnt/workspace` are mounted to `/workspace` inside
 the container. Checkpoints must land under `/workspace/checkpoints`; results,
 logs, and run-info must land under their matching `/workspace/*` mounts. Do not
 rely on state inside a container started with `--rm`.
+
+For normal GPU work, reuse the stopped instance `i-0c769a18f50fd1fe6` and
+change its instance type before launch. Do not launch multiple task-specific
+instances unless replacing the host is explicitly approved.
 
 ## Experiment Storage Policy
 
@@ -116,7 +128,7 @@ scripts/sync_results.sh --stage final
 ```
 
 The final-stage sync uploads the final adapter directory
-`/mnt/workspace/checkpoints/exp-00/smoke-qlora` to S3. It does not upload base
+`/mnt/workspace/checkpoints/exp-00/smoke-lora` to S3. It does not upload base
 LLM weights, Hugging Face caches, Docker layers, NGC caches, or intermediate
 checkpoint directories.
 
@@ -133,7 +145,7 @@ checkpoint directories.
 The earlier expectation that this image contained AutoModel `0.3.0` was
 incorrect. The actual container was validated directly: `nemo_automodel`
 imports successfully, the AutoModel CLI is available, Experiment 0 LoRA and
-QLoRA target classes resolve, persistent checkpoint paths validate, and
+LoRA target classes resolve, persistent checkpoint paths validate, and
 template and loss-mask checks pass. The container must not be changed solely to
 match the previously expected package-version string; runtime execution results
 are authoritative for Experiment 0.
@@ -148,6 +160,8 @@ make smoke-baseline-1000
 make smoke-train
 make smoke-reload-check
 make smoke-evaluate
+scripts/evaluate.py --dataset data/smoke/normalized/test.jsonl --predictions tests/fixtures/exp00/qwen3_1_7b_base_predictions.jsonl --output-dir /tmp/exp00-eval
+scripts/compare_evaluations.py --baseline-scored /path/to/base/scored_predictions.jsonl --candidate-scored /path/to/candidate/scored_predictions.jsonl --output-dir /tmp/eval-comparison
 make smoke-run
 scripts/run_automodel_container.sh --pull --login-ngc make smoke-run
 scripts/resolve_exp00_config.py

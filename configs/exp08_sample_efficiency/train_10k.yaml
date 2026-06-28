@@ -1,0 +1,115 @@
+# Experiment 8 / Task 13 sample-efficiency sweep: selected rank-4 attention-only recipe.
+# Primary variable: one epoch over the nested 10K training subset.
+
+schema_version: "1.0"
+experiment_id: exp-08
+task_id: task-13
+run_id: bf16-lora-r4-alpha8-attention-train-10k
+title: BF16 LoRA rank-4 attention-only 10K sample-efficiency run
+
+step_scheduler:
+  global_batch_size: 4
+  local_batch_size: 4
+  ckpt_every_steps: 625
+  val_every_steps: 625
+  max_steps: 2501
+
+dist_env:
+  backend: nccl
+  timeout_minutes: 5
+
+rng:
+  _target_: nemo_automodel.components.training.rng.StatefulRNG
+  seed: 42
+  ranked: true
+
+model:
+  _target_: nemo_automodel.NeMoAutoModelForCausalLM.from_pretrained
+  pretrained_model_name_or_path: Qwen/Qwen3-1.7B
+  revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+  torch_dtype: bfloat16
+
+compile:
+  enabled: false
+  mode: "default"
+  fullgraph: false
+  dynamic: false
+  backend: null
+
+checkpoint:
+  enabled: true
+  checkpoint_dir: /workspace/checkpoints/exp-08/train-10k/full-epoch
+  model_save_format: safetensors
+  save_consolidated: false
+
+peft:
+  _target_: nemo_automodel.components._peft.lora.PeftConfig
+  target_modules:
+    - "*q_proj"
+    - "*k_proj"
+    - "*v_proj"
+    - "*o_proj"
+  match_all_linear: false
+  dim: 4
+  alpha: 8
+  dropout: 0.05
+  use_triton: true
+
+distributed:
+  _target_: nemo_automodel.components.distributed.fsdp2.FSDP2Manager
+  dp_size: none
+  tp_size: 1
+  cp_size: 1
+  sequence_parallel: false
+
+loss_fn:
+  _target_: nemo_automodel.components.loss.masked_ce.MaskedCrossEntropy
+
+dataset:
+  _target_: nemo_automodel.components.datasets.llm.chat_dataset.ChatDataset
+  path_or_dataset_id: /workspace/data/processed/xlam_splits_v1/train_10k.jsonl
+  seq_length: 2048
+  padding: do_not_pad
+  truncation: do_not_truncate
+
+packed_sequence:
+  packed_sequence_size: 0
+
+dataloader:
+  _target_: torchdata.stateful_dataloader.StatefulDataLoader
+  collate_fn: nemo_automodel.components.datasets.utils.default_collater
+  shuffle: true
+
+validation_dataset:
+  _target_: nemo_automodel.components.datasets.llm.chat_dataset.ChatDataset
+  path_or_dataset_id: /workspace/data/processed/xlam_splits_v1/validation.jsonl
+  seq_length: 2048
+  padding: do_not_pad
+  truncation: do_not_truncate
+
+validation_dataloader:
+  _target_: torchdata.stateful_dataloader.StatefulDataLoader
+  collate_fn: nemo_automodel.components.datasets.utils.default_collater
+
+optimizer:
+  _target_: torch.optim.AdamW
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+  lr: 1.0e-4
+  weight_decay: 0.0
+
+lr_scheduler:
+  lr_decay_style: cosine
+  lr_warmup_steps: 76
+  min_lr: 1.0e-6
+
+task13_policy:
+  selected_peft_method: bf16_lora
+  selected_rank: 4
+  selected_alpha: 8
+  target_profile: attention
+  primary_variable: training_dataset_size
+  primary_comparison: one_epoch_per_dataset_size
+  fixed_token_secondary_analysis: skipped
+  reuse_policy: reuse Task 11 rank-4 attention-only 10K run only when controlled manifest equivalence passes
+  selection_rule: smallest dataset within 1pp executable accuracy and 0.5pp complete-call F1 of best, with hard-bucket and no-tool guardrails

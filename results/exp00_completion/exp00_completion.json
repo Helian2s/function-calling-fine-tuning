@@ -1,0 +1,609 @@
+{
+  "blockers": [],
+  "experiment_id": "exp-00",
+  "generated_at": "2026-06-26T16:37:14.575912+00:00",
+  "may_proceed_to_later_experiments": true,
+  "overall_status": "complete",
+  "schema_version": "1.0",
+  "stages": [
+    {
+      "evidence": {
+        "bootstrap_env": {
+          "exists": true,
+          "path": "/tmp/exp00_task01_audit/logs/exp-00/run-info/bootstrap.env",
+          "sha256": "1058d94c1ca11b88a9f670033ad5844dd70aee2fdf2a535b571a9cca3cf1d301",
+          "size_bytes": 455
+        },
+        "c4_container_report": {
+          "exists": true,
+          "path": "/tmp/exp00_task01_audit/logs/exp-00/run-info/c4_container_report.json",
+          "sha256": "5c47409dc62a5f705757136f5cd071c68867bbe0494c254543fbcb91dc9b1484",
+          "size_bytes": 1549
+        },
+        "container_digest": "sha256:c4f613005518d520c2ac3d9206d95617a2385f86cf8aa09582aad8d35957e2f2",
+        "container_image": {
+          "exists": true,
+          "path": "/tmp/exp00_task01_audit/logs/exp-00/run-info/container_image.txt",
+          "sha256": "c03a91c17c02f3393acb22f8dd9123c46efd6565175afb31780971ca47b553f4",
+          "size_bytes": 159
+        },
+        "container_tag": "nvcr.io/nvidia/nemo-automodel:25.11.00",
+        "environment_report": {
+          "exists": true,
+          "path": "/tmp/exp00_task01_audit/results/exp-00/environment_report.json",
+          "sha256": "a9d37b9e54ed3081d0e2088e5630cef919ed24fac376560b43ccd8c4c9c5bf36",
+          "size_bytes": 1199
+        },
+        "nemo_automodel_0_2_0rc0_observed": true,
+        "nvidia_smi": {
+          "exists": true,
+          "path": "/tmp/exp00_task01_audit/results/exp-00/nvidia-smi.txt",
+          "sha256": "e9f7c8bd36546aedfc71ba79805732d28d00ca2525fdbf3d72234ed3f2297962",
+          "size_bytes": 1689
+        },
+        "package_versions": {
+          "exists": true,
+          "path": "/tmp/exp00_task01_audit/results/exp-00/package_versions.txt",
+          "sha256": "9893f10a381814630e2e02104bac3e05a96cdf7daa43379c8f0e962ad80b573c",
+          "size_bytes": 129
+        }
+      },
+      "name": "gpu_driver_docker_cuda_mount_s3_preflight",
+      "status": "pass",
+      "summary": "environment/package evidence is present"
+    },
+    {
+      "evidence": {
+        "generation_metadata": {
+          "exists": true,
+          "path": "/tmp/exp00_task01_audit/results/exp-00/generation_metadata.json",
+          "sha256": "e942120637517ff7408e62dd2f6890d5015800afb41b6e2afbbe3ce2d6852de2",
+          "size_bytes": 737
+        },
+        "model_name": "Qwen/Qwen3-1.7B",
+        "model_revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e"
+      },
+      "name": "qwen3_1_7b_pinned_load",
+      "status": "pass",
+      "summary": "generation metadata records pinned Qwen3-1.7B load"
+    },
+    {
+      "evidence": {
+        "examples_rendered": 5,
+        "model_name": "Qwen/Qwen3-1.7B",
+        "model_revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
+        "report": {
+          "exists": true,
+          "path": "data/manifests/smoke_v1_template_report.json",
+          "sha256": "aecad80a8cf3b2b7b11b571cae2c45e34d3c6c654398222262118f2b947ad9d2",
+          "size_bytes": 39471
+        },
+        "thinking_mode_enabled": false,
+        "total_failures": 0
+      },
+      "name": "native_template_rendering",
+      "status": "pass",
+      "summary": "at least five native-template examples rendered with thinking disabled"
+    },
+    {
+      "evidence": {
+        "examples_checked": 2,
+        "included_non_tool_regions": [],
+        "included_token_count": 49,
+        "report": {
+          "exists": true,
+          "path": "data/manifests/smoke_v1_loss_mask_report.json",
+          "sha256": "ded5b4c368b82a1805c83ff018889fbb54b303ed9f9d35c274836e1b87295b9e",
+          "size_bytes": 221837
+        },
+        "thinking_mode_enabled": false
+      },
+      "name": "loss_mask",
+      "status": "pass",
+      "summary": "loss includes assistant tool-call spans only"
+    },
+    {
+      "evidence": {
+        "dataset_records": 40,
+        "mismatches": {},
+        "prediction_records": 40,
+        "prediction_sha256": "7683d59e158b4edfd197e4a8880182af1c3d11b948d2da6fb9f6e25ae0ebcda4",
+        "recomputed_scores": {
+          "average_argument_name_accuracy": 0.9240524781341108,
+          "average_argument_type_accuracy": 0.9438775510204082,
+          "average_argument_value_accuracy": 0.8656462585034013,
+          "complete_call_f1": 0.6666666666666666,
+          "complete_call_precision": 0.7755102040816326,
+          "complete_call_recall": 0.5846153846153846,
+          "complete_match_count": 22,
+          "complete_match_rate": 0.55,
+          "correct_argument_names_count": 26,
+          "correct_argument_values_count": 22,
+          "correct_function_name_count": 32,
+          "enum_validity_count": 49,
+          "executable_complete_call_count": 40,
+          "executable_complete_match_count": 24,
+          "executable_complete_match_rate": 0.6,
+          "expected_call_count": 65,
+          "extra_call_count": 0,
+          "extra_prose_count": 2,
+          "extra_prose_with_tool_call_count": 2,
+          "function_name_f1": 0.8596491228070176,
+          "function_name_precision": 1.0,
+          "function_name_recall": 0.7538461538461538,
+          "malformed_tool_call_count": 0,
+          "matched_call_count": 49,
+          "missing_call_count": 16,
+          "missing_predictions": 0,
+          "missing_required_argument_count": 2,
+          "no_tool_call_emitted_count": 7,
+          "order_matters": false,
+          "parse_failure_count": 7,
+          "parseable_given_emission_count": 33,
+          "parseable_given_emission_rate": 1.0,
+          "predicted_call_count": 49,
+          "predictions_present": 40,
+          "prose_only_response_count": 7,
+          "required_arguments_present_count": 47,
+          "schema_equivalent_complete_call_count": 40,
+          "schema_equivalent_complete_match_count": 24,
+          "schema_equivalent_complete_match_rate": 0.6,
+          "schema_validation_success_count": 46,
+          "schema_validation_success_rate": 0.9387755102040817,
+          "strict_complete_call_count": 38,
+          "strict_complete_match_count": 22,
+          "strict_complete_match_rate": 0.55,
+          "tool_call_emitted_count": 33,
+          "total_records": 40,
+          "undeclared_argument_count": 0,
+          "valid_structure_count": 33,
+          "valid_structure_rate": 0.825
+        },
+        "scores_sha256": "c58e5b1a1d65aff3daa327847b5b0322558ad0686f72249de6fd33a9aa63b7f2",
+        "status": "pass",
+        "stored_scores": {
+          "average_argument_name_accuracy": 0.9240524781341108,
+          "average_argument_type_accuracy": 0.9438775510204082,
+          "average_argument_value_accuracy": 0.8656462585034013,
+          "complete_call_f1": 0.6666666666666666,
+          "complete_call_precision": 0.7755102040816326,
+          "complete_call_recall": 0.5846153846153846,
+          "complete_match_count": 22,
+          "complete_match_rate": 0.55,
+          "correct_argument_names_count": 26,
+          "correct_argument_values_count": 22,
+          "correct_function_name_count": 32,
+          "enum_validity_count": 49,
+          "executable_complete_call_count": 40,
+          "executable_complete_match_count": 24,
+          "executable_complete_match_rate": 0.6,
+          "expected_call_count": 65,
+          "extra_call_count": 0,
+          "extra_prose_count": 2,
+          "extra_prose_with_tool_call_count": 2,
+          "function_name_f1": 0.8596491228070176,
+          "function_name_precision": 1.0,
+          "function_name_recall": 0.7538461538461538,
+          "malformed_tool_call_count": 0,
+          "matched_call_count": 49,
+          "missing_call_count": 16,
+          "missing_predictions": 0,
+          "missing_required_argument_count": 2,
+          "no_tool_call_emitted_count": 7,
+          "order_matters": false,
+          "parse_failure_count": 7,
+          "parseable_given_emission_count": 33,
+          "parseable_given_emission_rate": 1.0,
+          "predicted_call_count": 49,
+          "predictions_present": 40,
+          "prose_only_response_count": 7,
+          "required_arguments_present_count": 47,
+          "schema_equivalent_complete_call_count": 40,
+          "schema_equivalent_complete_match_count": 24,
+          "schema_equivalent_complete_match_rate": 0.6,
+          "schema_validation_success_count": 46,
+          "schema_validation_success_rate": 0.9387755102040817,
+          "strict_complete_call_count": 38,
+          "strict_complete_match_count": 22,
+          "strict_complete_match_rate": 0.55,
+          "tool_call_emitted_count": 33,
+          "total_records": 40,
+          "undeclared_argument_count": 0,
+          "valid_structure_count": 33,
+          "valid_structure_rate": 0.825
+        },
+        "summary": "stored scores match recomputed scores"
+      },
+      "name": "untouched_base_generation_40",
+      "status": "pass",
+      "summary": "40 predictions verified against stored scores"
+    },
+    {
+      "evidence": {
+        "adapter_gradient_status": "observed_nonzero_grad_norm",
+        "base_model_trainability_status": "frozen_by_ratio",
+        "checkpoint_exists_after": true,
+        "completed_step_count": 30,
+        "frozen_parameter_count": 2031739904,
+        "global_step": 29,
+        "losses_are_finite": true,
+        "oom_event_count": 0,
+        "trainable_parameter_count": 17432576,
+        "training_log": {
+          "exists": true,
+          "path": "/tmp/exp00_task01_audit/logs/exp-00/training.log",
+          "sha256": "7a43320e73a225a9c8ae1375c214937242dd767ff71070fd055f9fa762c4ab86",
+          "size_bytes": 21993
+        },
+        "training_metrics": {
+          "exists": true,
+          "path": "/tmp/exp00_task01_audit/results/exp-00/training_metrics.json",
+          "sha256": "28dd4e3161f244717ab6787e544fbccadc44a6bef50d5abb6db26d31e6e560c2",
+          "size_bytes": 7323
+        }
+      },
+      "name": "smoke_training_30_steps",
+      "status": "pass",
+      "summary": "30-step training has finite loss and adapter-only evidence"
+    },
+    {
+      "evidence": {
+        "adapter_dir": {
+          "exists": true,
+          "path": "/tmp/exp00_task01_audit/checkpoints/exp-00/smoke-lora",
+          "sha256": null,
+          "size_bytes": 4096
+        },
+        "config_files": [
+          {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/checkpoints/exp-00/smoke-lora/LATEST/model/adapter_config.json",
+            "sha256": "3f7db9ba34c2768d1cc806e04f9486ba704429408343f50bf6de8f3b14ce5765",
+            "size_bytes": 7638
+          },
+          {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/checkpoints/exp-00/smoke-lora/LOWEST_VAL/model/adapter_config.json",
+            "sha256": "3f7db9ba34c2768d1cc806e04f9486ba704429408343f50bf6de8f3b14ce5765",
+            "size_bytes": 7638
+          },
+          {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/checkpoints/exp-00/smoke-lora/epoch_0_step_29/model/adapter_config.json",
+            "sha256": "3f7db9ba34c2768d1cc806e04f9486ba704429408343f50bf6de8f3b14ce5765",
+            "size_bytes": 7638
+          }
+        ],
+        "weight_files": [
+          {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/checkpoints/exp-00/smoke-lora/LATEST/model/adapter_model.safetensors",
+            "sha256": "95d56dc851305964ba4d8273fd876046441093a4096fe8b62f85697ea1832aa5",
+            "size_bytes": 34917472
+          },
+          {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/checkpoints/exp-00/smoke-lora/LOWEST_VAL/model/adapter_model.safetensors",
+            "sha256": "95d56dc851305964ba4d8273fd876046441093a4096fe8b62f85697ea1832aa5",
+            "size_bytes": 34917472
+          },
+          {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/checkpoints/exp-00/smoke-lora/epoch_0_step_29/model/adapter_model.safetensors",
+            "sha256": "95d56dc851305964ba4d8273fd876046441093a4096fe8b62f85697ea1832aa5",
+            "size_bytes": 34917472
+          }
+        ]
+      },
+      "name": "adapter_save",
+      "status": "pass",
+      "summary": "adapter config and weights exist in retained storage"
+    },
+    {
+      "evidence": {
+        "deterministic": true,
+        "load_in_4bit": false,
+        "process_id": 1364,
+        "records_checked": 2,
+        "reload_check": {
+          "exists": true,
+          "path": "/tmp/exp00_task01_audit/results/exp-00/reload-check.json",
+          "sha256": "0c9c44eb2bf236035ce6e9773b58450d892dc9ebd4335b93cc0864e43797f2f6",
+          "size_bytes": 20261
+        }
+      },
+      "name": "clean_process_reload",
+      "status": "pass",
+      "summary": "adapter reload report is deterministic"
+    },
+    {
+      "evidence": {
+        "dataset_records": 40,
+        "mismatches": {},
+        "prediction_records": 40,
+        "prediction_sha256": "d5fde7aec7fb0a5d7398c4824708596feb9d203304b19b9d5ca15ad9f4884ed8",
+        "recomputed_scores": {
+          "average_argument_name_accuracy": 0.8961111111111111,
+          "average_argument_type_accuracy": 0.8999999999999999,
+          "average_argument_value_accuracy": 0.85,
+          "complete_call_f1": 0.6875,
+          "complete_call_precision": 0.6984126984126984,
+          "complete_call_recall": 0.676923076923077,
+          "complete_match_count": 26,
+          "complete_match_rate": 0.65,
+          "correct_argument_names_count": 26,
+          "correct_argument_values_count": 26,
+          "correct_function_name_count": 35,
+          "enum_validity_count": 60,
+          "executable_complete_call_count": 46,
+          "executable_complete_match_count": 28,
+          "executable_complete_match_rate": 0.7,
+          "expected_call_count": 65,
+          "extra_call_count": 3,
+          "extra_prose_count": 0,
+          "extra_prose_with_tool_call_count": 0,
+          "function_name_f1": 0.9375,
+          "function_name_precision": 0.9523809523809523,
+          "function_name_recall": 0.9230769230769231,
+          "malformed_tool_call_count": 0,
+          "matched_call_count": 60,
+          "missing_call_count": 5,
+          "missing_predictions": 0,
+          "missing_required_argument_count": 10,
+          "no_tool_call_emitted_count": 0,
+          "order_matters": false,
+          "parse_failure_count": 0,
+          "parseable_given_emission_count": 40,
+          "parseable_given_emission_rate": 1.0,
+          "predicted_call_count": 63,
+          "predictions_present": 40,
+          "prose_only_response_count": 0,
+          "required_arguments_present_count": 50,
+          "schema_equivalent_complete_call_count": 46,
+          "schema_equivalent_complete_match_count": 28,
+          "schema_equivalent_complete_match_rate": 0.7,
+          "schema_validation_success_count": 50,
+          "schema_validation_success_rate": 0.8333333333333334,
+          "strict_complete_call_count": 44,
+          "strict_complete_match_count": 26,
+          "strict_complete_match_rate": 0.65,
+          "tool_call_emitted_count": 40,
+          "total_records": 40,
+          "undeclared_argument_count": 2,
+          "valid_structure_count": 40,
+          "valid_structure_rate": 1.0
+        },
+        "scores_sha256": "ebcbfcb2da2d22fa7f443b48cb1380fac8173e95eb9b6495b8d52ab82c30953f",
+        "status": "pass",
+        "stored_scores": {
+          "average_argument_name_accuracy": 0.8961111111111111,
+          "average_argument_type_accuracy": 0.8999999999999999,
+          "average_argument_value_accuracy": 0.85,
+          "complete_call_f1": 0.6875,
+          "complete_call_precision": 0.6984126984126984,
+          "complete_call_recall": 0.676923076923077,
+          "complete_match_count": 26,
+          "complete_match_rate": 0.65,
+          "correct_argument_names_count": 26,
+          "correct_argument_values_count": 26,
+          "correct_function_name_count": 35,
+          "enum_validity_count": 60,
+          "executable_complete_call_count": 46,
+          "executable_complete_match_count": 28,
+          "executable_complete_match_rate": 0.7,
+          "expected_call_count": 65,
+          "extra_call_count": 3,
+          "extra_prose_count": 0,
+          "extra_prose_with_tool_call_count": 0,
+          "function_name_f1": 0.9375,
+          "function_name_precision": 0.9523809523809523,
+          "function_name_recall": 0.9230769230769231,
+          "malformed_tool_call_count": 0,
+          "matched_call_count": 60,
+          "missing_call_count": 5,
+          "missing_predictions": 0,
+          "missing_required_argument_count": 10,
+          "no_tool_call_emitted_count": 0,
+          "order_matters": false,
+          "parse_failure_count": 0,
+          "parseable_given_emission_count": 40,
+          "parseable_given_emission_rate": 1.0,
+          "predicted_call_count": 63,
+          "predictions_present": 40,
+          "prose_only_response_count": 0,
+          "required_arguments_present_count": 50,
+          "schema_equivalent_complete_call_count": 46,
+          "schema_equivalent_complete_match_count": 28,
+          "schema_equivalent_complete_match_rate": 0.7,
+          "schema_validation_success_count": 50,
+          "schema_validation_success_rate": 0.8333333333333334,
+          "strict_complete_call_count": 44,
+          "strict_complete_match_count": 26,
+          "strict_complete_match_rate": 0.65,
+          "tool_call_emitted_count": 40,
+          "total_records": 40,
+          "undeclared_argument_count": 2,
+          "valid_structure_count": 40,
+          "valid_structure_rate": 1.0
+        },
+        "summary": "stored scores match recomputed scores"
+      },
+      "name": "post_training_generation_parse_score_40",
+      "status": "pass",
+      "summary": "40 predictions verified against stored scores"
+    },
+    {
+      "evidence": {
+        "measurements": {
+          "adapter_loaded_evaluation": {
+            "peak_allocated_vram_gb": 3.784912109375,
+            "peak_reserved_vram_gb": 3.939453125
+          },
+          "smoke_training": {
+            "peak_allocated_vram_gb": 4.786706,
+            "peak_reserved_vram_gb": 12.794922
+          },
+          "untouched_base_generation": {
+            "peak_allocated_vram_gb": 1.8373651504516602,
+            "peak_reserved_vram_gb": 2.32421875
+          }
+        },
+        "missing": []
+      },
+      "name": "peak_allocated_reserved_vram",
+      "status": "pass",
+      "summary": "peak allocated/reserved VRAM is recorded for all GPU stages"
+    },
+    {
+      "evidence": {
+        "artifacts": {
+          "case_report.json": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/case_report.json",
+            "sha256": "b40464005a9f6e15fd0fab5bcb1b5e049e226e643026885e98285c867f418744",
+            "size_bytes": 25743
+          },
+          "case_report.md": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/case_report.md",
+            "sha256": "71e10371e7bc211e8fa61644243aac18e63d61a40eec56931549e375a867b986",
+            "size_bytes": 6252
+          },
+          "checksums.sha256": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/checksums.sha256",
+            "sha256": "6a4079bf09a80da28e2eaf50fbce3b7902f70d09aa8ae771d8385fc96218054d",
+            "size_bytes": 983
+          },
+          "environment_report.json": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/environment_report.json",
+            "sha256": "a9d37b9e54ed3081d0e2088e5630cef919ed24fac376560b43ccd8c4c9c5bf36",
+            "size_bytes": 1199
+          },
+          "generation_metadata.json": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/generation_metadata.json",
+            "sha256": "e942120637517ff7408e62dd2f6890d5015800afb41b6e2afbbe3ce2d6852de2",
+            "size_bytes": 737
+          },
+          "nvidia-smi.txt": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/nvidia-smi.txt",
+            "sha256": "e9f7c8bd36546aedfc71ba79805732d28d00ca2525fdbf3d72234ed3f2297962",
+            "size_bytes": 1689
+          },
+          "package_versions.txt": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/package_versions.txt",
+            "sha256": "9893f10a381814630e2e02104bac3e05a96cdf7daa43379c8f0e962ad80b573c",
+            "size_bytes": 129
+          },
+          "parse_failures.jsonl": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/parse_failures.jsonl",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "size_bytes": 0
+          },
+          "predictions.jsonl": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/predictions.jsonl",
+            "sha256": "d5fde7aec7fb0a5d7398c4824708596feb9d203304b19b9d5ca15ad9f4884ed8",
+            "size_bytes": 19782
+          },
+          "requested_metrics.json": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/requested_metrics.json",
+            "sha256": "9e3b44104974fe8bf0b666a8a8fe00b3f83b8b9c7055fce5dc40bec426a26c6f",
+            "size_bytes": 2644
+          },
+          "resolved_config.yaml": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/resolved_config.yaml",
+            "sha256": "a3e9c3268386d0241547c159072dc263877002c55b30cdf9c685ebbda4c4fc63",
+            "size_bytes": 2593
+          },
+          "run_manifest.json": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/run_manifest.json",
+            "sha256": "3b2c92c167b9f84bde457bbb835c4c4b2e2256cb81579744f5a941a3ef651ee8",
+            "size_bytes": 4346
+          },
+          "run_metadata.json": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/run_metadata.json",
+            "sha256": "bdeaa1259527e0781858ffbf7e79964cce8dcaeab152a4afe6f0efd9240ee0d9",
+            "size_bytes": 8570
+          },
+          "scored_predictions.jsonl": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/scored_predictions.jsonl",
+            "sha256": "3555a5c85accf86351dd77c9aab4f67123b380c382ae20cb11715e0dcd9ef6a1",
+            "size_bytes": 105444
+          },
+          "scores.json": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/scores.json",
+            "sha256": "ebcbfcb2da2d22fa7f443b48cb1380fac8173e95eb9b6495b8d52ab82c30953f",
+            "size_bytes": 1819
+          },
+          "training_metrics.json": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/training_metrics.json",
+            "sha256": "28dd4e3161f244717ab6787e544fbccadc44a6bef50d5abb6db26d31e6e560c2",
+            "size_bytes": 7323
+          },
+          "training_torch_memory.json": {
+            "exists": true,
+            "path": "/tmp/exp00_task01_audit/results/exp-00/training_torch_memory.json",
+            "sha256": "27f2bef42355ba0b9f9d63834b0fed6f15db8c8761f107d31c61a271d9b4da26",
+            "size_bytes": 589
+          }
+        },
+        "missing": []
+      },
+      "name": "canonical_artifact_bundle",
+      "status": "pass",
+      "summary": "all canonical final result files are present"
+    },
+    {
+      "evidence": {
+        "missing_required_suffixes": [],
+        "object_count": 320,
+        "required_suffixes": [
+          "finetuning/results/exp-00/predictions.jsonl",
+          "finetuning/results/exp-00/scored_predictions.jsonl",
+          "finetuning/results/exp-00/parse_failures.jsonl",
+          "finetuning/results/exp-00/scores.json",
+          "finetuning/results/exp-00/generation_metadata.json",
+          "finetuning/results/exp-00/run_metadata.json",
+          "finetuning/results/exp-00/run_manifest.json",
+          "finetuning/results/exp-00/training_metrics.json",
+          "finetuning/results/exp-00/training_torch_memory.json",
+          "finetuning/results/exp-00/environment_report.json",
+          "finetuning/results/exp-00/nvidia-smi.txt",
+          "finetuning/results/exp-00/package_versions.txt",
+          "finetuning/results/exp-00/resolved_config.yaml",
+          "finetuning/results/exp-00/requested_metrics.json",
+          "finetuning/results/exp-00/case_report.json",
+          "finetuning/results/exp-00/case_report.md",
+          "finetuning/results/exp-00/checksums.sha256",
+          "finetuning/logs/exp-00/training.log",
+          "finetuning/checkpoints/exp-00/smoke-lora/LATEST/model/adapter_config.json",
+          "finetuning/checkpoints/exp-00/smoke-lora/LATEST/model/adapter_model.safetensors"
+        ]
+      },
+      "name": "s3_artifact_upload",
+      "status": "pass",
+      "summary": "required S3 artifact names are present in inventory"
+    },
+    {
+      "evidence": {
+        "instance_state": "stopped"
+      },
+      "name": "ec2_instance_stopped",
+      "status": "pass",
+      "summary": "EC2 instance is stopped"
+    }
+  ]
+}

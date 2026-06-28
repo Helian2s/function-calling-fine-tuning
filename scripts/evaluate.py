@@ -13,6 +13,7 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from function_calling_ft.evaluation import evaluate_predictions
+from function_calling_ft.split_guard import assert_split_allowed
 
 
 def parse_args() -> argparse.Namespace:
@@ -27,11 +28,30 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Require predicted calls to match expected order.",
     )
+    parser.add_argument(
+        "--final-evaluation",
+        action="store_true",
+        help="Permit explicitly locked final-evaluation splits.",
+    )
+    parser.add_argument(
+        "--final-config",
+        type=Path,
+        help=(
+            "Frozen final-evaluation config required with "
+            "--final-evaluation on locked final splits."
+        ),
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
+    assert_split_allowed(
+        args.dataset,
+        final_evaluation=args.final_evaluation,
+        final_config=args.final_config,
+        command_name="evaluation",
+    )
     outputs = evaluate_predictions(
         dataset_path=args.dataset,
         predictions_path=args.predictions,

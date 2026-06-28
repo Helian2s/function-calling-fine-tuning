@@ -1,0 +1,54 @@
+schema_version: "1.0"
+experiment_id: exp-02
+task_id: task-06
+title: Base-model, decoding, and quantization feasibility matrix
+model_revision_policy: immutable
+container:
+  tag: nvcr.io/nvidia/nemo-automodel:25.11.00
+  digest: sha256:c4f613005518d520c2ac3d9206d95617a2385f86cf8aa09582aad8d35957e2f2
+  observed_nemo_automodel: 0.2.0rc0
+datasets:
+  tool_dev:
+    path: data/processed/xlam_splits_v1/dev_eval_1k.jsonl
+    split_name: xlam-splits-v1-dev-eval-1k
+    split_lock_status: screening_allowed
+    expected_records: 1000
+    final_evaluation: false
+  no_tool_dev:
+    path: data/eval/no_tool_relevance_v1/dev.jsonl
+    split_name: no-tool-relevance-v1-dev
+    split_lock_status: screening_allowed
+    expected_records: 100
+    final_evaluation: false
+locked_unused_datasets:
+  no_tool_final:
+    path: data/eval/no_tool_relevance_v1/final_locked.jsonl
+    split_name: final-no-tool
+    split_lock_status: locked_final_no_tool
+runs:
+  - config: configs/exp02_baseline/bf16.yaml
+  - config: configs/exp02_baseline/nf4.yaml
+  - config: configs/exp02_baseline/bf16_sampling.yaml
+comparisons:
+  - name: bf16-vs-nf4-deterministic
+    baseline_run_id: bf16-deterministic
+    candidate_run_id: nf4-deterministic
+    purpose: Quantization feasibility
+  - name: bf16-deterministic-vs-sampling
+    baseline_run_id: bf16-deterministic
+    candidate_run_id: bf16-sampling
+    purpose: Decoding sensitivity
+output:
+  results_root: /workspace/results/exp-02
+  logs_root: /workspace/logs/exp-02
+  cache_dir: /root/.cache/huggingface
+  s3_prefix: s3://ncp-genl/experiments/qwen3-function-calling/results/exp-02/
+generation_controls:
+  template: qwen-native-tool-calling
+  enable_thinking: false
+  no_custom_system_prompt: true
+  no_few_shot: true
+  no_gold_in_prompt: true
+failure_review:
+  sample_size: 100
+  taxonomy: evaluator-diagnostic

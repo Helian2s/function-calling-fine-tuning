@@ -1,0 +1,31 @@
+schema_version: "1.0"
+experiment_id: exp-06
+task_id: task-11
+title: LoRA rank and alpha comparison
+selected_peft_method: bf16_lora
+instance_type: g6e.2xlarge
+reuse_rank8_if_equivalent: true
+ranks:
+  - rank: 4
+    alpha: 8
+    config: configs/exp06_lora_rank/rank4_alpha8.yaml
+  - rank: 8
+    alpha: 16
+    config: configs/exp06_lora_rank/rank8_alpha16.yaml
+    reusable_reference_config: configs/exp03_reference_lora/lora_r8_attention.yaml
+  - rank: 16
+    alpha: 32
+    config: configs/exp06_lora_rank/rank16_alpha32.yaml
+evaluation:
+  validation_dataset: /workspace/data/processed/xlam_splits_v1/validation.jsonl
+  no_tool_development_dataset: /workspace/data/eval/no_tool_relevance_v1/dev.jsonl
+  deterministic_decoding:
+    do_sample: false
+    max_new_tokens: 256
+    seed: 42
+selection_rule:
+  primary: execution-equivalent complete accuracy
+  secondary: complete-call F1 and missing-call recall
+  tie_threshold_absolute: 0.01
+  practical_loss_threshold_absolute: 0.02
+  no_tool_policy: reported but not used for rank selection in this task

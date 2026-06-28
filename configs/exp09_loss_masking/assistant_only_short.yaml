@@ -1,0 +1,116 @@
+# Experiment 9A assistant-only short ablation control.
+# Same recipe as Task 07 reference BF16 LoRA r8/alpha16 attention-only,
+# with the masking policy made explicit.
+
+schema_version: "1.0"
+experiment_id: exp-09a
+task_id: task-14
+run_id: assistant-only-short-bf16-lora-r8-attention
+title: Assistant-only 300-step BF16 LoRA loss-mask control
+
+step_scheduler:
+  global_batch_size: 4
+  local_batch_size: 4
+  ckpt_every_steps: 300
+  val_every_steps: 150
+  max_steps: 300
+
+dist_env:
+  backend: nccl
+  timeout_minutes: 5
+
+rng:
+  _target_: nemo_automodel.components.training.rng.StatefulRNG
+  seed: 42
+  ranked: true
+
+model:
+  _target_: nemo_automodel.NeMoAutoModelForCausalLM.from_pretrained
+  pretrained_model_name_or_path: Qwen/Qwen3-1.7B
+  revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+  torch_dtype: bfloat16
+
+compile:
+  enabled: false
+  mode: "default"
+  fullgraph: false
+  dynamic: false
+  backend: null
+
+checkpoint:
+  enabled: true
+  checkpoint_dir: /workspace/checkpoints/exp-09a/assistant-only-short
+  model_save_format: safetensors
+  save_consolidated: false
+
+peft:
+  _target_: nemo_automodel.components._peft.lora.PeftConfig
+  target_modules:
+    - "*q_proj"
+    - "*k_proj"
+    - "*v_proj"
+    - "*o_proj"
+  match_all_linear: false
+  dim: 8
+  alpha: 16
+  dropout: 0.05
+  use_triton: true
+
+distributed:
+  _target_: nemo_automodel.components.distributed.fsdp2.FSDP2Manager
+  dp_size: none
+  tp_size: 1
+  cp_size: 1
+  sequence_parallel: false
+
+loss_fn:
+  _target_: nemo_automodel.components.loss.masked_ce.MaskedCrossEntropy
+
+dataset:
+  _target_: function_calling_ft.automodel_datasets.ToolCallChatDataset
+  path_or_dataset_id: /workspace/data/processed/xlam_splits_v1/train_10k.jsonl
+  seq_length: 2048
+  padding: do_not_pad
+  truncation: do_not_truncate
+  loss_mask_policy: assistant_only
+  enable_thinking: false
+
+packed_sequence:
+  packed_sequence_size: 0
+
+dataloader:
+  _target_: torchdata.stateful_dataloader.StatefulDataLoader
+  collate_fn: nemo_automodel.components.datasets.utils.default_collater
+  shuffle: true
+
+validation_dataset:
+  _target_: function_calling_ft.automodel_datasets.ToolCallChatDataset
+  path_or_dataset_id: /workspace/data/processed/xlam_splits_v1/validation.jsonl
+  seq_length: 2048
+  padding: do_not_pad
+  truncation: do_not_truncate
+  loss_mask_policy: assistant_only
+  enable_thinking: false
+
+validation_dataloader:
+  _target_: torchdata.stateful_dataloader.StatefulDataLoader
+  collate_fn: nemo_automodel.components.datasets.utils.default_collater
+
+optimizer:
+  _target_: torch.optim.AdamW
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+  lr: 1.0e-4
+  weight_decay: 0.0
+
+lr_scheduler:
+  lr_decay_style: cosine
+  lr_warmup_steps: 9
+  min_lr: 1.0e-6
+
+task14_policy:
+  loss_mask_policy: assistant_only
+  production_policy: true
+  ablation_steps: 300
+  eval_validation_records: 1000
+  eval_no_tool_dev_records: 100

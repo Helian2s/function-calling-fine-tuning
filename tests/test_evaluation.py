@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from function_calling_ft.evaluation import (
+    METRIC_SCHEMA_VERSION,
     evaluate_predictions,
     score_prediction_records,
 )
@@ -74,6 +75,111 @@ def test_scores_correct_prediction() -> None:
     assert summary["executable_complete_match_count"] == 1
     assert summary["tool_call_emitted_count"] == 1
     assert summary["parseable_given_emission_count"] == 1
+    assert summary["metric_schema_version"] == METRIC_SCHEMA_VERSION
+
+
+def test_openai_wire_format_arguments_string_is_scored() -> None:
+    dataset = [_record("xlam-1", [{"name": "weather", "arguments": {"city": "Denver"}}])]
+    predictions = [
+        {
+            "id": "xlam-1",
+            "response": {
+                "choices": [
+                    {
+                        "message": {
+                            "role": "assistant",
+                            "content": "",
+                            "tool_calls": [
+                                {
+                                    "type": "function",
+                                    "function": {
+                                        "name": "weather",
+                                        "arguments": '{"city":"Denver"}',
+                                    },
+                                }
+                            ],
+                        }
+                    }
+                ]
+            },
+        }
+    ]
+
+    scored, failures, summary = score_prediction_records(dataset, predictions)
+
+    assert failures == []
+    assert scored[0]["prediction_format"] == "openai_message_tool_calls"
+    assert scored[0]["headline_scores"]["strict_complete_match"] is True
+    assert summary["tool_call_emitted_count"] == 1
+
+
+def test_no_tool_record_without_gold_is_objectively_classified() -> None:
+    dataset = [_record("xlam-1", [])]
+    predictions = [_prediction("xlam-1", "The current answer is 42.")]
+
+    scored, failures, summary = score_prediction_records(dataset, predictions)
+
+    assert failures == []
+    assert scored[0]["no_tool_score"]["status"] == "unsupported_without_gold"
+    assert scored[0]["no_tool_score"]["correct_direct_answer"] is None
+    assert summary["no_tool_record_count"] == 1
+    assert summary["no_tool_unsupported_gold_count"] == 1
+    assert summary["parse_failure_count"] == 0
+
+
+def test_no_tool_record_with_gold_direct_answer_can_score_exact_match() -> None:
+    record = _record("xlam-1", [])
+    record["expected_response"] = {
+        "type": "direct_answer",
+        "content": "The current answer is 42.",
+    }
+    predictions = [_prediction("xlam-1", "The current answer is 42.")]
+
+    scored, _failures, summary = score_prediction_records([record], predictions)
+
+    assert scored[0]["no_tool_score"]["status"] == "correct_direct_answer"
+    assert scored[0]["no_tool_score"]["correct_direct_answer"] is True
+    assert summary["no_tool_correct_direct_answer_count"] == 1
+
+
+def test_string_source_id_is_preserved() -> None:
+    record = _record("xlam-1", [])
+    record["metadata"] = {"source_id": "human-authored-001"}
+    record["expected_response"] = {
+        "type": "direct_answer",
+        "content": "The current answer is 42.",
+    }
+    predictions = [_prediction("xlam-1", "The current answer is 42.")]
+
+    scored, _failures, _summary = score_prediction_records([record], predictions)
+
+    assert scored[0]["source_id"] == "human-authored-001"
+
+
+def test_grouped_metrics_use_curation_and_split_metadata() -> None:
+    record = _record("xlam-1", [{"name": "weather", "arguments": {"city": "Denver"}}])
+    record["curation_metadata"] = {
+        "call_category": "single",
+        "primary_tool_family": "weather",
+        "primary_api_category": "weather",
+        "expected_call_count": 1,
+        "tool_count": 1,
+    }
+    record["split_metadata"] = {
+        "primary_split": "validation",
+        "split_lock_status": "screening_allowed",
+        "token_counts": {"full_tokens": 700},
+    }
+    predictions = [
+        _prediction("xlam-1", '{"name":"weather","arguments":{"city":"Denver"}}'),
+    ]
+
+    scored, _failures, summary = score_prediction_records([record], predictions)
+
+    assert scored[0]["groups"]["primary_tool_family"] == "weather"
+    family_metrics = summary["metrics_by_group"]["primary_tool_family"]["weather"]
+    assert family_metrics["executable_complete_match_rate"] == 1.0
+    assert "0513-1024" in summary["metrics_by_group"]["length_bucket"]
 
 
 def test_malformed_prediction_is_preserved_as_failure() -> None:
@@ -331,3 +437,57 @@ def test_all_40_records_are_processed_with_empty_predictions_file(
     assert summary["total_records"] == 40
     assert summary["predictions_present"] == 0
     assert summary["missing_predictions"] == 40
+    assert outputs.requested_metrics_path is not None
+    assert outputs.requested_metrics_path.is_file()
+    assert outputs.failure_sample_path is not None
+    assert outputs.failure_sample_path.is_file()
+    assert outputs.summary_markdown_path is not None
+    assert outputs.summary_markdown_path.is_file()
+    assert outputs.checksums_path is not None
+    assert outputs.checksums_path.is_file()
+    assert "scores.json" in outputs.checksums_path.read_text(encoding="utf-8")
+
+
+def test_exp00_qwen3_1_7b_base_regression() -> None:
+    dataset = json.loads(
+        "["
+        + ",".join(
+            line
+            for line in Path("data/smoke/normalized/test.jsonl")
+            .read_text(encoding="utf-8")
+            .splitlines()
+            if line.strip()
+        )
+        + "]"
+    )
+    predictions = json.loads(
+        "["
+        + ",".join(
+            line
+            for line in Path(
+                "tests/fixtures/exp00/qwen3_1_7b_base_predictions.jsonl"
+            )
+            .read_text(encoding="utf-8")
+            .splitlines()
+            if line.strip()
+        )
+        + "]"
+    )
+
+    _scored, _failures, summary = score_prediction_records(
+        dataset,
+        predictions,
+    )
+
+    assert summary["total_records"] == 40
+    assert summary["strict_complete_match_count"] == 22
+    assert summary["strict_complete_match_rate"] == 0.55
+    assert summary["schema_equivalent_complete_match_count"] == 24
+    assert summary["executable_complete_match_count"] == 24
+    assert summary["expected_call_count"] == 65
+    assert summary["predicted_call_count"] == 49
+    assert summary["matched_call_count"] == 49
+    assert summary["missing_call_count"] == 16
+    assert summary["extra_call_count"] == 0
+    assert summary["malformed_tool_call_count"] == 0
+    assert summary["function_name_precision"] == 1.0

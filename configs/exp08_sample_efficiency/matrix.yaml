@@ -1,0 +1,40 @@
+schema_version: "1.0"
+experiment_id: exp-08
+task_id: task-13
+title: Dataset size and saturation matrix
+selected_recipe:
+  method: bf16_lora
+  rank: 4
+  alpha: 8
+  target_profile: attention
+  lr: 1.0e-4
+  dropout: 0.05
+  seed: 42
+  sequence_length: 2048
+  packing: false
+  activation_checkpointing: false
+primary_protocol:
+  comparison: one_epoch_per_dataset_size
+  fixed_token_secondary_analysis: skipped
+  evaluation_split: data/processed/xlam_splits_v1/validation.jsonl
+  no_tool_regression_split: data/eval/no_tool_relevance_v1/dev.jsonl
+  locked_final_splits: unused
+reuse_policy:
+  train_10k: reuse Task 11 rank-4 attention-only run only when controlled manifest equivalence passes
+selection_rule:
+  executable_complete_tie_threshold_absolute: 0.01
+  complete_call_f1_tie_threshold_absolute: 0.005
+  hard_bucket_loss_limit_absolute: 0.02
+  no_tool_false_positive_worsening_limit_absolute: 0.05
+  description: Choose the smallest dataset whose primary and guardrail metrics remain practically indistinguishable from the best validation result.
+runs:
+  - sample_profile: train_2k
+    config: configs/exp08_sample_efficiency/train_2k.yaml
+    records: 2019
+  - sample_profile: train_10k
+    config: configs/exp08_sample_efficiency/train_10k.yaml
+    records: 10003
+    reuse_candidate: true
+  - sample_profile: train_full
+    config: configs/exp08_sample_efficiency/train_full.yaml
+    records: 39526

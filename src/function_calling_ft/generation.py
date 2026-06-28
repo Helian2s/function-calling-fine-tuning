@@ -42,6 +42,27 @@ class GenerationPrompt:
         return len(self.input_ids)
 
 
+@dataclass(frozen=True)
+class PredictionWorkItem:
+    index: int
+    base_record: dict[str, Any]
+    prompt: GenerationPrompt
+
+
+@dataclass(frozen=True)
+class PredictionResult:
+    index: int
+    prediction: dict[str, Any]
+
+
+@dataclass(frozen=True)
+class DecodingConfig:
+    do_sample: bool = False
+    temperature: float | None = None
+    top_p: float | None = None
+    top_k: int | None = None
+
+
 def read_jsonl(path: Path) -> list[dict[str, Any]]:
     records: list[dict[str, Any]] = []
 
@@ -147,6 +168,80 @@ def normalize_token_ids(value: Any) -> tuple[int, ...]:
     return tuple(int(token_id) for token_id in value)
 
 
+def normalize_batch_token_ids(value: Any) -> list[tuple[int, ...]]:
+    if isinstance(value, dict):
+        value = value["input_ids"]
+    elif hasattr(value, "sequences"):
+        value = value.sequences
+    elif hasattr(value, "get") and callable(value.get):
+        maybe_sequences = value.get("sequences")
+        if maybe_sequences is not None:
+            value = maybe_sequences
+        else:
+            maybe_input_ids = value.get("input_ids")
+            if maybe_input_ids is not None:
+                value = maybe_input_ids
+
+    if hasattr(value, "detach"):
+        value = value.detach()
+
+    if hasattr(value, "cpu"):
+        value = value.cpu()
+
+    if hasattr(value, "tolist"):
+        value = value.tolist()
+
+    if isinstance(value, list) and (
+        not value or isinstance(value[0], int)
+    ):
+        value = [value]
+
+    return [tuple(int(token_id) for token_id in row) for row in value]
+
+
+def _token_id_set(value: Any) -> set[int]:
+    if value is None:
+        return set()
+    if isinstance(value, int):
+        return {value}
+    if isinstance(value, (list, tuple, set)):
+        return {int(token_id) for token_id in value}
+    return {int(value)}
+
+
+def _first_token_id(value: Any) -> int | None:
+    if value is None:
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, (list, tuple, set)):
+        for token_id in value:
+            return int(token_id)
+        return None
+    return int(value)
+
+
+def _trim_generated_ids(
+    generated_ids: Sequence[int],
+    *,
+    eos_token_id: Any,
+    pad_token_id: Any,
+) -> tuple[int, ...]:
+    token_ids = tuple(int(token_id) for token_id in generated_ids)
+    eos_token_ids = _token_id_set(eos_token_id)
+
+    if eos_token_ids:
+        for index, token_id in enumerate(token_ids):
+            if token_id in eos_token_ids:
+                return token_ids[: index + 1]
+
+    pad_token_ids = _token_id_set(pad_token_id)
+    while token_ids and token_ids[-1] in pad_token_ids:
+        token_ids = token_ids[:-1]
+
+    return token_ids
+
+
 def build_generation_prompt(
     tokenizer: GenerationTokenizer,
     record: dict[str, Any],
@@ -180,17 +275,28 @@ def validate_adapter_path(adapter_path: Path) -> Path:
     if not adapter_path.exists():
         raise FileNotFoundError(f"Adapter path does not exist: {adapter_path}")
 
-    candidates = [
-        path.parent
-        for path in adapter_path.rglob("adapter_config.json")
-        if path.is_file()
-    ]
-
     if adapter_path.is_file():
         raise ValueError(f"Adapter path must be a directory: {adapter_path}")
 
     if (adapter_path / "adapter_config.json").is_file():
         candidates = [adapter_path]
+    else:
+        preferred_candidates = [
+            adapter_path / "LATEST" / "model",
+            adapter_path / "LOWEST_VAL" / "model",
+        ]
+        candidates = []
+        for candidate in preferred_candidates:
+            if (candidate / "adapter_config.json").is_file():
+                candidates = [candidate]
+                break
+
+    if not candidates:
+        candidates = [
+            path.parent
+            for path in adapter_path.rglob("adapter_config.json")
+            if path.is_file()
+        ]
 
     unique_candidates = sorted(set(candidates))
 
@@ -288,6 +394,7 @@ def _generate_one(
     model: Any,
     prompt: GenerationPrompt,
     max_new_tokens: int,
+    decoding: DecodingConfig,
     device: str | None,
 ) -> tuple[str, int]:
     import torch
@@ -303,25 +410,182 @@ def _generate_one(
     eos_token_id = getattr(tokenizer, "eos_token_id", None)
 
     if pad_token_id is None:
-        pad_token_id = eos_token_id
+        pad_token_id = _first_token_id(eos_token_id)
 
     with torch.inference_mode():
         output_ids = model.generate(
             input_ids=input_ids,
             attention_mask=attention_mask,
-            do_sample=False,
-            max_new_tokens=max_new_tokens,
-            pad_token_id=pad_token_id,
-            eos_token_id=eos_token_id,
+            **_generate_kwargs(
+                decoding=decoding,
+                max_new_tokens=max_new_tokens,
+                pad_token_id=pad_token_id,
+                eos_token_id=eos_token_id,
+            ),
         )
 
     token_ids = normalize_token_ids(output_ids)
-    generated_ids = token_ids[len(prompt.input_ids) :]
+    generated_ids = _trim_generated_ids(
+        token_ids[len(prompt.input_ids) :],
+        eos_token_id=eos_token_id,
+        pad_token_id=pad_token_id,
+    )
     raw_generation = tokenizer.decode(
         generated_ids,
         skip_special_tokens=True,
     )
     return raw_generation, len(generated_ids)
+
+
+def _generate_kwargs(
+    *,
+    decoding: DecodingConfig,
+    max_new_tokens: int,
+    pad_token_id: Any,
+    eos_token_id: Any,
+) -> dict[str, Any]:
+    kwargs: dict[str, Any] = {
+        "do_sample": decoding.do_sample,
+        "max_new_tokens": max_new_tokens,
+        "pad_token_id": pad_token_id,
+        "eos_token_id": eos_token_id,
+    }
+    if decoding.do_sample:
+        if decoding.temperature is not None:
+            kwargs["temperature"] = decoding.temperature
+        if decoding.top_p is not None:
+            kwargs["top_p"] = decoding.top_p
+        if decoding.top_k is not None:
+            kwargs["top_k"] = decoding.top_k
+    return kwargs
+
+
+def _generate_batch(
+    *,
+    tokenizer: GenerationTokenizer,
+    model: Any,
+    prompts: Sequence[GenerationPrompt],
+    max_new_tokens: int,
+    decoding: DecodingConfig,
+    device: str | None,
+) -> list[tuple[str, int]]:
+    import torch
+
+    if not prompts:
+        return []
+
+    model_device = _device_for_model(model, device)
+    pad_token_id = getattr(tokenizer, "pad_token_id", None)
+    eos_token_id = getattr(tokenizer, "eos_token_id", None)
+
+    if pad_token_id is None:
+        pad_token_id = _first_token_id(eos_token_id)
+
+    if pad_token_id is None:
+        raise ValueError("Tokenizer must define pad_token_id or eos_token_id")
+
+    max_prompt_len = max(prompt.prompt_token_count for prompt in prompts)
+    input_rows: list[list[int]] = []
+    attention_rows: list[list[int]] = []
+
+    for prompt in prompts:
+        prompt_ids = list(prompt.input_ids)
+        pad_len = max_prompt_len - len(prompt_ids)
+        input_rows.append([int(pad_token_id)] * pad_len + prompt_ids)
+        attention_rows.append([0] * pad_len + [1] * len(prompt_ids))
+
+    input_ids = torch.tensor(
+        input_rows,
+        dtype=torch.long,
+        device=model_device,
+    )
+    attention_mask = torch.tensor(
+        attention_rows,
+        dtype=torch.long,
+        device=model_device,
+    )
+
+    with torch.inference_mode():
+        output_ids = model.generate(
+            input_ids=input_ids,
+            attention_mask=attention_mask,
+            **_generate_kwargs(
+                decoding=decoding,
+                max_new_tokens=max_new_tokens,
+                pad_token_id=pad_token_id,
+                eos_token_id=eos_token_id,
+            ),
+        )
+
+    output_rows = normalize_batch_token_ids(output_ids)
+    if len(output_rows) != len(prompts):
+        raise ValueError(
+            "Model returned an unexpected number of generated rows: "
+            f"{len(output_rows)} != {len(prompts)}",
+        )
+
+    generations: list[tuple[str, int]] = []
+    for output_row in output_rows:
+        generated_ids = _trim_generated_ids(
+            output_row[max_prompt_len:],
+            eos_token_id=eos_token_id,
+            pad_token_id=pad_token_id,
+        )
+        raw_generation = tokenizer.decode(
+            generated_ids,
+            skip_special_tokens=True,
+        )
+        generations.append((raw_generation, len(generated_ids)))
+
+    return generations
+
+def _base_prediction_record(
+    *,
+    record: dict[str, Any],
+    model_name: str,
+    model_revision: str,
+    adapter_path: str | None,
+) -> dict[str, Any]:
+    record_id = str(record.get("id", ""))
+    metadata = record.get("metadata")
+    source_id = (
+        metadata.get("source_id") if isinstance(metadata, dict) else None
+    )
+
+    return {
+        "id": record_id,
+        "source_id": source_id,
+        "model_name": model_name,
+        "model_revision": model_revision,
+        "adapter_path": adapter_path,
+        "raw_generation": "",
+        "prompt_token_count": 0,
+        "generated_token_count": 0,
+        "generation_error": None,
+    }
+
+
+def _prediction_error(
+    base_record: dict[str, Any],
+    exc: Exception,
+) -> dict[str, Any]:
+    return {
+        **base_record,
+        "generation_error": f"{type(exc).__name__}: {exc}",
+    }
+
+
+def _prediction_success(
+    item: PredictionWorkItem,
+    raw_generation: str,
+    generated_count: int,
+) -> dict[str, Any]:
+    return {
+        **item.base_record,
+        "raw_generation": raw_generation,
+        "prompt_token_count": item.prompt.prompt_token_count,
+        "generated_token_count": generated_count,
+    }
 
 
 def generate_prediction_record(
@@ -333,24 +597,15 @@ def generate_prediction_record(
     model_revision: str,
     adapter_path: str | None,
     max_new_tokens: int,
+    decoding: DecodingConfig = DecodingConfig(),
     device: str | None = None,
 ) -> dict[str, Any]:
-    record_id = str(record.get("id", ""))
-    metadata = record.get("metadata")
-    source_id = (
-        metadata.get("source_id") if isinstance(metadata, dict) else None
+    base_record = _base_prediction_record(
+        record=record,
+        model_name=model_name,
+        model_revision=model_revision,
+        adapter_path=adapter_path,
     )
-    base_record = {
-        "id": record_id,
-        "source_id": source_id,
-        "model_name": model_name,
-        "model_revision": model_revision,
-        "adapter_path": adapter_path,
-        "raw_generation": "",
-        "prompt_token_count": 0,
-        "generated_token_count": 0,
-        "generation_error": None,
-    }
 
     try:
         prompt = build_generation_prompt(
@@ -363,19 +618,193 @@ def generate_prediction_record(
             model=model,
             prompt=prompt,
             max_new_tokens=max_new_tokens,
+            decoding=decoding,
             device=device,
         )
-        return {
-            **base_record,
-            "raw_generation": raw_generation,
-            "prompt_token_count": prompt.prompt_token_count,
-            "generated_token_count": generated_count,
-        }
+        return _prediction_success(
+            PredictionWorkItem(
+                index=0,
+                base_record=base_record,
+                prompt=prompt,
+            ),
+            raw_generation,
+            generated_count,
+        )
     except Exception as exc:  # noqa: BLE001 - preserve per-record errors.
-        return {
-            **base_record,
-            "generation_error": f"{type(exc).__name__}: {exc}",
-        }
+        return _prediction_error(base_record, exc)
+
+
+def _positive_batch_size(batch_size: int) -> int:
+    if batch_size < 1:
+        raise ValueError("batch_size must be at least 1")
+    return batch_size
+
+
+def _iter_chunks(
+    items: Sequence[PredictionWorkItem],
+    chunk_size: int,
+) -> Iterator[Sequence[PredictionWorkItem]]:
+    for start in range(0, len(items), chunk_size):
+        yield items[start : start + chunk_size]
+
+
+def _build_prediction_work_items(
+    *,
+    records: Sequence[dict[str, Any]],
+    tokenizer: GenerationTokenizer,
+    model_name: str,
+    model_revision: str,
+    adapter_path: str | None,
+) -> Iterator[PredictionWorkItem | PredictionResult]:
+    for index, record in enumerate(records):
+        base_record = _base_prediction_record(
+            record=record,
+            model_name=model_name,
+            model_revision=model_revision,
+            adapter_path=adapter_path,
+        )
+
+        try:
+            prompt = build_generation_prompt(
+                tokenizer,
+                record,
+                enable_thinking=False,
+            )
+        except Exception as exc:  # noqa: BLE001 - preserve per-record errors.
+            yield PredictionResult(
+                index=index,
+                prediction=_prediction_error(base_record, exc),
+            )
+            continue
+
+        yield PredictionWorkItem(
+            index=index,
+            base_record=base_record,
+            prompt=prompt,
+        )
+
+
+def _iter_prediction_result_batches(
+    *,
+    records: Sequence[dict[str, Any]],
+    tokenizer: GenerationTokenizer,
+    model: Any,
+    model_name: str,
+    model_revision: str,
+    adapter_path: str | None,
+    seed: int,
+    max_new_tokens: int,
+    batch_size: int,
+    decoding: DecodingConfig = DecodingConfig(),
+    device: str | None = None,
+) -> Iterator[list[PredictionResult]]:
+    batch_size = _positive_batch_size(batch_size)
+    set_generation_seed(seed)
+
+    if batch_size == 1:
+        for index, record in enumerate(records):
+            yield [
+                PredictionResult(
+                    index=index,
+                    prediction=generate_prediction_record(
+                        record=record,
+                        tokenizer=tokenizer,
+                        model=model,
+                        model_name=model_name,
+                        model_revision=model_revision,
+                        adapter_path=adapter_path,
+                        max_new_tokens=max_new_tokens,
+                        decoding=decoding,
+                        device=device,
+                    ),
+                ),
+            ]
+        return
+
+    work_items: list[PredictionWorkItem] = []
+    for item in _build_prediction_work_items(
+        records=records,
+        tokenizer=tokenizer,
+        model_name=model_name,
+        model_revision=model_revision,
+        adapter_path=adapter_path,
+    ):
+        if isinstance(item, PredictionResult):
+            yield [item]
+        else:
+            work_items.append(item)
+
+    sorted_items = sorted(
+        work_items,
+        key=lambda item: item.prompt.prompt_token_count,
+        reverse=True,
+    )
+
+    for batch in _iter_chunks(sorted_items, batch_size):
+        try:
+            generations = _generate_batch(
+                tokenizer=tokenizer,
+                model=model,
+                prompts=[item.prompt for item in batch],
+                max_new_tokens=max_new_tokens,
+                decoding=decoding,
+                device=device,
+            )
+        except Exception as exc:  # noqa: BLE001 - preserve per-record errors.
+            yield [
+                PredictionResult(
+                    index=item.index,
+                    prediction=_prediction_error(item.base_record, exc),
+                )
+                for item in batch
+            ]
+            continue
+
+        yield [
+            PredictionResult(
+                index=item.index,
+                prediction=_prediction_success(
+                    item,
+                    raw_generation,
+                    generated_count,
+                ),
+            )
+            for item, (raw_generation, generated_count) in zip(
+                batch,
+                generations,
+                strict=True,
+            )
+        ]
+
+
+def _iter_prediction_result_items(
+    *,
+    records: Sequence[dict[str, Any]],
+    tokenizer: GenerationTokenizer,
+    model: Any,
+    model_name: str,
+    model_revision: str,
+    adapter_path: str | None,
+    seed: int,
+    max_new_tokens: int,
+    batch_size: int,
+    decoding: DecodingConfig = DecodingConfig(),
+    device: str | None = None,
+) -> Iterator[PredictionResult]:
+    for batch in _iter_prediction_result_batches(
+        records=records,
+        tokenizer=tokenizer,
+        model=model,
+        model_name=model_name,
+        model_revision=model_revision,
+        adapter_path=adapter_path,
+        seed=seed,
+        max_new_tokens=max_new_tokens,
+        batch_size=batch_size,
+        decoding=decoding,
+        device=device,
+    ):
+        yield from batch
 
 
 def iter_prediction_records(
@@ -388,21 +817,63 @@ def iter_prediction_records(
     adapter_path: str | None,
     seed: int,
     max_new_tokens: int,
+    batch_size: int = 1,
+    decoding: DecodingConfig = DecodingConfig(),
     device: str | None = None,
 ) -> Iterator[dict[str, Any]]:
-    set_generation_seed(seed)
+    for result in _iter_prediction_result_items(
+        records=records,
+        tokenizer=tokenizer,
+        model=model,
+        model_name=model_name,
+        model_revision=model_revision,
+        adapter_path=adapter_path,
+        seed=seed,
+        max_new_tokens=max_new_tokens,
+        batch_size=batch_size,
+        decoding=decoding,
+        device=device,
+    ):
+        yield result.prediction
 
-    for record in records:
-        yield generate_prediction_record(
-            record=record,
-            tokenizer=tokenizer,
-            model=model,
-            model_name=model_name,
-            model_revision=model_revision,
-            adapter_path=adapter_path,
-            max_new_tokens=max_new_tokens,
-            device=device,
-        )
+
+def iter_prediction_record_batches(
+    *,
+    records: Sequence[dict[str, Any]],
+    tokenizer: GenerationTokenizer,
+    model: Any,
+    model_name: str,
+    model_revision: str,
+    adapter_path: str | None,
+    seed: int,
+    max_new_tokens: int,
+    batch_size: int = 1,
+    decoding: DecodingConfig = DecodingConfig(),
+    device: str | None = None,
+) -> Iterator[list[dict[str, Any]]]:
+    for batch in _iter_prediction_result_batches(
+        records=records,
+        tokenizer=tokenizer,
+        model=model,
+        model_name=model_name,
+        model_revision=model_revision,
+        adapter_path=adapter_path,
+        seed=seed,
+        max_new_tokens=max_new_tokens,
+        batch_size=batch_size,
+        decoding=decoding,
+        device=device,
+    ):
+        yield [result.prediction for result in batch]
+
+
+def _sort_results_by_input_order(
+    results: Sequence[PredictionResult],
+) -> list[dict[str, Any]]:
+    return [
+        result.prediction
+        for result in sorted(results, key=lambda result: result.index)
+    ]
 
 
 def generate_prediction_records(
@@ -415,19 +886,25 @@ def generate_prediction_records(
     adapter_path: str | None,
     seed: int,
     max_new_tokens: int,
+    batch_size: int = 1,
+    decoding: DecodingConfig = DecodingConfig(),
     device: str | None = None,
 ) -> list[dict[str, Any]]:
-    return list(
-        iter_prediction_records(
-            records=records,
-            tokenizer=tokenizer,
-            model=model,
-            model_name=model_name,
-            model_revision=model_revision,
-            adapter_path=adapter_path,
-            seed=seed,
-            max_new_tokens=max_new_tokens,
-            device=device,
+    return _sort_results_by_input_order(
+        list(
+            _iter_prediction_result_items(
+                records=records,
+                tokenizer=tokenizer,
+                model=model,
+                model_name=model_name,
+                model_revision=model_revision,
+                adapter_path=adapter_path,
+                seed=seed,
+                max_new_tokens=max_new_tokens,
+                batch_size=batch_size,
+                decoding=decoding,
+                device=device,
+            )
         )
     )
 

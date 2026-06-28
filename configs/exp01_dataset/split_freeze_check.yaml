@@ -1,0 +1,34 @@
+schema_version: "1.0"
+experiment_id: exp-01
+task_id: Task04-check
+title: Small local split-freeze mechanics check
+seed: 20260626
+
+splits:
+  primary_split_unit: split_group_id
+  validation_target_records: 20
+  internal_test_target_records: 20
+  challenge_target_records: 20
+  train_10k_target_records: 10
+  train_2k_target_records: 5
+  dev_eval_target_records: 5
+  max_overshoot_records: 5
+  challenge_strategy: rare_primary_tool_family_holdout_then_hard_category_score
+  balancing_objectives:
+    - call_category
+    - primary_api_category
+    - primary_tool_family
+    - tool_count_bucket
+    - expected_call_count_bucket
+    - schema_complexity_bucket
+    - rendered_token_length_bucket
+
+sequence_length:
+  tokenizer_model: Qwen/Qwen3-1.7B
+  tokenizer_revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+  native_qwen_tool_template: true
+  enable_thinking: false
+  preferred_max_length: 2048
+  fallback_max_length: 4096
+  preferred_coverage_threshold: 0.99
+  overlength_policy: exclude_whole_split_group
