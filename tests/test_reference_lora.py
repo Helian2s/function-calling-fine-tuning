@@ -27,6 +27,7 @@ from scripts.run_exp08_sample_efficiency import (
     _select_dataset_size,
     verify_nested_split_paths,
 )
+from scripts.run_exp03_reference_lora import _training_command
 from scripts.run_training_with_monitor import child_environment
 
 
@@ -607,6 +608,24 @@ def test_memory_trace_env_is_injected(tmp_path: Path) -> None:
 
     assert env["FCFT_TORCH_MEMORY_OUTPUT"] == str(memory_output)
     assert env["FCFT_TORCH_MEMORY_TRACE_OUTPUT"] == str(trace_output)
+
+
+def test_training_command_can_stop_after_observed_step(tmp_path: Path) -> None:
+    command = _training_command(
+        config_path=tmp_path / "config.yaml",
+        checkpoint_path=tmp_path / "checkpoint",
+        log_path=tmp_path / "train.log",
+        metrics_path=tmp_path / "metrics.json",
+        gpu_log_path=tmp_path / "gpu.csv",
+        torch_memory_path=tmp_path / "memory.json",
+        torch_trace_path=None,
+        qlora_patch_report_path=None,
+        automodel_bin="automodel",
+        stop_after_step=299,
+    )
+
+    assert "--stop-after-step" in command
+    assert command[command.index("--stop-after-step") + 1] == "299"
 
 
 def test_qlora_peft_state_dict_patch_env_is_explicit(tmp_path: Path) -> None:

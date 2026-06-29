@@ -73,6 +73,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--low-gpu-grace-seconds", type=float, default=600.0)
     parser.add_argument("--low-gpu-window-samples", type=int, default=60)
     parser.add_argument(
+        "--stop-after-step",
+        type=int,
+        help=(
+            "Terminate the child process successfully after observing this "
+            "training step. Useful for runtime probes that should not depend "
+            "on framework end-of-run validation or checkpoint finalization."
+        ),
+    )
+    parser.add_argument(
         "--require-checkpoint-root-mount",
         action="store_true",
         help="Fail before training if checkpoint root is not a separate mount.",
@@ -471,6 +480,15 @@ def main() -> None:
                 if parsed.oom_event:
                     oom_event_count += 1
 
+                if (
+                    args.stop_after_step is not None
+                    and parsed.steps
+                    and max(parsed.steps) >= args.stop_after_step
+                ):
+                    abort_reason = "target_step_reached"
+                    terminate_process(process)
+                    break
+
                 if any(not math.isfinite(loss) for loss in parsed.losses):
                     abort_reason = "non_finite_loss"
                     terminate_process(process)
@@ -556,13 +574,16 @@ def main() -> None:
             else "not_detected_as_trainable"
         )
 
+    controlled_stop = abort_reason == "target_step_reached"
     metrics = {
         "command": command,
         "started_at": started_at,
         "ended_at": ended_at,
         "duration_seconds": duration_seconds,
-        "return_code": return_code,
-        "aborted": abort_reason is not None,
+        "return_code": 0 if controlled_stop else return_code,
+        "raw_return_code": return_code,
+        "aborted": abort_reason is not None and not controlled_stop,
+        "controlled_stop": controlled_stop,
         "abort_reason": abort_reason,
         "oom_event_count": oom_event_count,
         "training_log": str(args.log),
@@ -584,6 +605,8 @@ def main() -> None:
     }
     write_metrics(args.metrics_output, metrics)
 
+    if controlled_stop:
+        raise SystemExit(0)
     if abort_reason is not None and return_code == 0:
         raise SystemExit(2)
     raise SystemExit(return_code)

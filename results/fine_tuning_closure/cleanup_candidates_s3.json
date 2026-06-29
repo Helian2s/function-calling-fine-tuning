@@ -1,0 +1,35 @@
+{
+  "bucket": "finetuning-lab-1-037678282394-us-west-2-an",
+  "created_at": "2026-06-29T00:29:32.836030+00:00",
+  "delete_prefixes": [
+    "finetuning/checkpoints/exp-00/",
+    "finetuning/checkpoints/exp-03/",
+    "finetuning/checkpoints/exp-04/",
+    "finetuning/checkpoints/exp-05a/",
+    "finetuning/checkpoints/exp-05b/",
+    "finetuning/checkpoints/exp-06/",
+    "finetuning/checkpoints/exp-07/",
+    "finetuning/checkpoints/exp-08/train-2k/",
+    "finetuning/checkpoints/exp-08/train-10k/",
+    "finetuning/checkpoints/exp-09a/",
+    "finetuning/checkpoints/exp-09c/",
+    "finetuning/results/",
+    "finetuning/logs/",
+    "finetuning/source-bundles/",
+    "finetuning/source-updates/",
+    "finetuning/tmp/",
+    "finetuning/data/",
+    "finetuning/configs/",
+    "finetuning/checksums-exp00.sha256"
+  ],
+  "keep_prefixes": [
+    "finetuning/checkpoints/exp-08/train-full/"
+  ],
+  "mode": "delete all versions under delete_prefixes; preserve keep_prefixes",
+  "notes": [
+    "S3 bucket versioning is enabled; current-object deletion alone is insufficient.",
+    "Deletion should remove explicit VersionId entries under each cleanup prefix.",
+    "The repository closure package must be committed before cleanup."
+  ],
+  "schema_version": "1.0"
+}

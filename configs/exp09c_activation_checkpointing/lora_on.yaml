@@ -1,0 +1,120 @@
+# Activation checkpointing benchmark, primary treatment: checkpointing on.
+
+schema_version: "1.0"
+experiment_id: exp-09c
+task_id: task-16
+run_id: activation-checkpointing-bf16-lora-r4-attention-on
+title: Exp09C BF16 LoRA rank-4 attention checkpointing on
+
+step_scheduler:
+  global_batch_size: 4
+  local_batch_size: 4
+  ckpt_every_steps: 300
+  val_every_steps: 300
+  max_steps: 300
+
+dist_env:
+  backend: nccl
+  timeout_minutes: 5
+
+rng:
+  _target_: nemo_automodel.components.training.rng.StatefulRNG
+  seed: 42
+  ranked: true
+
+model:
+  _target_: nemo_automodel.NeMoAutoModelForCausalLM.from_pretrained
+  pretrained_model_name_or_path: Qwen/Qwen3-1.7B
+  revision: 70d244cc86ccca08cf5af4e1e306ecf908b1ad5e
+  torch_dtype: bfloat16
+
+compile:
+  enabled: false
+  mode: "default"
+  fullgraph: false
+  dynamic: false
+  backend: null
+
+checkpoint:
+  enabled: true
+  checkpoint_dir: /workspace/checkpoints/exp-09c/lora-on
+  model_save_format: safetensors
+  save_consolidated: false
+
+peft:
+  _target_: nemo_automodel.components._peft.lora.PeftConfig
+  target_modules:
+    - "*q_proj"
+    - "*k_proj"
+    - "*v_proj"
+    - "*o_proj"
+  match_all_linear: false
+  dim: 4
+  alpha: 8
+  dropout: 0.05
+  use_triton: true
+
+distributed:
+  _target_: nemo_automodel.components.distributed.fsdp2.FSDP2Manager
+  dp_size: none
+  tp_size: 1
+  cp_size: 1
+  sequence_parallel: false
+  activation_checkpointing: true
+
+loss_fn:
+  _target_: nemo_automodel.components.loss.masked_ce.MaskedCrossEntropy
+
+dataset:
+  _target_: function_calling_ft.automodel_datasets.ToolCallChatDataset
+  path_or_dataset_id: /workspace/data/processed/xlam_splits_v1/train_10k.jsonl
+  seq_length: 2048
+  padding: do_not_pad
+  truncation: do_not_truncate
+  loss_mask_policy: assistant_only
+  enable_thinking: false
+
+packed_sequence:
+  packed_sequence_size: 0
+
+dataloader:
+  _target_: torchdata.stateful_dataloader.StatefulDataLoader
+  collate_fn: nemo_automodel.components.datasets.utils.default_collater
+  shuffle: true
+
+validation_dataset:
+  _target_: function_calling_ft.automodel_datasets.ToolCallChatDataset
+  path_or_dataset_id: /workspace/data/processed/xlam_splits_v1/validation.jsonl
+  seq_length: 2048
+  padding: do_not_pad
+  truncation: do_not_truncate
+  loss_mask_policy: assistant_only
+  enable_thinking: false
+
+validation_dataloader:
+  _target_: torchdata.stateful_dataloader.StatefulDataLoader
+  collate_fn: nemo_automodel.components.datasets.utils.default_collater
+
+optimizer:
+  _target_: torch.optim.AdamW
+  betas: [0.9, 0.95]
+  eps: 1.0e-8
+  lr: 1.0e-4
+  weight_decay: 0.0
+
+lr_scheduler:
+  lr_decay_style: cosine
+  lr_warmup_steps: 9
+  min_lr: 1.0e-6
+
+task16_policy:
+  method: bf16_lora
+  rank: 4
+  alpha: 8
+  target_profile: attention
+  benchmark_role: primary_treatment
+  activation_checkpointing: true
+  packing: false
+  selected_data_source: train_10k
+  max_steps: 300
+  secondary_microbatch_profile: false

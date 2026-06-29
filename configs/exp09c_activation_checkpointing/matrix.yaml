@@ -1,0 +1,32 @@
+schema_version: "1.0"
+experiment_id: exp-09c
+task_id: task-16
+title: Exp09C activation checkpointing benchmark matrix
+primary_profiles:
+  - lora_off
+  - lora_on
+secondary_profiles:
+  - lora_on_microbatch8
+default_instance_type: g6e.2xlarge
+primary_comparison:
+  controlled_variables:
+    - model_revision
+    - tokenizer_revision
+    - dataset_ids_and_order_policy
+    - lora_rank_alpha_targets
+    - learning_rate
+    - sequence_length
+    - packing_disabled
+    - local_batch_size
+    - global_batch_size
+    - seed
+  experimental_variable: distributed.activation_checkpointing
+policy_thresholds:
+  low_memory_saving_pct: 10.0
+  moderate_memory_saving_pct: 20.0
+  acceptable_moderate_slowdown_pct: 15.0
+  acceptable_large_slowdown_pct: 20.0
+artifact_prefixes:
+  results: s3://finetuning-lab-1-037678282394-us-west-2-an/finetuning/results/exp-09c/
+  logs: s3://finetuning-lab-1-037678282394-us-west-2-an/finetuning/logs/exp-09c/
+  checkpoints: s3://finetuning-lab-1-037678282394-us-west-2-an/finetuning/checkpoints/exp-09c/

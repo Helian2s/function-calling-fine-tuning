@@ -1,0 +1,427 @@
+{
+  "advanced_score_table": {
+    "full_sft_no_tool_dev": {
+      "average_argument_name_accuracy": 0.0,
+      "average_argument_value_accuracy": 0.0,
+      "complete_call_f1": 0.0,
+      "complete_call_precision": 0.0,
+      "complete_call_recall": 0.0,
+      "executable_complete_match_rate": 0.0,
+      "expected_call_count": 0,
+      "extra_call_count": 109,
+      "extra_prose_with_tool_call_count": 0,
+      "function_name_f1": 0.0,
+      "function_name_precision": 0.0,
+      "function_name_recall": 0.0,
+      "malformed_tool_call_count": 0,
+      "missing_call_count": 0,
+      "no_tool_call_emitted_count": 7,
+      "predicted_call_count": 109,
+      "schema_equivalent_complete_match_rate": 0.0,
+      "strict_complete_match_rate": 0.0,
+      "tool_call_emitted_count": 93,
+      "total_records": 100
+    },
+    "full_sft_tool_dev": {
+      "average_argument_name_accuracy": 0.9737679409792089,
+      "average_argument_value_accuracy": 0.9371616364855799,
+      "complete_call_f1": 0.845749099972307,
+      "complete_call_precision": 0.845983379501385,
+      "complete_call_recall": 0.845514950166113,
+      "executable_complete_match_rate": 0.789,
+      "expected_call_count": 1806,
+      "extra_call_count": 30,
+      "extra_prose_with_tool_call_count": 0,
+      "function_name_f1": 0.9831071725283855,
+      "function_name_precision": 0.9833795013850416,
+      "function_name_recall": 0.9828349944629015,
+      "malformed_tool_call_count": 0,
+      "missing_call_count": 31,
+      "no_tool_call_emitted_count": 0,
+      "predicted_call_count": 1805,
+      "schema_equivalent_complete_match_rate": 0.796,
+      "strict_complete_match_rate": 0.776,
+      "tool_call_emitted_count": 1000,
+      "total_records": 1000
+    },
+    "lora_no_tool_dev": {
+      "average_argument_name_accuracy": 0.0,
+      "average_argument_value_accuracy": 0.0,
+      "complete_call_f1": 0.0,
+      "complete_call_precision": 0.0,
+      "complete_call_recall": 0.0,
+      "executable_complete_match_rate": 0.0,
+      "expected_call_count": 0,
+      "extra_call_count": 105,
+      "extra_prose_with_tool_call_count": 0,
+      "function_name_f1": 0.0,
+      "function_name_precision": 0.0,
+      "function_name_recall": 0.0,
+      "malformed_tool_call_count": 2,
+      "missing_call_count": 0,
+      "no_tool_call_emitted_count": 0,
+      "predicted_call_count": 105,
+      "schema_equivalent_complete_match_rate": 0.0,
+      "strict_complete_match_rate": 0.0,
+      "tool_call_emitted_count": 100,
+      "total_records": 100
+    },
+    "lora_tool_dev": {
+      "average_argument_name_accuracy": 0.9618649669499535,
+      "average_argument_value_accuracy": 0.9228463510049918,
+      "complete_call_f1": 0.810435747987788,
+      "complete_call_precision": 0.8124652198107958,
+      "complete_call_recall": 0.8084163898117387,
+      "executable_complete_match_rate": 0.742,
+      "expected_call_count": 1806,
+      "extra_call_count": 32,
+      "extra_prose_with_tool_call_count": 0,
+      "function_name_f1": 0.9797391063003054,
+      "function_name_precision": 0.9821925431274346,
+      "function_name_recall": 0.9772978959025471,
+      "malformed_tool_call_count": 2,
+      "missing_call_count": 41,
+      "no_tool_call_emitted_count": 0,
+      "predicted_call_count": 1797,
+      "schema_equivalent_complete_match_rate": 0.75,
+      "strict_complete_match_rate": 0.725,
+      "tool_call_emitted_count": 1000,
+      "total_records": 1000
+    },
+    "qlora_no_tool_dev": {
+      "average_argument_name_accuracy": 0.0,
+      "average_argument_value_accuracy": 0.0,
+      "complete_call_f1": 0.0,
+      "complete_call_precision": 0.0,
+      "complete_call_recall": 0.0,
+      "executable_complete_match_rate": 0.0,
+      "expected_call_count": 0,
+      "extra_call_count": 102,
+      "extra_prose_with_tool_call_count": 0,
+      "function_name_f1": 0.0,
+      "function_name_precision": 0.0,
+      "function_name_recall": 0.0,
+      "malformed_tool_call_count": 0,
+      "missing_call_count": 0,
+      "no_tool_call_emitted_count": 1,
+      "predicted_call_count": 102,
+      "schema_equivalent_complete_match_rate": 0.0,
+      "strict_complete_match_rate": 0.0,
+      "tool_call_emitted_count": 99,
+      "total_records": 100
+    },
+    "qlora_tool_dev": {
+      "average_argument_name_accuracy": 0.9598979979898408,
+      "average_argument_value_accuracy": 0.9228180262407303,
+      "complete_call_f1": 0.8069980560955291,
+      "complete_call_precision": 0.8094707520891364,
+      "complete_call_recall": 0.8045404208194906,
+      "executable_complete_match_rate": 0.747,
+      "expected_call_count": 1806,
+      "extra_call_count": 42,
+      "extra_prose_with_tool_call_count": 0,
+      "function_name_f1": 0.9736184393224103,
+      "function_name_precision": 0.9766016713091922,
+      "function_name_recall": 0.9706533776301218,
+      "malformed_tool_call_count": 1,
+      "missing_call_count": 53,
+      "no_tool_call_emitted_count": 0,
+      "predicted_call_count": 1795,
+      "schema_equivalent_complete_match_rate": 0.753,
+      "strict_complete_match_rate": 0.731,
+      "tool_call_emitted_count": 1000,
+      "total_records": 1000
+    }
+  },
+  "comparison_metrics": [
+    "strict_complete_match",
+    "schema_equivalent_complete_match",
+    "executable_complete_match",
+    "tool_call_emitted",
+    "no_tool_false_positive"
+  ],
+  "created_at": "2026-06-28T04:07:50.382526+00:00",
+  "paired_comparisons": {
+    "lora_vs_full_sft_no_tool": {
+      "bootstrap_confidence": 0.95,
+      "bootstrap_samples": 1000,
+      "bootstrap_seed": 42,
+      "comparison_schema_version": "1.0",
+      "metrics": {
+        "executable_complete_match": {
+          "baseline_mean": 0.0,
+          "candidate_mean": 0.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        },
+        "no_tool_false_positive": {
+          "baseline_mean": 1.0,
+          "candidate_mean": 0.93,
+          "delta_mean": -0.07,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": -0.12,
+            "samples": 1000,
+            "seed": 42,
+            "upper": -0.02
+          }
+        },
+        "schema_equivalent_complete_match": {
+          "baseline_mean": 0.0,
+          "candidate_mean": 0.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        },
+        "strict_complete_match": {
+          "baseline_mean": 0.0,
+          "candidate_mean": 0.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        },
+        "tool_call_emitted": {
+          "baseline_mean": 1.0,
+          "candidate_mean": 0.93,
+          "delta_mean": -0.07,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": -0.12,
+            "samples": 1000,
+            "seed": 42,
+            "upper": -0.02
+          }
+        }
+      },
+      "record_count": 100,
+      "return_code": 0
+    },
+    "lora_vs_full_sft_tool": {
+      "bootstrap_confidence": 0.95,
+      "bootstrap_samples": 1000,
+      "bootstrap_seed": 42,
+      "comparison_schema_version": "1.0",
+      "metrics": {
+        "executable_complete_match": {
+          "baseline_mean": 0.742,
+          "candidate_mean": 0.789,
+          "delta_mean": 0.047,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.026,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.066
+          }
+        },
+        "no_tool_false_positive": {
+          "baseline_mean": 0.0,
+          "candidate_mean": 0.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        },
+        "schema_equivalent_complete_match": {
+          "baseline_mean": 0.75,
+          "candidate_mean": 0.796,
+          "delta_mean": 0.046,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.026,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.066
+          }
+        },
+        "strict_complete_match": {
+          "baseline_mean": 0.725,
+          "candidate_mean": 0.776,
+          "delta_mean": 0.051,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.03,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.073
+          }
+        },
+        "tool_call_emitted": {
+          "baseline_mean": 1.0,
+          "candidate_mean": 1.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        }
+      },
+      "record_count": 1000,
+      "return_code": 0
+    },
+    "qlora_vs_full_sft_no_tool": {
+      "bootstrap_confidence": 0.95,
+      "bootstrap_samples": 1000,
+      "bootstrap_seed": 42,
+      "comparison_schema_version": "1.0",
+      "metrics": {
+        "executable_complete_match": {
+          "baseline_mean": 0.0,
+          "candidate_mean": 0.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        },
+        "no_tool_false_positive": {
+          "baseline_mean": 0.99,
+          "candidate_mean": 0.93,
+          "delta_mean": -0.06,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": -0.11,
+            "samples": 1000,
+            "seed": 42,
+            "upper": -0.02
+          }
+        },
+        "schema_equivalent_complete_match": {
+          "baseline_mean": 0.0,
+          "candidate_mean": 0.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        },
+        "strict_complete_match": {
+          "baseline_mean": 0.0,
+          "candidate_mean": 0.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        },
+        "tool_call_emitted": {
+          "baseline_mean": 0.99,
+          "candidate_mean": 0.93,
+          "delta_mean": -0.06,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": -0.11,
+            "samples": 1000,
+            "seed": 42,
+            "upper": -0.02
+          }
+        }
+      },
+      "record_count": 100,
+      "return_code": 0
+    },
+    "qlora_vs_full_sft_tool": {
+      "bootstrap_confidence": 0.95,
+      "bootstrap_samples": 1000,
+      "bootstrap_seed": 42,
+      "comparison_schema_version": "1.0",
+      "metrics": {
+        "executable_complete_match": {
+          "baseline_mean": 0.747,
+          "candidate_mean": 0.789,
+          "delta_mean": 0.042,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.02,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.063
+          }
+        },
+        "no_tool_false_positive": {
+          "baseline_mean": 0.0,
+          "candidate_mean": 0.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        },
+        "schema_equivalent_complete_match": {
+          "baseline_mean": 0.753,
+          "candidate_mean": 0.796,
+          "delta_mean": 0.043,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.022,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.064
+          }
+        },
+        "strict_complete_match": {
+          "baseline_mean": 0.731,
+          "candidate_mean": 0.776,
+          "delta_mean": 0.045,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.022,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.066
+          }
+        },
+        "tool_call_emitted": {
+          "baseline_mean": 1.0,
+          "candidate_mean": 1.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        }
+      },
+      "record_count": 1000,
+      "return_code": 0
+    }
+  },
+  "schema_version": "1.0"
+}

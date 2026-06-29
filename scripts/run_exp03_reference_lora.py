@@ -180,6 +180,7 @@ def _training_command(
     torch_trace_path: Path | None,
     qlora_patch_report_path: Path | None,
     automodel_bin: str,
+    stop_after_step: int | None = None,
 ) -> list[str]:
     command = [
         sys.executable,
@@ -207,6 +208,8 @@ def _training_command(
                 str(qlora_patch_report_path),
             ],
         )
+    if stop_after_step is not None:
+        command.extend(["--stop-after-step", str(stop_after_step)])
     command.extend(["--", automodel_bin, "finetune", "llm", "-c", str(config_path)])
     return command
 
@@ -286,6 +289,7 @@ def _run_training_stage(
     dry_run: bool,
     patch_qlora_peft_state_dict: bool,
     validator: Any = validate_reference_lora_config,
+    stop_after_step: int | None = None,
 ) -> dict[str, Any]:
     stage_root = results_root / stage_name
     checkpoint_dir = checkpoint_root / stage_name
@@ -332,6 +336,7 @@ def _run_training_stage(
             else None
         ),
         automodel_bin=automodel_bin,
+        stop_after_step=stop_after_step,
     )
     _write_json(
         stage_root / "train_command.json",

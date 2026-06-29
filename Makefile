@@ -30,7 +30,9 @@ SHELLCHECK_BIN := $(shell if command -v shellcheck >/dev/null 2>&1; then command
 	exp06-validate exp06-dry-run exp06-full \
 	exp07-validate exp07-dry-run exp07-full \
 	exp08-validate exp08-dry-run exp08-full \
-	exp09-validate exp09-dry-run exp09-full
+	exp09-validate exp09-dry-run exp09-full \
+	exp09c-validate exp09c-dry-run exp09c-full \
+	fine-tuning-closure fine-tuning-s3-cleanup-dry-run
 
 help:
 	@printf '%s\n' \
@@ -65,6 +67,10 @@ help:
 		'make exp08-full  Run Exp 08 dataset-size sample-efficiency comparison' \
 		'make exp09-validate  Validate Exp 09A loss-mask ablation configs' \
 		'make exp09-full  Run Exp 09A loss-mask proof and short ablation' \
+		'make exp09c-validate  Validate Exp 09C activation-checkpointing configs' \
+		'make exp09c-full  Run Exp 09C activation-checkpointing benchmark' \
+		'make fine-tuning-closure  Rebuild the final fine-tuning closure package' \
+		'make fine-tuning-s3-cleanup-dry-run  Preview versioned S3 cleanup' \
 		'make smoke-run   Run the container/EC2 smoke pipeline scaffold' \
 		'make sync-source-dry-run   Preview source publication to S3' \
 		'make lint        Run Ruff' \
@@ -88,6 +94,7 @@ unit-tests:
 		tests/test_run_manifest.py \
 		tests/test_split_guard.py \
 		tests/test_reference_lora.py \
+		tests/test_activation_checkpointing.py \
 		tests/test_exp00_completion.py \
 		tests/test_preflight_scripts.py \
 		-v
@@ -123,10 +130,10 @@ calculate-checksums:
 	$(PYTHON) scripts/calculate_checksums.py
 
 shellcheck:
-	bash -n scripts/bootstrap_instance.sh scripts/smoke_run.sh scripts/train_smoke.sh scripts/train_reference_lora.sh scripts/train_exp04_qlora.sh scripts/train_exp05a_full_sft.sh scripts/train_exp05b_full_sft.sh scripts/train_exp06_lora_rank.sh scripts/train_exp07_target_modules.sh scripts/train_exp08_sample_efficiency.sh scripts/train_exp09_loss_masking.sh scripts/sync_results.sh scripts/run_automodel_container.sh infrastructure/aws/bootstrap/bootstrap_instance.sh infrastructure/aws/bootstrap/shutdown_and_sync.sh scripts/publish_exp00_source_bundle.sh scripts/build_exp00_source_bundle.sh scripts/audit_launch_template.sh scripts/sync_source_to_s3.sh scripts/publish_eval_dataset.sh scripts/run_curator_exact_dedup_docker.sh
-	$(PYTHON) -m py_compile scripts/resolve_exp00_config.py scripts/select_stratified_eval_sample.py scripts/migrate_smoke_run_metadata.py scripts/check_split_access.py scripts/audit_exp00_completion.py scripts/summarize_evaluation_report.py scripts/compare_evaluations.py scripts/run_training_with_monitor.py scripts/python_sitecustomize/sitecustomize.py scripts/normalize_xlam_full.py scripts/curate_xlam_groups.py scripts/audit_xlam_leakage.py scripts/compare_curator_exact_dedup.py scripts/freeze_xlam_splits.py scripts/build_no_tool_relevance_set.py scripts/render_prompt_hashes.py scripts/run_exp02_matrix.py scripts/validate_reference_lora_config.py scripts/validate_full_sft_config.py scripts/inspect_lora_targets.py scripts/inspect_automodel_package.py scripts/probe_full_sft_runtime.py scripts/probe_automodel_loss_masking.py scripts/audit_exp09_loss_masks.py scripts/reload_full_sft_check.py scripts/run_exp03_reference_lora.py scripts/run_exp05a_full_sft.py scripts/run_exp05b_full_sft.py scripts/run_exp06_lora_rank.py scripts/run_exp07_target_modules.py scripts/run_exp08_sample_efficiency.py scripts/run_exp09_loss_masking.py
+	bash -n scripts/bootstrap_instance.sh scripts/smoke_run.sh scripts/train_smoke.sh scripts/train_reference_lora.sh scripts/train_exp04_qlora.sh scripts/train_exp05a_full_sft.sh scripts/train_exp05b_full_sft.sh scripts/train_exp06_lora_rank.sh scripts/train_exp07_target_modules.sh scripts/train_exp08_sample_efficiency.sh scripts/train_exp09_loss_masking.sh scripts/train_exp09c_activation_checkpointing.sh scripts/sync_results.sh scripts/run_automodel_container.sh infrastructure/aws/bootstrap/bootstrap_instance.sh infrastructure/aws/bootstrap/shutdown_and_sync.sh scripts/publish_exp00_source_bundle.sh scripts/build_exp00_source_bundle.sh scripts/audit_launch_template.sh scripts/sync_source_to_s3.sh scripts/publish_eval_dataset.sh scripts/run_curator_exact_dedup_docker.sh
+	$(PYTHON) -m py_compile scripts/resolve_exp00_config.py scripts/select_stratified_eval_sample.py scripts/migrate_smoke_run_metadata.py scripts/check_split_access.py scripts/audit_exp00_completion.py scripts/summarize_evaluation_report.py scripts/compare_evaluations.py scripts/run_training_with_monitor.py scripts/python_sitecustomize/sitecustomize.py scripts/normalize_xlam_full.py scripts/curate_xlam_groups.py scripts/audit_xlam_leakage.py scripts/compare_curator_exact_dedup.py scripts/freeze_xlam_splits.py scripts/build_no_tool_relevance_set.py scripts/render_prompt_hashes.py scripts/run_exp02_matrix.py scripts/validate_reference_lora_config.py scripts/validate_full_sft_config.py scripts/inspect_lora_targets.py scripts/inspect_automodel_package.py scripts/probe_full_sft_runtime.py scripts/probe_automodel_loss_masking.py scripts/audit_exp09_loss_masks.py scripts/reload_full_sft_check.py scripts/run_exp03_reference_lora.py scripts/run_exp05a_full_sft.py scripts/run_exp05b_full_sft.py scripts/run_exp06_lora_rank.py scripts/run_exp07_target_modules.py scripts/run_exp08_sample_efficiency.py scripts/run_exp09_loss_masking.py scripts/run_exp09c_activation_checkpointing.py scripts/create_fine_tuning_closure.py scripts/cleanup_fine_tuning_s3.py
 	@if [ -n "$(SHELLCHECK_BIN)" ]; then \
-		"$(SHELLCHECK_BIN)" -x scripts/bootstrap_instance.sh scripts/smoke_run.sh scripts/train_smoke.sh scripts/train_reference_lora.sh scripts/train_exp04_qlora.sh scripts/train_exp05a_full_sft.sh scripts/train_exp05b_full_sft.sh scripts/train_exp06_lora_rank.sh scripts/train_exp07_target_modules.sh scripts/train_exp08_sample_efficiency.sh scripts/train_exp09_loss_masking.sh scripts/sync_results.sh scripts/run_automodel_container.sh infrastructure/aws/bootstrap/bootstrap_instance.sh infrastructure/aws/bootstrap/shutdown_and_sync.sh scripts/publish_exp00_source_bundle.sh scripts/build_exp00_source_bundle.sh scripts/audit_launch_template.sh scripts/sync_source_to_s3.sh scripts/publish_eval_dataset.sh scripts/run_curator_exact_dedup_docker.sh; \
+		"$(SHELLCHECK_BIN)" -x scripts/bootstrap_instance.sh scripts/smoke_run.sh scripts/train_smoke.sh scripts/train_reference_lora.sh scripts/train_exp04_qlora.sh scripts/train_exp05a_full_sft.sh scripts/train_exp05b_full_sft.sh scripts/train_exp06_lora_rank.sh scripts/train_exp07_target_modules.sh scripts/train_exp08_sample_efficiency.sh scripts/train_exp09_loss_masking.sh scripts/train_exp09c_activation_checkpointing.sh scripts/sync_results.sh scripts/run_automodel_container.sh infrastructure/aws/bootstrap/bootstrap_instance.sh infrastructure/aws/bootstrap/shutdown_and_sync.sh scripts/publish_exp00_source_bundle.sh scripts/build_exp00_source_bundle.sh scripts/audit_launch_template.sh scripts/sync_source_to_s3.sh scripts/publish_eval_dataset.sh scripts/run_curator_exact_dedup_docker.sh; \
 	else \
 		printf '%s\n' 'shellcheck not installed; bash -n completed and shellcheck was skipped.'; \
 	fi
@@ -244,6 +251,21 @@ exp09-dry-run:
 
 exp09-full:
 	bash scripts/train_exp09_loss_masking.sh
+
+exp09c-validate:
+	$(PYTHON) scripts/run_exp09c_activation_checkpointing.py --validate-only --results-root /tmp/exp09c-activation-checkpointing-validate/results --logs-root /tmp/exp09c-activation-checkpointing-validate/logs
+
+exp09c-dry-run:
+	EXP09C_DRY_RUN=1 EXP09C_RESULTS_ROOT=/tmp/exp09c-activation-checkpointing-dry-run/results EXP09C_LOGS_ROOT=/tmp/exp09c-activation-checkpointing-dry-run/logs EXP09C_CHECKPOINT_ROOT=/tmp/exp09c-activation-checkpointing-dry-run/checkpoints bash scripts/train_exp09c_activation_checkpointing.sh
+
+exp09c-full:
+	bash scripts/train_exp09c_activation_checkpointing.sh
+
+fine-tuning-closure:
+	$(PYTHON) scripts/create_fine_tuning_closure.py
+
+fine-tuning-s3-cleanup-dry-run:
+	$(PYTHON) scripts/cleanup_fine_tuning_s3.py
 
 sync-source-dry-run:
 	./scripts/sync_source_to_s3.sh --dry-run

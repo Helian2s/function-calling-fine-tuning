@@ -1,0 +1,509 @@
+{
+  "bucket": "finetuning-lab-1-037678282394-us-west-2-an",
+  "created_at": "2026-06-29T00:29:32.830914+00:00",
+  "delete_marker_count": 38,
+  "prefixes": [
+    {
+      "bytes": 68939334851,
+      "count": 98,
+      "prefix": "finetuning/checkpoints/exp-05b"
+    },
+    {
+      "bytes": 41363188552,
+      "count": 63,
+      "prefix": "finetuning/checkpoints/exp-05a"
+    },
+    {
+      "bytes": 777750448,
+      "count": 106,
+      "prefix": "finetuning/checkpoints/exp-00"
+    },
+    {
+      "bytes": 634558889,
+      "count": 242,
+      "prefix": "finetuning/checkpoints/exp-06"
+    },
+    {
+      "bytes": 433821270,
+      "count": 242,
+      "prefix": "finetuning/checkpoints/exp-08"
+    },
+    {
+      "bytes": 404802780,
+      "count": 174,
+      "prefix": "finetuning/checkpoints/exp-03"
+    },
+    {
+      "bytes": 383461108,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp02-worktree-20260626T2238Z.tar.gz"
+    },
+    {
+      "bytes": 363725302,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task09-exp05a-working-tree-final-20260628T021429Z.tar.gz"
+    },
+    {
+      "bytes": 363725161,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task09-exp05a-working-tree-20260628T015625Z.tar.gz"
+    },
+    {
+      "bytes": 363724838,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task09-exp05a-working-tree-20260628T015159Z.tar.gz"
+    },
+    {
+      "bytes": 362676433,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp05b-workspace-20260628T025330Z.tar.gz"
+    },
+    {
+      "bytes": 358942674,
+      "count": 121,
+      "prefix": "finetuning/checkpoints/exp-07"
+    },
+    {
+      "bytes": 308096834,
+      "count": 10,
+      "prefix": "finetuning/data/processed"
+    },
+    {
+      "bytes": 283561833,
+      "count": 121,
+      "prefix": "finetuning/checkpoints/exp-04"
+    },
+    {
+      "bytes": 242605398,
+      "count": 106,
+      "prefix": "finetuning/checkpoints/exp-09a"
+    },
+    {
+      "bytes": 162769681,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp02-worktree-20260626T2201Z.tar.gz"
+    },
+    {
+      "bytes": 162768984,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp02-worktree-20260626T2155Z.tar.gz"
+    },
+    {
+      "bytes": 162768822,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp02-worktree-20260626T2150Z.tar.gz"
+    },
+    {
+      "bytes": 162768242,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp02-worktree-20260626T2146Z.tar.gz"
+    },
+    {
+      "bytes": 162767914,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp02-worktree-20260626T213916Z.tar.gz"
+    },
+    {
+      "bytes": 85740886,
+      "count": 5,
+      "prefix": "finetuning/source-bundles/task07"
+    },
+    {
+      "bytes": 82559101,
+      "count": 129,
+      "prefix": "finetuning/results/exp-08"
+    },
+    {
+      "bytes": 81901896,
+      "count": 112,
+      "prefix": "finetuning/results/exp-06"
+    },
+    {
+      "bytes": 57935369,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task12"
+    },
+    {
+      "bytes": 52254682,
+      "count": 67,
+      "prefix": "finetuning/results/exp-07"
+    },
+    {
+      "bytes": 47657180,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task09-exp05a-working-tree-20260628T013828Z.tar.gz"
+    },
+    {
+      "bytes": 43048640,
+      "count": 5,
+      "prefix": "finetuning/source-bundles/task13"
+    },
+    {
+      "bytes": 35192251,
+      "count": 164,
+      "prefix": "finetuning/results/exp-09a"
+    },
+    {
+      "bytes": 27866787,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task08-exp04-working-tree-20260627T221218Z.tar.gz"
+    },
+    {
+      "bytes": 24122854,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task03-curator-payload.tar.gz"
+    },
+    {
+      "bytes": 24122854,
+      "count": 1,
+      "prefix": "finetuning/tmp/task03-curator"
+    },
+    {
+      "bytes": 20699457,
+      "count": 155,
+      "prefix": "finetuning/results/exp-02"
+    },
+    {
+      "bytes": 17147841,
+      "count": 1,
+      "prefix": "finetuning/source-updates/task07"
+    },
+    {
+      "bytes": 15393476,
+      "count": 10,
+      "prefix": "finetuning/source-bundles/task11"
+    },
+    {
+      "bytes": 11215476,
+      "count": 37,
+      "prefix": "finetuning/results/exp-05b"
+    },
+    {
+      "bytes": 9807873,
+      "count": 125,
+      "prefix": "finetuning/results/exp-00"
+    },
+    {
+      "bytes": 9156639,
+      "count": 73,
+      "prefix": "finetuning/results/exp-03"
+    },
+    {
+      "bytes": 7395264,
+      "count": 65,
+      "prefix": "finetuning/results/exp-04"
+    },
+    {
+      "bytes": 6054305,
+      "count": 68,
+      "prefix": "finetuning/results/exp-05a"
+    },
+    {
+      "bytes": 5983975,
+      "count": 43,
+      "prefix": "finetuning/logs/exp-08"
+    },
+    {
+      "bytes": 5056735,
+      "count": 8,
+      "prefix": "finetuning/data/eval"
+    },
+    {
+      "bytes": 3242318,
+      "count": 185,
+      "prefix": "finetuning/logs/exp-00"
+    },
+    {
+      "bytes": 2127647,
+      "count": 45,
+      "prefix": "finetuning/logs/exp-06"
+    },
+    {
+      "bytes": 2117418,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task09-exp05a-train2k-data-20260628T014453Z.tar.gz"
+    },
+    {
+      "bytes": 1084122,
+      "count": 4,
+      "prefix": "finetuning/source-bundles/task14"
+    },
+    {
+      "bytes": 1054665,
+      "count": 8,
+      "prefix": "finetuning/logs/exp-04"
+    },
+    {
+      "bytes": 1011984,
+      "count": 13,
+      "prefix": "finetuning/logs/exp-07"
+    },
+    {
+      "bytes": 941092,
+      "count": 8,
+      "prefix": "finetuning/logs/exp-05b"
+    },
+    {
+      "bytes": 872122,
+      "count": 29,
+      "prefix": "finetuning/logs/exp-09c"
+    },
+    {
+      "bytes": 762767,
+      "count": 8,
+      "prefix": "finetuning/source-bundles/exp00-source.tar.gz"
+    },
+    {
+      "bytes": 757027,
+      "count": 33,
+      "prefix": "finetuning/logs/exp-09a"
+    },
+    {
+      "bytes": 725211,
+      "count": 19,
+      "prefix": "finetuning/logs/exp-03"
+    },
+    {
+      "bytes": 695066,
+      "count": 52,
+      "prefix": "finetuning/results/exp-09c"
+    },
+    {
+      "bytes": 529115,
+      "count": 6,
+      "prefix": "finetuning/checkpoints/exp-09c"
+    },
+    {
+      "bytes": 464592,
+      "count": 10,
+      "prefix": "finetuning/data/smoke-v1"
+    },
+    {
+      "bytes": 308750,
+      "count": 2,
+      "prefix": "finetuning/source-bundles/working"
+    },
+    {
+      "bytes": 305370,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task16-exp09c-working-tree-v3-20260628T233913Z.tar.gz"
+    },
+    {
+      "bytes": 304859,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task16-exp09c-working-tree-v2-20260628T232915Z.tar.gz"
+    },
+    {
+      "bytes": 304853,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task16-exp09c-working-tree-20260628T230809Z.tar.gz"
+    },
+    {
+      "bytes": 255989,
+      "count": 13,
+      "prefix": "finetuning/logs/exp-05a"
+    },
+    {
+      "bytes": 242518,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task08-exp04-working-tree-20260627T224621Z.tar.gz"
+    },
+    {
+      "bytes": 242306,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task08-exp04-working-tree-20260627T223239Z.tar.gz"
+    },
+    {
+      "bytes": 241239,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task08-exp04-working-tree-20260627T222304Z.tar.gz"
+    },
+    {
+      "bytes": 161718,
+      "count": 7,
+      "prefix": "finetuning/logs/exp-02"
+    },
+    {
+      "bytes": 107663,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp00-source-2652aec.tar.gz"
+    },
+    {
+      "bytes": 106479,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp00-source-5c6a578.tar.gz"
+    },
+    {
+      "bytes": 106479,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp00-source-64bda58.tar.gz"
+    },
+    {
+      "bytes": 100771,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp00-source-1dc6472.tar.gz"
+    },
+    {
+      "bytes": 99890,
+      "count": 8,
+      "prefix": "finetuning/source-bundles/bootstrap_instance.sh"
+    },
+    {
+      "bytes": 95090,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp00-source-7099621.tar.gz"
+    },
+    {
+      "bytes": 92206,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp00-source-c62a6e4.tar.gz"
+    },
+    {
+      "bytes": 88081,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp00-source-2971e3b.tar.gz"
+    },
+    {
+      "bytes": 65998,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp00-source-c25e11e.tar.gz"
+    },
+    {
+      "bytes": 64422,
+      "count": 2,
+      "prefix": "finetuning/tmp/c7-lora-patch.tgz"
+    },
+    {
+      "bytes": 55578,
+      "count": 19,
+      "prefix": "finetuning/results/exp-01"
+    },
+    {
+      "bytes": 37188,
+      "count": 8,
+      "prefix": "finetuning/source-bundles/shutdown_and_sync.sh"
+    },
+    {
+      "bytes": 10901,
+      "count": 1,
+      "prefix": "finetuning/tmp/exp00-batched-generation.patch-files.tgz"
+    },
+    {
+      "bytes": 5099,
+      "count": 4,
+      "prefix": "finetuning/configs/exp00_smoke"
+    },
+    {
+      "bytes": 4427,
+      "count": 7,
+      "prefix": "finetuning/source-bundles/exp00-release-manifest.json"
+    },
+    {
+      "bytes": 3390,
+      "count": 1,
+      "prefix": "finetuning/checksums-exp00.sha256"
+    },
+    {
+      "bytes": 1599,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp05b_prepare.sh"
+    },
+    {
+      "bytes": 303,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/exp05b-workspace-20260628T025330Z.json"
+    },
+    {
+      "bytes": 125,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task16-exp09c-working-tree-v2-20260628T232915Z.tar.gz.sha256"
+    },
+    {
+      "bytes": 125,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task16-exp09c-working-tree-v3-20260628T233913Z.tar.gz.sha256"
+    },
+    {
+      "bytes": 122,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task16-exp09c-working-tree-20260628T230809Z.tar.gz.sha256"
+    },
+    {
+      "bytes": 121,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/task08-exp04-working-tree-20260627T221218Z.tar.gz.sha256"
+    },
+    {
+      "bytes": 0,
+      "count": 1,
+      "prefix": "finetuning/"
+    },
+    {
+      "bytes": 0,
+      "count": 1,
+      "prefix": "finetuning/checkpoints/"
+    },
+    {
+      "bytes": 0,
+      "count": 1,
+      "prefix": "finetuning/configs/"
+    },
+    {
+      "bytes": 0,
+      "count": 3,
+      "prefix": "finetuning/configs/common"
+    },
+    {
+      "bytes": 0,
+      "count": 2,
+      "prefix": "finetuning/configs/exp02_baseline"
+    },
+    {
+      "bytes": 0,
+      "count": 1,
+      "prefix": "finetuning/configs/exp03_reference_lora"
+    },
+    {
+      "bytes": 0,
+      "count": 2,
+      "prefix": "finetuning/configs/exp04_lora_vs_qlora"
+    },
+    {
+      "bytes": 0,
+      "count": 3,
+      "prefix": "finetuning/configs/exp05_rank"
+    },
+    {
+      "bytes": 0,
+      "count": 3,
+      "prefix": "finetuning/configs/exp06_target_modules"
+    },
+    {
+      "bytes": 0,
+      "count": 2,
+      "prefix": "finetuning/configs/exp11_lora_vs_dora"
+    },
+    {
+      "bytes": 0,
+      "count": 1,
+      "prefix": "finetuning/data/"
+    },
+    {
+      "bytes": 0,
+      "count": 1,
+      "prefix": "finetuning/logs/"
+    },
+    {
+      "bytes": 0,
+      "count": 1,
+      "prefix": "finetuning/results/"
+    },
+    {
+      "bytes": 0,
+      "count": 1,
+      "prefix": "finetuning/source-bundles/"
+    }
+  ],
+  "total_versioned_bytes": 117087932360,
+  "version_count": 2901
+}

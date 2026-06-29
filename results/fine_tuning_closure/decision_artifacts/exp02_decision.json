@@ -1,0 +1,147 @@
+{
+  "comparisons": [
+    {
+      "baseline_run_id": "bf16-deterministic",
+      "candidate_run_id": "nf4-deterministic",
+      "name": "bf16-vs-nf4-deterministic",
+      "purpose": "Quantization feasibility"
+    },
+    {
+      "baseline_run_id": "bf16-deterministic",
+      "candidate_run_id": "bf16-sampling",
+      "name": "bf16-deterministic-vs-sampling",
+      "purpose": "Decoding sensitivity"
+    }
+  ],
+  "decision": {
+    "base_model_learning_region": "continue_qwen3_1_7b_training",
+    "nf4_feasibility": "not_acceptable_for_primary_comparison",
+    "qwen3_4b_evaluation_needed": "not_required_before_next_training_step",
+    "sampling_policy": "sampling_is_sensitivity_only_no_primary_replacement"
+  },
+  "experiment_id": "exp-02",
+  "notes": [
+    "No training or optimizer steps were run.",
+    "Final no-tool records are frozen and were not evaluated.",
+    "Failure taxonomy sample uses deterministic evaluator diagnostics."
+  ],
+  "runs": {
+    "bf16-deterministic": {
+      "no_tool_dev": {
+        "complete_call_precision": 0.0,
+        "complete_call_recall": 0.0,
+        "executable_complete_match_rate": 0.0,
+        "function_name_precision": 0.0,
+        "function_name_recall": 0.0,
+        "generated_tokens_per_second": 106.50013115930598,
+        "generation_wall_time_seconds": 29.014048774999992,
+        "load_time_seconds": 36.14822184400009,
+        "malformed_call_rate": 0.0,
+        "no_tool_false_positive_rate": 0.0,
+        "peak_allocated_vram_gb": 4.357659816741943,
+        "peak_reserved_vram_gb": 4.859375,
+        "records_per_second": 3.446606186385307,
+        "schema_equivalent_complete_match_rate": 0.0,
+        "strict_complete_match_rate": 0.0,
+        "total_records": 100
+      },
+      "tool_dev": {
+        "complete_call_precision": 0.8017543859649123,
+        "complete_call_recall": 0.7591362126245847,
+        "executable_complete_match_rate": 0.715,
+        "function_name_precision": 0.9888888888888889,
+        "function_name_recall": 0.9363233665559247,
+        "generated_tokens_per_second": 138.30234078901105,
+        "generation_wall_time_seconds": 439.4430322239999,
+        "load_time_seconds": 5.723683763000054,
+        "malformed_call_rate": 0.0,
+        "no_tool_false_positive_rate": null,
+        "peak_allocated_vram_gb": 6.583809852600098,
+        "peak_reserved_vram_gb": 7.14453125,
+        "records_per_second": 2.2756078186950615,
+        "schema_equivalent_complete_match_rate": 0.719,
+        "strict_complete_match_rate": 0.695,
+        "total_records": 1000
+      }
+    },
+    "bf16-sampling": {
+      "no_tool_dev": {
+        "complete_call_precision": 0.0,
+        "complete_call_recall": 0.0,
+        "executable_complete_match_rate": 0.0,
+        "function_name_precision": 0.0,
+        "function_name_recall": 0.0,
+        "generated_tokens_per_second": 94.26355394238918,
+        "generation_wall_time_seconds": 30.945151949000092,
+        "load_time_seconds": 5.619159205999949,
+        "malformed_call_rate": 0.0,
+        "no_tool_false_positive_rate": 0.0,
+        "peak_allocated_vram_gb": 4.414015769958496,
+        "peak_reserved_vram_gb": 4.955078125,
+        "records_per_second": 3.231523961000658,
+        "schema_equivalent_complete_match_rate": 0.0,
+        "strict_complete_match_rate": 0.0,
+        "total_records": 100
+      },
+      "tool_dev": {
+        "complete_call_precision": 0.8001172332942555,
+        "complete_call_recall": 0.7558139534883721,
+        "executable_complete_match_rate": 0.716,
+        "function_name_precision": 0.988862837045721,
+        "function_name_recall": 0.9341085271317829,
+        "generated_tokens_per_second": 134.89782790124247,
+        "generation_wall_time_seconds": 451.2971109109999,
+        "load_time_seconds": 5.66469730200015,
+        "malformed_call_rate": 0.0,
+        "no_tool_false_positive_rate": null,
+        "peak_allocated_vram_gb": 6.583809852600098,
+        "peak_reserved_vram_gb": 7.14453125,
+        "records_per_second": 2.215835146786946,
+        "schema_equivalent_complete_match_rate": 0.72,
+        "strict_complete_match_rate": 0.694,
+        "total_records": 1000
+      }
+    },
+    "nf4-deterministic": {
+      "no_tool_dev": {
+        "complete_call_precision": 0.0,
+        "complete_call_recall": 0.0,
+        "executable_complete_match_rate": 0.0,
+        "function_name_precision": 0.0,
+        "function_name_recall": 0.0,
+        "generated_tokens_per_second": 66.8617108912806,
+        "generation_wall_time_seconds": 43.41797362500006,
+        "load_time_seconds": 8.486167618000081,
+        "malformed_call_rate": 0.0,
+        "no_tool_false_positive_rate": 0.0,
+        "peak_allocated_vram_gb": 2.3943943977355957,
+        "peak_reserved_vram_gb": 2.755859375,
+        "records_per_second": 2.303193623537051,
+        "schema_equivalent_complete_match_rate": 0.0,
+        "strict_complete_match_rate": 0.0,
+        "total_records": 100
+      },
+      "tool_dev": {
+        "complete_call_precision": 0.7701072386058981,
+        "complete_call_recall": 0.6362126245847176,
+        "executable_complete_match_rate": 0.591,
+        "function_name_precision": 0.9845844504021448,
+        "function_name_recall": 0.8133997785160576,
+        "generated_tokens_per_second": 102.30449958627867,
+        "generation_wall_time_seconds": 617.0989570870001,
+        "load_time_seconds": 7.871527741000136,
+        "malformed_call_rate": 0.007,
+        "no_tool_false_positive_rate": null,
+        "peak_allocated_vram_gb": 4.634309768676758,
+        "peak_reserved_vram_gb": 4.94921875,
+        "records_per_second": 1.6204856425628629,
+        "schema_equivalent_complete_match_rate": 0.593,
+        "strict_complete_match_rate": 0.567,
+        "total_records": 1000
+      }
+    }
+  },
+  "schema_version": "1.0",
+  "status": "complete",
+  "task_id": "task-06"
+}

@@ -1,0 +1,56 @@
+{
+  "lora_off": {
+    "activation_checkpointing": false,
+    "checkpoint_dir": "/workspace/checkpoints/exp-09c/lora-off",
+    "errors": [],
+    "global_batch_size": 4,
+    "local_batch_size": 4,
+    "lora_alpha": 8,
+    "lora_rank": 4,
+    "max_steps": 300,
+    "method": "bf16_lora_activation_checkpointing",
+    "model_name": "Qwen/Qwen3-1.7B",
+    "model_revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
+    "ok": true,
+    "path": "configs/exp09c_activation_checkpointing/lora_off.yaml",
+    "profile": "lora_off",
+    "quantization": {},
+    "sequence_length": 2048,
+    "target_modules": [
+      "*q_proj",
+      "*k_proj",
+      "*v_proj",
+      "*o_proj"
+    ],
+    "train_path": "/workspace/data/processed/xlam_splits_v1/train_10k.jsonl",
+    "validation_path": "/workspace/data/processed/xlam_splits_v1/validation.jsonl",
+    "warmup_steps": null
+  },
+  "lora_on": {
+    "activation_checkpointing": true,
+    "checkpoint_dir": "/workspace/checkpoints/exp-09c/lora-on",
+    "errors": [],
+    "global_batch_size": 4,
+    "local_batch_size": 4,
+    "lora_alpha": 8,
+    "lora_rank": 4,
+    "max_steps": 300,
+    "method": "bf16_lora_activation_checkpointing",
+    "model_name": "Qwen/Qwen3-1.7B",
+    "model_revision": "70d244cc86ccca08cf5af4e1e306ecf908b1ad5e",
+    "ok": true,
+    "path": "configs/exp09c_activation_checkpointing/lora_on.yaml",
+    "profile": "lora_on",
+    "quantization": {},
+    "sequence_length": 2048,
+    "target_modules": [
+      "*q_proj",
+      "*k_proj",
+      "*v_proj",
+      "*o_proj"
+    ],
+    "train_path": "/workspace/data/processed/xlam_splits_v1/train_10k.jsonl",
+    "validation_path": "/workspace/data/processed/xlam_splits_v1/validation.jsonl",
+    "warmup_steps": null
+  }
+}

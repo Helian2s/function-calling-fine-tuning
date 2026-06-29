@@ -1,0 +1,7 @@
+{
+  "mismatched_top_level_keys": [],
+  "off_activation_checkpointing": false,
+  "on_activation_checkpointing": true,
+  "only_activation_checkpointing_and_output_paths_differ": true,
+  "schema_version": "1.0"
+}

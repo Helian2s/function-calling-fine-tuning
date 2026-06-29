@@ -284,10 +284,23 @@ experiments:
     decision_artifacts: []
     expected_artifacts: [run_manifest, report]
   - experiment_id: exp-16
-    task_ids: []
-    title: Reserved experiment slot
-    status: pending_definition
-    dependencies: [exp-00]
-    configs: []
-    decision_artifacts: []
-    expected_artifacts: [run_manifest, report]
+    task_ids: [task-16]
+    title: Activation checkpointing runtime and memory benchmark
+    status: planned
+    dependencies: [exp-06, exp-09]
+    configs:
+      - configs/exp09c_activation_checkpointing/lora_off.yaml
+      - configs/exp09c_activation_checkpointing/lora_on.yaml
+      - configs/exp09c_activation_checkpointing/lora_on_microbatch8.yaml
+      - configs/exp09c_activation_checkpointing/matrix.yaml
+    decision_artifacts:
+      - s3://finetuning-lab-1-037678282394-us-west-2-an/finetuning/results/exp-09c/activation_checkpointing_policy.json
+      - s3://finetuning-lab-1-037678282394-us-west-2-an/finetuning/results/exp-09c/activation_checkpointing_summary.json
+    expected_artifacts:
+      - resolved_config
+      - run_manifest
+      - environment
+      - metrics
+      - logs
+      - checksums
+      - report

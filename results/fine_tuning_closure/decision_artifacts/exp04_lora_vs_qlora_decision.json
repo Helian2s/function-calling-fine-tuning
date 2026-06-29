@@ -1,0 +1,261 @@
+{
+  "comparisons": {
+    "bf16_base_vs_qlora_no_tool_dev": {
+      "bootstrap_confidence": 0.95,
+      "bootstrap_samples": 1000,
+      "bootstrap_seed": 42,
+      "comparison_schema_version": "1.0",
+      "metrics": {
+        "executable_complete_match": {
+          "baseline_mean": 0.0,
+          "candidate_mean": 0.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        },
+        "schema_equivalent_complete_match": {
+          "baseline_mean": 0.0,
+          "candidate_mean": 0.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        },
+        "strict_complete_match": {
+          "baseline_mean": 0.0,
+          "candidate_mean": 0.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        }
+      },
+      "record_count": 100
+    },
+    "bf16_base_vs_qlora_tool_dev": {
+      "bootstrap_confidence": 0.95,
+      "bootstrap_samples": 1000,
+      "bootstrap_seed": 42,
+      "comparison_schema_version": "1.0",
+      "metrics": {
+        "executable_complete_match": {
+          "baseline_mean": 0.715,
+          "candidate_mean": 0.747,
+          "delta_mean": 0.032,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.006,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.058
+          }
+        },
+        "schema_equivalent_complete_match": {
+          "baseline_mean": 0.719,
+          "candidate_mean": 0.753,
+          "delta_mean": 0.034,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.009,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.059
+          }
+        },
+        "strict_complete_match": {
+          "baseline_mean": 0.695,
+          "candidate_mean": 0.731,
+          "delta_mean": 0.036,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.01,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.061
+          }
+        }
+      },
+      "record_count": 1000
+    },
+    "reference_lora_vs_qlora_no_tool_dev": {
+      "bootstrap_confidence": 0.95,
+      "bootstrap_samples": 1000,
+      "bootstrap_seed": 42,
+      "comparison_schema_version": "1.0",
+      "metrics": {
+        "executable_complete_match": {
+          "baseline_mean": 0.0,
+          "candidate_mean": 0.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        },
+        "schema_equivalent_complete_match": {
+          "baseline_mean": 0.0,
+          "candidate_mean": 0.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        },
+        "strict_complete_match": {
+          "baseline_mean": 0.0,
+          "candidate_mean": 0.0,
+          "delta_mean": 0.0,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": 0.0,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.0
+          }
+        }
+      },
+      "record_count": 100
+    },
+    "reference_lora_vs_qlora_tool_dev": {
+      "bootstrap_confidence": 0.95,
+      "bootstrap_samples": 1000,
+      "bootstrap_seed": 42,
+      "comparison_schema_version": "1.0",
+      "metrics": {
+        "executable_complete_match": {
+          "baseline_mean": 0.742,
+          "candidate_mean": 0.747,
+          "delta_mean": 0.005,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": -0.016,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.025
+          }
+        },
+        "schema_equivalent_complete_match": {
+          "baseline_mean": 0.75,
+          "candidate_mean": 0.753,
+          "delta_mean": 0.003,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": -0.016,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.023
+          }
+        },
+        "strict_complete_match": {
+          "baseline_mean": 0.725,
+          "candidate_mean": 0.731,
+          "delta_mean": 0.006,
+          "paired_bootstrap_ci": {
+            "confidence": 0.95,
+            "lower": -0.014,
+            "samples": 1000,
+            "seed": 42,
+            "upper": 0.026
+          }
+        }
+      },
+      "record_count": 1000
+    }
+  },
+  "controlled_reference": "exp-03/reference-bf16-lora-r8-attention",
+  "decision": {
+    "infrastructure": "g6.2xlarge completed full QLoRA with local_batch_size=2 and gradient_accumulation=2",
+    "primary_quality_reference": "preserve_bf16_lora_as_quality_reference_until_task08_review",
+    "qlora_sweep_policy": "use_only_if_quality_delta_and_failure_tradeoffs_are_acceptable"
+  },
+  "deviations": [
+    "g6.2xlarge could not fit local_batch_size=4; local_batch_size=2 with gradient_accumulation=2 preserved global_batch_size=4.",
+    "nemo_automodel==0.2.0rc0 required force_hf=true for NF4 loading.",
+    "PEFT+bitsandbytes checkpoint save required a QLoRA-only adapter state-dict patch to avoid serializing Params4bit quantization internals."
+  ],
+  "evaluation": {
+    "no_tool_dev": {
+      "complete_call_precision": 0.0,
+      "complete_call_recall": 0.0,
+      "executable_complete_match_rate": 0.0,
+      "extra_call_rate": null,
+      "function_name_precision": 0.0,
+      "function_name_recall": 0.0,
+      "generated_tokens_per_second": 84.83428311991689,
+      "generation_wall_time_seconds": 31.543851160000486,
+      "load_time_seconds": 8.055006441999467,
+      "malformed_call_rate": null,
+      "no_tool_call_rate_on_tool_required": null,
+      "no_tool_false_positive_rate": null,
+      "peak_allocated_vram_gb": 2.198047637939453,
+      "peak_reserved_vram_gb": 2.27734375,
+      "records_per_second": 3.1701899521643084,
+      "schema_equivalent_complete_match_rate": 0.0,
+      "strict_complete_match_rate": 0.0,
+      "total_records": 100
+    },
+    "tool_dev": {
+      "complete_call_precision": 0.8094707520891364,
+      "complete_call_recall": 0.8045404208194906,
+      "executable_complete_match_rate": 0.747,
+      "extra_call_rate": null,
+      "function_name_precision": 0.9766016713091922,
+      "function_name_recall": 0.9706533776301218,
+      "generated_tokens_per_second": 91.2589026021229,
+      "generation_wall_time_seconds": 655.9360050710002,
+      "load_time_seconds": 8.162308793999728,
+      "malformed_call_rate": null,
+      "no_tool_call_rate_on_tool_required": null,
+      "no_tool_false_positive_rate": null,
+      "peak_allocated_vram_gb": 4.647249221801758,
+      "peak_reserved_vram_gb": 5.53125,
+      "records_per_second": 1.5245389676265102,
+      "schema_equivalent_complete_match_rate": 0.753,
+      "strict_complete_match_rate": 0.731,
+      "total_records": 1000
+    }
+  },
+  "experiment_id": "exp-04",
+  "method": "NF4 QLoRA on frozen Qwen/Qwen3-1.7B with BF16 compute and double quantization",
+  "quantization_assertions": {
+    "reload_four_bit_quantization_observed": null,
+    "state_dict_patch_tensor_count": 224,
+    "state_dict_patch_total_numel": 3211264
+  },
+  "schema_version": "1.0",
+  "status": "complete",
+  "task_id": "task-08",
+  "training": {
+    "completed_steps": null,
+    "duration_seconds": 3628.957676106,
+    "global_batch_size": 4,
+    "gradient_accumulation_steps": 2,
+    "local_batch_size": 2,
+    "max_gpu_memory_used_mb": 19248.0,
+    "max_steps": 2501,
+    "peak_allocated_vram_gb": 7.058908,
+    "peak_reserved_vram_gb": 17.587891,
+    "training_metrics_path": "/workspace/results/exp-04/full-epoch/training_metrics.json",
+    "training_metrics_sha256": "423b9ca7b97d899bb8dd880f58d9cc625b59311100de42cb2c4793972a3f3864",
+    "validation_loss_final": 0.0398
+  }
+}

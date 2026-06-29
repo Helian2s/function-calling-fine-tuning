@@ -1,0 +1,9 @@
+{
+  "full_sft_l40s_default": "use_prior_full_sft_memory_evidence_or_preflight",
+  "full_sft_l4_default": "not_recommended_without_separate_memory_preflight",
+  "packing_interaction_measured": false,
+  "peft_l40s_default": "off",
+  "peft_l4_default": "off",
+  "primary_reason": "activation-checkpointing profile failed under the pinned BF16 LoRA path",
+  "schema_version": "1.0"
+}

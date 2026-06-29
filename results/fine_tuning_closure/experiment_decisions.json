@@ -1,0 +1,167 @@
+{
+  "created_at": "2026-06-29T00:29:32.835711+00:00",
+  "decisions": [
+    {
+      "decision": {
+        "base_model_learning_region": "continue_qwen3_1_7b_training",
+        "nf4_feasibility": "not_acceptable_for_primary_comparison",
+        "qwen3_4b_evaluation_needed": "not_required_before_next_training_step",
+        "sampling_policy": "sampling_is_sensitivity_only_no_primary_replacement"
+      },
+      "experiment": "exp-02",
+      "title": "Base, decoding, and quantization feasibility"
+    },
+    {
+      "decision": {
+        "infrastructure": "g6.2xlarge completed full QLoRA with local_batch_size=2 and gradient_accumulation=2",
+        "primary_quality_reference": "preserve_bf16_lora_as_quality_reference_until_task08_review",
+        "qlora_sweep_policy": "use_only_if_quality_delta_and_failure_tradeoffs_are_acceptable"
+      },
+      "deviations": [
+        "g6.2xlarge could not fit local_batch_size=4; local_batch_size=2 with gradient_accumulation=2 preserved global_batch_size=4.",
+        "nemo_automodel==0.2.0rc0 required force_hf=true for NF4 loading.",
+        "PEFT+bitsandbytes checkpoint save required a QLoRA-only adapter state-dict patch to avoid serializing Params4bit quantization internals."
+      ],
+      "experiment": "exp-04",
+      "title": "BF16 LoRA versus NF4 QLoRA"
+    },
+    {
+      "decision": "PASS",
+      "experiment": "exp-05a",
+      "title": "Full-SFT feasibility pilot"
+    },
+    {
+      "decision": {
+        "reload_succeeded": true,
+        "selected_checkpoint_policy": "lowest_validation_loss",
+        "status": "complete"
+      },
+      "experiment": "exp-05b",
+      "title": "Full-SFT 10K comparison"
+    },
+    {
+      "decision": {
+        "best_complete_call_f1": 0.8342988242041869,
+        "best_executable_complete_match_rate": 0.7880423915216956,
+        "practical_loss_threshold_absolute": 0.02,
+        "rank16_underfitting_definition": "True only when rank 16 shows a practical validation gain over all smaller ranks on execution-equivalent accuracy and complete-call F1.",
+        "rank16_underfitting_evidence": false,
+        "selected_alpha": 8,
+        "selected_rank": 4,
+        "selection_rule": "Choose the smallest rank within 1pp of the best validation execution-equivalent record accuracy and complete-call F1; report no-tool regression but do not select on it for Task 11.",
+        "status": "selected",
+        "tie_threshold_absolute": 0.01
+      },
+      "experiment": "exp-06",
+      "title": "LoRA rank sweep"
+    },
+    {
+      "decision": {
+        "attention_mlp_minus_attention": {
+          "complete_call_f1": -0.00699789349063995,
+          "executable_complete_match_rate": -0.007398520295940791,
+          "no_tool_false_positive_rate": 0.31999999999999995
+        },
+        "complete_call_f1_gain_threshold_absolute": 0.005,
+        "default_profile": "attention",
+        "exec_gain_threshold_absolute": 0.01,
+        "no_tool_false_positive_worsening_limit_absolute": 0.05,
+        "selected_target_profile": "attention",
+        "selection_rule": "Keep attention-only unless attention+MLP improves validation execution-equivalent record accuracy and complete-call F1 by the predefined thresholds without worsening no-tool false positives by more than the guardrail.",
+        "status": "selected"
+      },
+      "experiment": "exp-07",
+      "title": "Target-module selection"
+    },
+    {
+      "decision": {
+        "best_complete_call_f1": 0.8515181082477187,
+        "best_executable_complete_match_rate": 0.8074385122975405,
+        "best_no_tool_false_positive_rate": 0.68,
+        "candidates": [
+          {
+            "complete_call_f1": 0.8102428661652409,
+            "eligible": false,
+            "executable_complete_match_rate": 0.7618476304739052,
+            "hard_bucket_pass": false,
+            "no_tool_false_positive_rate": 1.0,
+            "no_tool_pass": false,
+            "primary_pass": false,
+            "sample_profile": "train_2k",
+            "supervised_target_tokens": 112427,
+            "train_records": 2019
+          },
+          {
+            "complete_call_f1": 0.8342988242041869,
+            "eligible": false,
+            "executable_complete_match_rate": 0.7880423915216956,
+            "hard_bucket_pass": false,
+            "no_tool_false_positive_rate": 0.68,
+            "no_tool_pass": true,
+            "primary_pass": false,
+            "sample_profile": "train_10k",
+            "supervised_target_tokens": 532826,
+            "train_records": 10003
+          },
+          {
+            "complete_call_f1": 0.8515181082477187,
+            "eligible": false,
+            "executable_complete_match_rate": 0.8074385122975405,
+            "hard_bucket_pass": true,
+            "no_tool_false_positive_rate": 1.0,
+            "no_tool_pass": false,
+            "primary_pass": true,
+            "sample_profile": "train_full",
+            "supervised_target_tokens": 2038249,
+            "train_records": 39526
+          }
+        ],
+        "complete_call_f1_tie_threshold_absolute": 0.005,
+        "executable_complete_tie_threshold_absolute": 0.01,
+        "hard_bucket_loss_limit_absolute": 0.02,
+        "no_tool_false_positive_worsening_limit_absolute": 0.05,
+        "schema_version": "1.0",
+        "selected_sample_profile": "train_full",
+        "selection_rule": "Choose the smallest dataset within 1pp executable-complete accuracy and 0.5pp complete-call F1 of the best validation result, while passing hard-bucket and no-tool false-positive guardrails.",
+        "status": "no_profile_met_all_guardrails"
+      },
+      "experiment": "exp-08",
+      "title": "Dataset size and saturation"
+    },
+    {
+      "decision": {
+        "ablation_policy": "full_sequence",
+        "interpretation": "Short full-sequence run is diagnostic only and is not eligible to replace the production assistant/tool-call-output-only policy.",
+        "production_policy": "assistant_only"
+      },
+      "experiment": "exp-09a",
+      "title": "Assistant-only masking and full-sequence ablation"
+    },
+    {
+      "decision": {
+        "full_sft_new_probe": "not_run",
+        "packing_interaction_measured": false,
+        "peft_activation_checkpointing": "do_not_use_with_pinned_bf16_lora_path",
+        "reason": "Activation checkpointing failed before the first training step in the pinned NeMo AutoModel BF16 LoRA path: checkpointed inputs had no requires_grad=True, so backward failed with no grad_fn."
+      },
+      "experiment": "exp-09c",
+      "policy": {
+        "full_sft_l40s_default": "use_prior_full_sft_memory_evidence_or_preflight",
+        "full_sft_l4_default": "not_recommended_without_separate_memory_preflight",
+        "packing_interaction_measured": false,
+        "peft_l40s_default": "off",
+        "peft_l4_default": "off",
+        "primary_reason": "activation-checkpointing profile failed under the pinned BF16 LoRA path",
+        "schema_version": "1.0"
+      },
+      "title": "Activation checkpointing benchmark"
+    }
+  ],
+  "final_practical_recommendation": {
+    "do_not_retain_by_default": "Full-SFT checkpoints; metrics are retained, checkpoint is not needed for next tasks",
+    "optional_retained_adapter": "Best LoRA adapter from exp-08 train-full for optional deployment comparison",
+    "primary_next_model": "Qwen/Qwen3-1.7B base for TensorRT-LLM optimization benchmark"
+  },
+  "project_decision": "Close fine-tuning experiments and move to inference optimization / GPU acceleration projects.",
+  "schema_version": "1.0"
+}

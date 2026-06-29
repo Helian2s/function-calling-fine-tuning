@@ -27,6 +27,9 @@ from function_calling_ft.reference_lora import (  # noqa: E402
     validate_reference_lora_config,
     validate_reference_qlora_config,
 )
+from function_calling_ft.activation_checkpointing import (  # noqa: E402
+    validate_activation_checkpointing_config,
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -65,6 +68,11 @@ def parse_args() -> argparse.Namespace:
         "--loss-mask-profile",
         choices=("assistant_only_short", "full_sequence_short"),
         help="Validate an Exp 09A loss-mask ablation profile.",
+    )
+    parser.add_argument(
+        "--activation-checkpointing-profile",
+        choices=("lora_off", "lora_on", "lora_on_microbatch8"),
+        help="Validate an Exp 09C activation-checkpointing benchmark profile.",
     )
     parser.add_argument(
         "--local-files-only",
@@ -139,6 +147,7 @@ def _estimated_lora_params(
 
 def main() -> None:
     args = parse_args()
+    validation: Any
     if args.sample_profile is not None:
         validation = validate_lora_sample_efficiency_config(
             args.config,
@@ -153,6 +162,11 @@ def main() -> None:
         validation = validate_loss_mask_ablation_config(
             args.config,
             loss_mask_profile=args.loss_mask_profile,
+        )
+    elif args.activation_checkpointing_profile is not None:
+        validation = validate_activation_checkpointing_config(
+            args.config,
+            profile_name=args.activation_checkpointing_profile,
         )
     elif args.rank is not None:
         validation = validate_lora_rank_config(args.config, rank=args.rank)
