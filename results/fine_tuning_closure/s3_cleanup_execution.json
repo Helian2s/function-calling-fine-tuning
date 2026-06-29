@@ -1,0 +1,51 @@
+{
+  "bucket": "finetuning-lab-1-037678282394-us-west-2-an",
+  "bytes_selected": 116869655028,
+  "created_at": "2026-06-29T00:32:16.713780+00:00",
+  "delete_prefixes": [
+    "finetuning/checkpoints/exp-00/",
+    "finetuning/checkpoints/exp-03/",
+    "finetuning/checkpoints/exp-04/",
+    "finetuning/checkpoints/exp-05a/",
+    "finetuning/checkpoints/exp-05b/",
+    "finetuning/checkpoints/exp-06/",
+    "finetuning/checkpoints/exp-07/",
+    "finetuning/checkpoints/exp-08/train-2k/",
+    "finetuning/checkpoints/exp-08/train-10k/",
+    "finetuning/checkpoints/exp-09a/",
+    "finetuning/checkpoints/exp-09c/",
+    "finetuning/results/",
+    "finetuning/logs/",
+    "finetuning/source-bundles/",
+    "finetuning/source-updates/",
+    "finetuning/tmp/",
+    "finetuning/data/",
+    "finetuning/configs/",
+    "finetuning/checksums-exp00.sha256"
+  ],
+  "deleted_batches": [
+    {
+      "count": 1000,
+      "response": null,
+      "start": 0
+    },
+    {
+      "count": 1000,
+      "response": null,
+      "start": 1000
+    },
+    {
+      "count": 816,
+      "response": null,
+      "start": 2000
+    }
+  ],
+  "errors": [],
+  "execute": true,
+  "keep_prefixes": [
+    "finetuning/checkpoints/exp-08/train-full/"
+  ],
+  "objects_considered": 2939,
+  "objects_selected": 2816,
+  "schema_version": "1.0"
+}

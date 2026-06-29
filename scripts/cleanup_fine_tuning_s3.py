@@ -10,6 +10,7 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+import tempfile
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -91,20 +92,23 @@ def delete_batch(bucket: str, profile: str, batch: list[dict[str, Any]]) -> dict
         "Objects": [{"Key": item["key"], "VersionId": item["version_id"]} for item in batch],
         "Quiet": True,
     }
-    command = [
-        "aws",
-        "s3api",
-        "delete-objects",
-        "--bucket",
-        bucket,
-        "--profile",
-        profile,
-        "--delete",
-        json.dumps(payload),
-        "--output",
-        "json",
-    ]
-    return run_json(command)
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", suffix=".json") as handle:
+        json.dump(payload, handle)
+        handle.flush()
+        command = [
+            "aws",
+            "s3api",
+            "delete-objects",
+            "--bucket",
+            bucket,
+            "--profile",
+            profile,
+            "--delete",
+            f"file://{handle.name}",
+            "--output",
+            "json",
+        ]
+        return run_json(command)
 
 
 def write_report(path: Path, report: dict[str, Any]) -> None:
